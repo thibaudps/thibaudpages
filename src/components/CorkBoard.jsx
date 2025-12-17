@@ -330,7 +330,7 @@ const CorkBoard = () => {
             
             {/* Background corkboard */}
             <img 
-              src="/images/corkboard.svg" 
+              src="images/corkboard.svg" 
               alt="Cork Board"
               style={{ 
                 width: '100%',
