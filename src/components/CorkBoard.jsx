@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './fonts.css';
 import ContactForm from './ContactForm';
 
+const BASE = import.meta.env.BASE_URL;
+
 
 // ═══════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -24,17 +26,17 @@ const CONFIG = {
 
 const CENTRAL_SECTION = {
   logo: {
-    src: '/images/logocentre.svg',
+    src: `${BASE}images/logocentre.svg`,
     width: '350px',
     alt: 'Thibaud Pages'
   },
   buttons: [
-    { id: 's1', src: '/images/boutons/s1.svg', label: 'Affiches' },
-    { id: 's2', src: '/images/boutons/s2.svg', label: 'Illustrations' },
-    { id: 's3', src: '/images/boutons/s3.svg', label: 'Peintures' },
-    { id: 's4', src: '/images/boutons/s4.svg', label: 'Marketing' },
-    { id: 's5', src: '/images/boutons/s5.svg', label: 'Livres' },
-    { id: 'contact', src: '/images/boutons/contact.svg', label: 'Contact' }
+    { id: 's1', src: 'images/boutons/s1.svg', label: 'Affiches' },
+    { id: 's2', src: 'images/boutons/s2.svg', label: 'Illustrations' },
+    { id: 's3', src: 'images/boutons/s3.svg', label: 'Peintures' },
+    { id: 's4', src: 'images/boutons/s4.svg', label: 'Marketing' },
+    { id: 's5', src: 'images/boutons/s5.svg', label: 'Livres' },
+    { id: 'contact', src: 'images/boutons/contact.svg', label: 'Contact' }
   ]
 };
 
@@ -47,62 +49,62 @@ const SECTIONS = [
   {
     id: 's1',
     relativePosition: { x: -900, y: -700 },
-    title: { src: '/images/sections/s1.svg', alt: 'Affiches', width: '350px' },
+    title: { src: 'images/sections/s1.svg', alt: 'Affiches', width: '350px' },
     cards: [
-      { title: 'Le Petit Nicolas', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: '/images/portfolio/petitnicolas.png', ratio: 'portrait' },
-      { title: 'Alice', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: '/images/portfolio/alice.jpg', ratio: 'portrait' },
-      { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: '/images/portfolio/corgis.png', ratio: 'portrait' },
-      { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: '/images/portfolio/troublante.png', ratio: 'portrait' },
-      { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac ', image: '/images/portfolio/hdl.png', ratio: 'square' },
-      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: '/images/portfolio/cledesol.png', ratio: 'portrait' },
+      { title: 'Le Petit Nicolas', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/petitnicolas.png', ratio: 'portrait' },
+      { title: 'Alice', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/alice.jpg', ratio: 'portrait' },
+      { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: 'images/portfolio/corgis.png', ratio: 'portrait' },
+      { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: 'images/portfolio/troublante.png', ratio: 'portrait' },
+      { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac ', image: 'images/portfolio/hdl.png', ratio: 'square' },
+      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: 'images/portfolio/cledesol.png', ratio: 'portrait' },
     ],
     gridCols: 3
   },
   {
     id: 's2',
     relativePosition: { x: 1100, y: -700 },
-    title: { src: '/images/sections/s2.svg', alt: 'Illustrations', width: '350px' },
+    title: { src: 'images/sections/s2.svg', alt: 'Illustrations', width: '350px' },
     cards: [
-      { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le styel de M. Bablet', image: '/images/portfolio/bablet.jpg', ratio: 'portrait' },
-      { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: '/images/portfolio/keith.jpg', ratio: 'portrait' },
-      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: '/images/portfolio/mucha.jpg', ratio: 'portrait' },
-      { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: '/images/portfolio/juliette.jpg', ratio: 'landscape' },
-      { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: '/images/portfolio/skatepark.jpg', ratio: 'landscape' },
+      { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le styel de M. Bablet', image: 'images/portfolio/bablet.jpg', ratio: 'portrait' },
+      { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg', ratio: 'portrait' },
+      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.jpg', ratio: 'portrait' },
+      { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: 'images/portfolio/juliette.jpg', ratio: 'landscape' },
+      { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: 'images/portfolio/skatepark.jpg', ratio: 'landscape' },
     ],
     gridCols: 3
   },
   {
     id: 's3',
     relativePosition: { x: 2000, y: 0 },
-    title: { src: '/images/sections/s3.svg', alt: 'Peintures', width: '350px' },
+    title: { src: 'images/sections/s3.svg', alt: 'Peintures', width: '350px' },
     cards: [
-      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: '/images/portfolio/maisonforet.png', ratio: 'portrait' },
-      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: '/images/portfolio/grenouillechill.png', ratio: 'portrait' },
-      { title: 'La Fille du LAc', description: 'Peinture à l\'acrylique', image: '/images/portfolio/filledulac.png', ratio: 'portrait' },
-      { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: '/images/portfolio/monstregentil.jpg', ratio: 'portrait' },
+      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png', ratio: 'portrait' },
+      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait' },
+      { title: 'La Fille du LAc', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png', ratio: 'portrait' },
+      { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: 'images/portfolio/monstregentil.jpg', ratio: 'portrait' },
     ],
     gridCols: 3
   },
   {
     id: 's4',
     relativePosition: { x: 1000, y: 600 },
-    title: { src: '/images/sections/s4.svg', alt: 'Marketing', width: '350px' },
+    title: { src: 'images/sections/s4.svg', alt: 'Marketing', width: '350px' },
     cards: [
-      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: '/images/portfolio/lunawave.png', ratio: 'square' },
-      { title: 'La Sargane', description: 'Logo design pour La Sargane', image: '/images/portfolio/sargane.png', ratio: 'portrait' },
-      { title: 'Dog & Bio', description: 'Packaging pour la marque Dog & Bio', image: '/images/portfolio/dogbio.png', ratio: 'portrait' },
+      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: 'images/portfolio/lunawave.png', ratio: 'square' },
+      { title: 'La Sargane', description: 'Logo design pour La Sargane', image: 'images/portfolio/sargane.png', ratio: 'portrait' },
+      { title: 'Dog & Bio', description: 'Packaging pour la marque Dog & Bio', image: 'images/portfolio/dogbio.png', ratio: 'portrait' },
     ],
     gridCols: 3
   },
   {
     id: 's5',
     relativePosition: { x: -1800, y: 100 },
-    title: { src: '/images/sections/s5.svg', alt: 'Livres', width: '350px' },
+    title: { src: 'images/sections/s5.svg', alt: 'Livres', width: '350px' },
     cards: [
-      { title: 'BD Fruits et Légumes', description: 'Planche réalisée pour promouvoir les fruits et légumes de saison', image: '/images/portfolio/bdlegumes.jpg', ratio: 'portrait' },
-      { title: 'Coccinelle, Demoiselle', description: 'Illustration de comptine', image: '/images/portfolio/cox.png', ratio: 'landscape' },
-      { title: 'Hopi dans son Jardin', description: 'Couverture d\'imagier pour enfants', image: '/images/portfolio/hopicover.png', ratio: 'square' },
-      { title: 'Hopi dans son Jardin', description: 'Imagier pour enfants', image: '/images/portfolio/hopip1.png', ratio: 'landscape' },
+      { title: 'BD Fruits et Légumes', description: 'Planche réalisée pour promouvoir les fruits et légumes de saison', image: 'images/portfolio/bdlegumes.jpg', ratio: 'portrait' },
+      { title: 'Coccinelle, Demoiselle', description: 'Illustration de comptine', image: 'images/portfolio/cox.png', ratio: 'landscape' },
+      { title: 'Hopi dans son Jardin', description: 'Couverture d\'imagier pour enfants', image: 'images/portfolio/hopicover.png', ratio: 'square' },
+      { title: 'Hopi dans son Jardin', description: 'Imagier pour enfants', image: 'images/portfolio/hopip1.png', ratio: 'landscape' },
     ],
     gridCols: 3
   },
