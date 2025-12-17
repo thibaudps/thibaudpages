@@ -531,7 +531,7 @@ const CorkBoard = () => {
             }}
           >
             <img 
-              src="/images/retouraucentre.svg"
+              src="images/retouraucentre.svg"
               alt="Retour au centre"
               style={{ width: '120px', height: 'auto' }}
             />
