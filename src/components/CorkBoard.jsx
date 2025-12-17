@@ -54,7 +54,7 @@ const SECTIONS = [
       { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: '/images/portfolio/corgis.png', ratio: 'portrait' },
       { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: '/images/portfolio/troublante.png', ratio: 'portrait' },
       { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac ', image: '/images/portfolio/hdl.png', ratio: 'square' },
-      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: '/images/portfolio/cledesol.svg', ratio: 'portrait' },
+      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: '/images/portfolio/cledesol.png', ratio: 'portrait' },
     ],
     gridCols: 3
   },
@@ -88,7 +88,7 @@ const SECTIONS = [
     relativePosition: { x: 1000, y: 600 },
     title: { src: '/images/sections/s4.svg', alt: 'Marketing', width: '350px' },
     cards: [
-      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: '/images/portfolio/lunawave.svg', ratio: 'square' },
+      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: '/images/portfolio/lunawave.png', ratio: 'square' },
       { title: 'La Sargane', description: 'Logo design pour La Sargane', image: '/images/portfolio/sargane.png', ratio: 'portrait' },
       { title: 'Dog & Bio', description: 'Packaging pour la marque Dog & Bio', image: '/images/portfolio/dogbio.png', ratio: 'portrait' },
     ],
@@ -96,7 +96,7 @@ const SECTIONS = [
   },
   {
     id: 's5',
-    relativePosition: { x: -2000, y: 100 },
+    relativePosition: { x: -1800, y: 100 },
     title: { src: '/images/sections/s5.svg', alt: 'Livres', width: '350px' },
     cards: [
       { title: 'BD Fruits et Légumes', description: 'Planche réalisée pour promouvoir les fruits et légumes de saison', image: '/images/portfolio/bdlegumes.jpg', ratio: 'portrait' },
@@ -188,6 +188,8 @@ const CorkBoard = () => {
   });
   
   const [lightboxImage, setLightboxImage] = useState(null);
+
+  
 
   // ═══════════════════════════════════════════════════════════
   // GÉNÉRER LES VARIATIONS ALÉATOIRES UNE SEULE FOIS
@@ -448,221 +450,277 @@ const CorkBoard = () => {
               
             </motion.div>
             
-            {/* Sections portfolio - Positions en PIXELS ABSOLUS */}
-            {SECTIONS.map((section) => {
-              const absPos = getAbsolutePosition(section.relativePosition);
+{/* Sections portfolio - Positions en PIXELS ABSOLUS */}
+{SECTIONS.map((section) => {
+  const absPos = getAbsolutePosition(section.relativePosition);
+  
+  return (
+    <div
+      key={section.id}
+      className="absolute"
+      style={{
+        left: `${absPos.left}px`,
+        top: `${absPos.top}px`,
+        transform: 'translate(-50%, -50%)',
+        zIndex: 3
+      }}
+    >
+      
+      {/* CONDITION : Structure différente pour la section contact */}
+      {section.id === 'contact' ? (
+        <div className="relative flex items-start justify-center gap-6">
+          {/* Formulaire de contact */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <ContactForm />
+          </motion.div>
+          
+          {/* Bouton retour positionné en haut à droite du formulaire */}
+          <motion.button
+            onClick={returnToCenter}
+            style={{ 
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              transformOrigin: 'center 10%',
+              marginTop: '0px',
+              position: 'absolute',
+              left: 'calc(50% + 100px)',
+              zIndex: 100,           
+            }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: 1,
+              scale: 1,
+              rotate: [0, -2, 2, -1, 1, 0]
+            }}
+            transition={{ 
+              opacity: { duration: 0.3 },
+              scale: { duration: 0.3 },
+              rotate: {
+                duration: 4,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+                delay: 0.3
+              }
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 5,
+              transition: { 
+                type: "spring", 
+                stiffness: 300, 
+                damping: 10 
+              }
+            }}
+            whileTap={{ 
+              scale: 0.95,
+              rotate: -5,
+              transition: { 
+                type: "spring", 
+                stiffness: 500, 
+                damping: 20 
+              }
+            }}
+          >
+            <img 
+              src="/images/retouraucentre.svg"
+              alt="Retour au centre"
+              style={{ width: '120px', height: 'auto' }}
+            />
+          </motion.button>
+        </div>
+      ) : (
+        /* Structure normale pour les autres sections (avec titre) */
+        <>
+          {/* Container pour titre et bouton retour */}
+          <div className="mb-6 flex justify-center items-start gap-6">
+            
+            {/* Titre de section avec animation */}
+            <motion.div
+              style={{ perspective: 1500 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ 
+                opacity: 1,
+                x: [0, 2, 0, 3, 0], 
+                y: [0, 5, 1, 4, 0],
+                rotateX: [0, -10, -2, -8, 0]
+              }}
+              transition={{
+                opacity: { duration: 0.5 },
+                y: { duration: 0.5 },
+                rotateX: {
+                  duration: 5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: 0.5
+                }
+              }}
+              style={{ 
+                transformOrigin: 'center 45%',
+                transformStyle: 'preserve-3d'
+              }}
+            >
+              <img 
+                src={section.title.src}
+                alt={section.title.alt}
+                style={{ width: section.title.width, height: 'auto' }}
+              />
+            </motion.div>
+            
+            {/* Bouton retour avec oscillation indépendante */}
+            <motion.button
+              onClick={returnToCenter}
+              style={{ 
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                transformOrigin: 'center 20%',
+                marginTop: '10px',
+                position: 'absolute',  
+                left: 'calc(50% + 200px)', 
+                top: '10px',              
+                zIndex: 10
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: 1,
+                scale: 1,
+                rotate: [0, -2, 2, -1, 1, 0]
+              }}
+              transition={{ 
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.3 },
+                rotate: {
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: 0.3
+                }
+              }}
+              whileHover={{ 
+                scale: 1.1,
+                rotate: 5,
+                transition: { 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 10 
+                }
+              }}
+              whileTap={{ 
+                scale: 0.95,
+                rotate: -5,
+                transition: { 
+                  type: "spring", 
+                  stiffness: 500, 
+                  damping: 20 
+                }
+              }}
+            >
+              <img 
+                src="/images/retouraucentre.svg"
+                alt="Retour au centre"
+                style={{ width: '120px', height: 'auto' }}
+              />
+            </motion.button>
+            
+          </div>
+          
+          {/* Grille de cartes */}
+          <div className="flex flex-wrap justify-center gap-4">
+            {section.cards.map((card, idx) => {
+              const dimensions = getCardDimensions(card.ratio);
+              const variations = cardVariations[section.id][idx];
               
               return (
-                <div
-                  key={section.id}
-                  className="absolute"
-                  style={{
-                    left: `${absPos.left}px`,
-                    top: `${absPos.top}px`,
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 3
+                <motion.div
+                  key={idx}
+                  className="bg-white rounded-lg shadow-xl overflow-hidden border-2 border-gray-800 cursor-pointer flex flex-col relative"
+                  style={{ 
+                    width: `${dimensions.width}px`,
+                    transform: `translateY(${variations.cardY}px) translateX(${variations.cardX}px) rotate(${variations.cardRotation}deg)`,
+                    transformOrigin: 'center 10%'
                   }}
+                  initial={{ opacity: 0, y: 30, x: 0 }}
+                  animate={{ 
+                    opacity: 1,
+                    y: variations.cardY,
+                    x: variations.cardX,
+                    rotate: [
+                      variations.cardRotation,
+                      variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.15,
+                      variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.2,
+                      variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.1,
+                      variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.1,
+                    ]
+                  }}
+                  transition={{
+                    opacity: { delay: idx * 0.1, duration: 0.5 },
+                    y: { delay: idx * 0.1, duration: 0.5 },
+                    x: { delay: idx * 0.1, duration: 0.5 },
+                    rotate: {
+                      delay: idx * 0.1 + 0.5,
+                      duration: 3.5 + idx * 0.2,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }
+                  }}
+                  onClick={() => openLightbox(card)}
                 >
+                  <img 
+                    src="/images/punaises.svg"
+                    alt="Punaise"
+                    style={{
+                      position: 'absolute',
+                      top: `${-4 + variations.pinY}px`,
+                      left: `calc(50% + ${variations.pinX}px)`,
+                      transform: `translate(-50%, 0) rotate(${variations.pinRotation}deg)`,
+                      width: '30px',
+                      height: 'auto',
+                      zIndex: 10,
+                      pointerEvents: 'none'
+                    }}
+                  />
                   
-                  {/* Container pour titre et bouton retour */}
-                  <div className="mb-6 flex justify-center items-start gap-6">
-                    
-                    {/* Titre de section avec animation */}
-                    <motion.div
-                      style={{ perspective: 1500 }}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ 
-                        opacity: 1,
-                        x: [0, 2, 0, 3, 0], 
-                        y: [0, 5, 1, 4, 0],
-                        rotateX: [0, -10, -2, -8, 0]
-                      }}
-                      transition={{
-                        opacity: { duration: 0.5 },
-                        y: { duration: 0.5 },
-                        rotateX: {
-                          duration: 5,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                          delay: 0.5
-                        }
-                      }}
-                      style={{ 
-                        transformOrigin: 'center 45%',
-                        transformStyle: 'preserve-3d'
-                      }}
-                    >
+                  <div 
+                    className="relative bg-white border-b-2 border-gray-800 flex items-center justify-center overflow-hidden flex-grow"
+                  >
+                    {card.image ? (
                       <img 
-                        src={section.title.src}
-                        alt={section.title.alt}
-                        style={{ width: section.title.width, height: 'auto' }}
+                        src={card.image} 
+                        alt={card.title}
+                        className="w-full h-full object-cover"
+                        style={{ display: 'block' }}
                       />
-                    </motion.div>
-                    
-                    {/* Bouton retour avec oscillation indépendante */}
-                    <motion.button
-                      onClick={returnToCenter}
-                      style={{ 
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: 0,
-                        transformOrigin: 'center 18%',
-                        marginTop: '10px'
-                      }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ 
-                        opacity: 1,
-                        scale: 1,
-                        rotate: [0, -2, 2, -1, 1, 0]
-                      }}
-                      transition={{ 
-                        opacity: { duration: 0.3 },
-                        scale: { duration: 0.3 },
-                        rotate: {
-                          duration: 4,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                          delay: 0.3
-                        }
-                      }}
-                      whileHover={{ 
-                        scale: 1.1,
-                        rotate: 5,
-                        transition: { 
-                          type: "spring", 
-                          stiffness: 300, 
-                          damping: 10 
-                        }
-                      }}
-                      whileTap={{ 
-                        scale: 0.95,
-                        rotate: -5,
-                        transition: { 
-                          type: "spring", 
-                          stiffness: 500, 
-                          damping: 20 
-                        }
-                      }}
-                    >
-                      <img 
-                        src="/images/retouraucentre.svg"
-                        alt="Retour au centre"
-                        style={{ width: '120px', height: 'auto' }}
-                      />
-                    </motion.button>
-                    
+                    ) : (
+                      <div className="text-gray-300 text-sm text-center px-4">
+                        [Image à venir]
+                      </div>
+                    )}
                   </div>
-                  
-                  {/* CONDITION : Si c'est la section contact, afficher le formulaire */}
-                  {section.id === 'contact' ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                      className="flex justify-center"
-                    >
-                      <ContactForm />
-                    </motion.div>
-                  ) : (
-                    /* SINON : Afficher les cartes normalement */
-                    <div className="flex flex-wrap justify-center gap-4">
-                      {section.cards.map((card, idx) => {
-                        const dimensions = getCardDimensions(card.ratio);
-                        const variations = cardVariations[section.id][idx];
-                        
-                        return (
-                          <motion.div
-                            key={idx}
-                            className="bg-white rounded-lg shadow-xl overflow-hidden border-2 border-gray-800 cursor-pointer flex flex-col relative"
-                            style={{ 
-                              width: `${dimensions.width}px`,
-                              transformOrigin: 'center top'
-                            }}
-                            initial={{ 
-                              opacity: 0, 
-                              y: 20 + variations.cardY,
-                              rotate: variations.cardRotation,
-                              x: variations.cardX
-                            }}
-                            animate={{ 
-                              opacity: 1, 
-                              y: variations.cardY,
-                              x: variations.cardX,
-                              rotate: [
-                                variations.cardRotation,
-                                variations.cardRotation - 0.6,
-                                variations.cardRotation + 0.6,
-                                variations.cardRotation - 0.3,
-                                variations.cardRotation + 0.3,
-                                variations.cardRotation
-                              ]
-                            }}
-                            whileHover={{ 
-                              scale: 1.05, 
-                              rotate: variations.cardRotation + 2,
-                              transition: { duration: 0.2 }
-                            }}
-                            transition={{ 
-                              opacity: { delay: idx * 0.1, duration: 0.5 },
-                              y: { delay: idx * 0.1, duration: 0.5 },
-                              x: { delay: idx * 0.1, duration: 0.5 },
-                              rotate: {
-                                delay: idx * 0.1 + 0.5,
-                                duration: 3.5 + idx * 0.2,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                ease: "easeInOut"
-                              }
-                            }}
-                            onClick={() => openLightbox(card)}
-                          >
-                            <img 
-                              src="/images/punaises.svg"
-                              alt="Punaise"
-                              style={{
-                                position: 'absolute',
-                                top: `${-4 + variations.pinY}px`,
-                                left: `calc(50% + ${variations.pinX}px)`,
-                                transform: `translate(-50%, 0) rotate(${variations.pinRotation}deg)`,
-                                width: '30px',
-                                height: 'auto',
-                                zIndex: 10,
-                                pointerEvents: 'none'
-                              }}
-                            />
-                            
-                            <div 
-                              className="relative bg-white border-b-2 border-gray-800 flex items-center justify-center overflow-hidden flex-grow"
-                            >
-                              {card.image ? (
-                                <img 
-                                  src={card.image} 
-                                  alt={card.title}
-                                  className="w-full h-full object-cover"
-                                  style={{ display: 'block' }}
-                                />
-                              ) : (
-                                <div className="text-gray-300 text-sm text-center px-4">
-                                  [Image à venir]
-                                </div>
-                              )}
-                            </div>
-                            <div className="p-3 bg-yellow-50 flex-shrink-0" style={{ fontFamily: 'MyFont, sans-serif' }}>
-                              <h3 className="font-bold text-sm mb-1 text-gray-800">{card.title}</h3>
-                              <p className="text-xs text-gray-600">{card.description}</p>
-                            </div>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                  )}
-                  
-                </div>
+                  <div className="p-3 bg-yellow-50 flex-shrink-0" style={{ fontFamily: 'MyFont, sans-serif' }}>
+                    <h3 className="font-bold text-sm mb-1 text-gray-800">{card.title}</h3>
+                    <p className="text-xs text-gray-600">{card.description}</p>
+                  </div>
+                </motion.div>
               );
             })}
+          </div>
+        </>
+      )}
+      
+    </div>
+  );
+})}
             
           </motion.div>
           

@@ -55,10 +55,10 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '150%',
+          height: '150%',
           top: 0,
-          left: 0,
+          left: -50,
           zIndex: 2,
           fontFamily: 'MyFont, sans-serif'
         }}
@@ -74,8 +74,8 @@ const ContactForm = () => {
           placeholder="Votre nom"
           style={{
             position: 'absolute',
-            left: '25%',        // ⚙️ AJUSTE : Position horizontale
-            top: '26.5%',         // ⚙️ AJUSTE : Position verticale
+            left: '23%',        // ⚙️ AJUSTE : Position horizontale
+            top: '17%',         // ⚙️ AJUSTE : Position verticale
             width: '30%',       // ⚙️ AJUSTE : Largeur du champ
             height: '4%',       // ⚙️ AJUSTE : Hauteur du champ
             background: 'rgba(139, 98, 63, 0)', // Légère transparence
@@ -98,8 +98,8 @@ const ContactForm = () => {
           placeholder="Votre email"
           style={{
             position: 'absolute',
-            left: '26.5%',        // ⚙️ AJUSTE : Position horizontale
-            top: '33%',         // ⚙️ AJUSTE : Position verticale
+            left: '23%',        // ⚙️ AJUSTE : Position horizontale
+            top: '21%',         // ⚙️ AJUSTE : Position verticale
             width: '36%',       // ⚙️ AJUSTE : Largeur du champ
             height: '4%',       // ⚙️ AJUSTE : Hauteur du champ
             background: 'rgba(139, 98, 63, 0)',
@@ -121,8 +121,8 @@ const ContactForm = () => {
           placeholder="Votre message"
           style={{
             position: 'absolute',
-            left: '26.5%',        // ⚙️ AJUSTE : Position horizontale
-            top: '38%',         // ⚙️ AJUSTE : Position verticale
+            left: '23%',        // ⚙️ AJUSTE : Position horizontale
+            top: '25.5%',         // ⚙️ AJUSTE : Position verticale
             width: '36%',       // ⚙️ AJUSTE : Largeur du champ
             height: '34%',      // ⚙️ AJUSTE : Hauteur du champ
             background: 'rgba(139, 98, 63, 0)',
@@ -142,10 +142,10 @@ const ContactForm = () => {
           type="submit"
           style={{
             position: 'absolute',
-            left: '48%',        // ⚙️ AJUSTE : Position horizontale du bouton
-            top: '73%',         // ⚙️ AJUSTE : Position verticale du bouton
-            width: '18%',       // ⚙️ AJUSTE : Largeur de la zone cliquable
-            height: '7%',       // ⚙️ AJUSTE : Hauteur de la zone cliquable
+            left: '37%',        // ⚙️ AJUSTE : Position horizontale du bouton
+            top: '49%',         // ⚙️ AJUSTE : Position verticale du bouton
+            width: '12%',       // ⚙️ AJUSTE : Largeur de la zone cliquable
+            height: '4%',       // ⚙️ AJUSTE : Hauteur de la zone cliquable
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
             cursor: 'pointer',
