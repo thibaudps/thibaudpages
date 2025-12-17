@@ -679,7 +679,7 @@ const CorkBoard = () => {
                   onClick={() => openLightbox(card)}
                 >
                   <img 
-                    src="/images/punaises.svg"
+                    src="images/punaises.svg"
                     alt="Punaise"
                     style={{
                       position: 'absolute',
