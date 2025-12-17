@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import LoadingScreen from './components/LoadingScreen';
-import CorkBoard from './components/CorkBoard';
-import CorkBoardMobile from './components/CorkBoardMobile';
+import { useState, useEffect } from 'react'
+import CorkBoard from './components/CorkBoard'
+import CorkBoardMobile from './components/CorkBoardMobile'
+import LoadingScreen from './components/LoadingScreen'
+import './index.css'
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [showLoading, setShowLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
-  // Détecter si on est sur mobile
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 3000)
 
-  return (
-    <>
-      {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
-      {!isLoading && (isMobile ? <CorkBoardMobile /> : <CorkBoard />)}
-    </>
-  );
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (showLoading) {
+    return <LoadingScreen />
+  }
+
+  return isMobile ? <CorkBoardMobile /> : <CorkBoard />
 }
 
-export default App;
+export default App
