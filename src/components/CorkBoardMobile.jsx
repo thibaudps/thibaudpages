@@ -119,7 +119,7 @@ const CorkBoardMobile = () => {
         overflowY: 'scroll',
         overflowX: 'hidden',
         backgroundImage: 'url("images/corkboard.svg")',
-        backgroundSize: '400%',
+        backgroundSize: '150%',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
       }}
@@ -130,15 +130,15 @@ const CorkBoardMobile = () => {
       <div 
         style={{
           position: 'sticky',
-          top: 40,
+          top: 0,
           zIndex: 50,
-          backgroundColor: 'rgba(212, 165, 116, 0)' // Semi-transparent pour voir le background à travers
+          backgroundColor: 'rgba(212, 165, 116, 0.95)' // Semi-transparent pour voir le background à travers
         }}
       >
-        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '10px 8px' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '24px 16px' }}>
           {/* Logo */}
           <motion.div
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}
+            style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -146,7 +146,7 @@ const CorkBoardMobile = () => {
             <img 
               src="images/logocentre.svg"
               alt="Thibaud Pages"
-              style={{ width: '300px', maxWidth: '70vw', display: 'block' }}
+              style={{ width: '200px', maxWidth: '70vw', display: 'block' }}
             />
           </motion.div>
 
@@ -155,8 +155,8 @@ const CorkBoardMobile = () => {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '4px',
-              maxWidth: '300px',
+              gap: '8px',
+              maxWidth: '200px',
               margin: '0 auto'
             }}
             initial={{ opacity: 0 }}
@@ -269,7 +269,16 @@ const CorkBoardMobile = () => {
                     <img 
                       src={card.image} 
                       alt={card.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      loading="lazy"
+                      onLoad={(e) => e.target.style.opacity = 1}
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover', 
+                        display: 'block',
+                        opacity: 0,
+                        transition: 'opacity 0.3s'
+                      }}
                     />
                   ) : (
                     <div style={{
@@ -368,9 +377,9 @@ const CorkBoardMobile = () => {
               placeholder="Votre nom"
               style={{
                 position: 'absolute',
-                left: '34%',
-                top: '26.2%',
-                width: '43%',
+                left: '23%',
+                top: '17%',
+                width: '30%',
                 height: '4%',
                 background: 'transparent',
                 border: 'none',
@@ -389,9 +398,9 @@ const CorkBoardMobile = () => {
               placeholder="Votre email"
               style={{
                 position: 'absolute',
-                left: '35%',
-                top: '32.7%',
-                width: '43%',
+                left: '23%',
+                top: '21%',
+                width: '36%',
                 height: '4%',
                 background: 'transparent',
                 border: 'none',
@@ -409,9 +418,9 @@ const CorkBoardMobile = () => {
               placeholder="Votre message"
               style={{
                 position: 'absolute',
-                left: '36%',
-                top: '38%',
-                width: '43%',
+                left: '23%',
+                top: '25.5%',
+                width: '36%',
                 height: '34%',
                 background: 'transparent',
                 border: 'none',
@@ -429,10 +438,10 @@ const CorkBoardMobile = () => {
               type="submit"
               style={{
                 position: 'absolute',
-                left: '62%',
-                top: '73.5%',
-                width: '22%',
-                height: '6%',
+                left: '37%',
+                top: '49%',
+                width: '12%',
+                height: '4%',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
@@ -448,7 +457,7 @@ const CorkBoardMobile = () => {
 
       {/* Footer */}
       <div style={{ textAlign: 'center', padding: '32px 0', color: '#374151', fontFamily: 'MyFont, sans-serif' }}>
-        <p style={{ fontSize: '14px' }}>© 2025 Thibaud Pagès</p>
+        <p style={{ fontSize: '14px' }}>© 2024 Thibaud Pagès</p>
         <p style={{ fontSize: '12px', marginTop: '4px' }}>Graphiste & Illustrateur</p>
       </div>
 
