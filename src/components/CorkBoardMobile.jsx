@@ -118,11 +118,15 @@ const CorkBoardMobile = () => {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '100vh',
+        height: '100vh',
         backgroundImage: 'url("images/corkboardweb.svg")',
         backgroundSize: '150%',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundRepeat: 'repeat-y',
+        overflowY: 'auto',
+        overflowX: 'hidden', 
+        WebkitOverflowScrolling: 'touch',      
+        
       }}
     >
       {/* ═══════════════════════════════════════════════════════════
