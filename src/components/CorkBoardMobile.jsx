@@ -97,11 +97,22 @@ const CorkBoardMobile = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fonction pour scroller vers une section
+  // Fonction pour scroller vers une section - AVEC FIX ANDROID
   const scrollToSection = (sectionId) => {
     const element = sectionRefs.current[sectionId];
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const container = containerRef.current;
+    
+    if (element && container) {
+      // Position de l'élément par rapport au conteneur
+      const elementTop = element.offsetTop;
+      
+      // Offset spécial pour la section contact (fix Android)
+      const offset = sectionId === 'contact' ? -80 : 0;
+      
+      container.scrollTo({
+        top: elementTop + offset,
+        behavior: 'smooth'
+      });
     }
   };
 
