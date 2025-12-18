@@ -82,15 +82,19 @@ const CorkBoardMobile = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const sectionRefs = useRef({});
+  const containerRef = useRef(null);
 
   // Détecter le scroll pour afficher le bouton "retour en haut"
   React.useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 500);
+      setShowBackToTop(container.scrollTop > 500);
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Fonction pour scroller vers une section
@@ -103,9 +107,8 @@ const CorkBoardMobile = () => {
 
   // Fonction pour retourner en haut
   const scrollToTop = () => {
-    const element = sectionRefs.current['top'];
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -114,344 +117,412 @@ const CorkBoardMobile = () => {
   };
 
   return (
-    <div 
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100vh',
-        backgroundImage: 'url("images/corkboardweb.svg")',
-        backgroundSize: '150%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'repeat-y',
-        overflowY: 'auto',
-        overflowX: 'hidden', 
-        WebkitOverflowScrolling: 'touch',      
-        
-      }}
-    >
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION HEADER - Logo + Navigation
-      ═══════════════════════════════════════════════════════════ */}
+    <>
       <div 
-        ref={el => sectionRefs.current['top'] = el}
-        style={{ padding: '20px 16px' }}
+        ref={containerRef}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100vh',
+          backgroundImage: 'url("images/corkboardweb.svg")',
+          backgroundSize: '150%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'repeat-y',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch'
+        }}
       >
-        {/* Logo */}
-        <motion.div
-          style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <img 
-            src="images/logocentre.svg"
-            alt="Thibaud Pages"
-            style={{ width: '350px', maxWidth: '70vw', display: 'block' }}
-          />
-        </motion.div>
-
-        {/* Grille de boutons 3×2 */}
-        <motion.div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '4px',
-            maxWidth: '300px',
-            margin: '0 auto'
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-        >
-          {NAVIGATION_BUTTONS.map((button, idx) => (
-            <motion.button
-              key={button.id}
-              onClick={() => scrollToSection(button.id)}
-              style={{
-                aspectRatio: '1',
-                padding: '2px',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 + idx * 0.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <img 
-                src={button.src}
-                alt={button.label}
-                style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
-              />
-            </motion.button>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════
-          SECTIONS PORTFOLIO
-      ═══════════════════════════════════════════════════════════ */}
-      {SECTIONS_DATA.map((section) => (
+        {/* ═══════════════════════════════════════════════════════════
+            SECTION HEADER - Logo + Navigation
+        ═══════════════════════════════════════════════════════════ */}
         <div 
-          key={section.id}
-          ref={el => sectionRefs.current[section.id] = el}
-          style={{ padding: '48px 16px' }}
+          ref={el => sectionRefs.current['top'] = el}
+          style={{ padding: '20px 16px' }}
         >
-          {/* Titre de section */}
+          {/* Logo */}
           <motion.div
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
             <img 
-              src={section.title.src}
-              alt={section.title.alt}
-              style={{ width: '180px', maxWidth: '65vw', display: 'block' }}
+              src="images/logocentre.svg"
+              alt="Thibaud Pages"
+              style={{ width: '350px', maxWidth: '70vw', display: 'block' }}
             />
           </motion.div>
 
-          {/* Grille de cartes */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '8px',
-            maxWidth: '280px',
-            margin: '0 auto',
-            padding: '0 8px'
-          }}>
-            {section.cards.map((card, idx) => (
-              <motion.div
-                key={idx}
+          {/* Grille de boutons 3×2 */}
+          <motion.div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '4px',
+              maxWidth: '300px',
+              margin: '0 auto'
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            {NAVIGATION_BUTTONS.map((button, idx) => (
+              <motion.button
+                key={button.id}
+                onClick={() => scrollToSection(button.id)}
                 style={{
-                  background: 'white',
-                  borderRadius: '8px',
-                  boxShadow: '0 10px 15px rgba(0,0,0,0.3)',
-                  overflow: 'hidden',
-                  border: '2px solid #1f2937',
-                  position: 'relative',
+                  aspectRatio: '1',
+                  padding: '2px',
+                  background: 'transparent',
+                  border: 'none',
                   cursor: 'pointer'
                 }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                onClick={() => openLightbox(card)}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + idx * 0.1 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {/* Punaise */}
                 <img 
-                  src="images/punaises.svg"
-                  alt="Punaise"
-                  style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '16px',
-                    height: 'auto',
-                    zIndex: 10,
-                    pointerEvents: 'none'
-                  }}
+                  src={button.src}
+                  alt={button.label}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
                 />
-                
-                {/* Image */}
-                <div style={{
-                  position: 'relative',
-                  background: 'white',
-                  borderBottom: '2px solid #1f2937',
-                  overflow: 'hidden',
-                  aspectRatio: '3/4'
-                }}>
-                  {card.image ? (
-                    <img 
-                      src={card.image} 
-                      alt={card.title}
-                      loading="lazy"
-                      onLoad={(e) => e.target.style.opacity = 1}
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover', 
-                        display: 'block',
-                        opacity: 0,
-                        transition: 'opacity 0.3s'
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                      color: '#d1d5db',
-                      fontSize: '12px'
-                    }}>
-                      [Image à venir]
-                    </div>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div style={{
-                  padding: '6px',
-                  background: '#fefce8',
-                  fontFamily: 'MyFont, sans-serif'
-                }}>
-                  <h3 style={{
-                    fontWeight: 'bold',
-                    fontSize: '10px',
-                    marginBottom: '2px',
-                    color: '#1f2937',
-                    lineHeight: '1.2'
-                  }}>{card.title}</h3>
-                  <p style={{
-                    fontSize: '8px',
-                    color: '#4b5563',
-                    lineHeight: '1.2',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                  }}>{card.description}</p>
-                </div>
-              </motion.div>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </div>
-      ))}
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION CONTACT
-      ═══════════════════════════════════════════════════════════ */}
-      <div 
-        ref={el => sectionRefs.current['contact'] = el}
-        style={{ padding: '48px 16px' }}
-      >
-        <motion.div
-          style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: '470px',
-            margin: '0 auto'
-          }}
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <img 
-            src="images/contact-form.svg"
-            alt="Formulaire de contact"
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block'
-            }}
-          />
-
-          <form 
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert('Message envoyé ! (Version démo)');
-            }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              fontFamily: 'MyFont, sans-serif'
-            }}
+        {/* ═══════════════════════════════════════════════════════════
+            SECTIONS PORTFOLIO
+        ═══════════════════════════════════════════════════════════ */}
+        {SECTIONS_DATA.map((section) => (
+          <div 
+            key={section.id}
+            ref={el => sectionRefs.current[section.id] = el}
+            style={{ padding: '48px 16px' }}
           >
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="Votre nom"
+            {/* Titre de section */}
+            <motion.div
+              style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+            >
+              <img 
+                src={section.title.src}
+                alt={section.title.alt}
+                style={{ width: '180px', maxWidth: '65vw', display: 'block' }}
+              />
+            </motion.div>
+
+            {/* Grille de cartes */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '8px',
+              maxWidth: '280px',
+              margin: '0 auto',
+              padding: '0 8px'
+            }}>
+              {section.cards.map((card, idx) => (
+                <motion.div
+                  key={idx}
+                  style={{
+                    background: 'white',
+                    borderRadius: '8px',
+                    boxShadow: '0 10px 15px rgba(0,0,0,0.3)',
+                    overflow: 'hidden',
+                    border: '2px solid #1f2937',
+                    position: 'relative',
+                    cursor: 'pointer'
+                  }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  onClick={() => openLightbox(card)}
+                >
+                  {/* Punaise */}
+                  <img 
+                    src="images/punaises.svg"
+                    alt="Punaise"
+                    style={{
+                      position: 'absolute',
+                      top: '-2px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '16px',
+                      height: 'auto',
+                      zIndex: 10,
+                      pointerEvents: 'none'
+                    }}
+                  />
+                  
+                  {/* Image */}
+                  <div style={{
+                    position: 'relative',
+                    background: 'white',
+                    borderBottom: '2px solid #1f2937',
+                    overflow: 'hidden',
+                    aspectRatio: '3/4'
+                  }}>
+                    {card.image ? (
+                      <img 
+                        src={card.image} 
+                        alt={card.title}
+                        loading="lazy"
+                        onLoad={(e) => e.target.style.opacity = 1}
+                        style={{ 
+                          width: '100%', 
+                          height: '100%', 
+                          objectFit: 'cover', 
+                          display: 'block',
+                          opacity: 0,
+                          transition: 'opacity 0.3s'
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        color: '#d1d5db',
+                        fontSize: '12px'
+                      }}>
+                        [Image à venir]
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <div style={{
+                    padding: '6px',
+                    background: '#fefce8',
+                    fontFamily: 'MyFont, sans-serif'
+                  }}>
+                    <h3 style={{
+                      fontWeight: 'bold',
+                      fontSize: '10px',
+                      marginBottom: '2px',
+                      color: '#1f2937',
+                      lineHeight: '1.2'
+                    }}>{card.title}</h3>
+                    <p style={{
+                      fontSize: '8px',
+                      color: '#4b5563',
+                      lineHeight: '1.2',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>{card.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* ═══════════════════════════════════════════════════════════
+            SECTION CONTACT
+        ═══════════════════════════════════════════════════════════ */}
+        <div 
+          ref={el => sectionRefs.current['contact'] = el}
+          style={{ padding: '48px 16px' }}
+        >
+          <motion.div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '470px',
+              margin: '0 auto'
+            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <img 
+              src="images/contact-form.svg"
+              alt="Formulaire de contact"
               style={{
-                position: 'absolute',
-                left: '35%',
-                top: '26.5%',
-                width: '42%',
-                height: '4%',
-                background: 'transparent',
-                border: 'none',
-                padding: '0 8px',
-                fontSize: '13px',
-                color: '#2d2d2d',
-                outline: 'none'
+                width: '100%',
+                height: 'auto',
+                display: 'block'
               }}
             />
 
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Votre email"
-              style={{
-                position: 'absolute',
-                left: '36%',
-                top: '33%',
-                width: '42%',
-                height: '4%',
-                background: 'transparent',
-                border: 'none',
-                padding: '0 8px',
-                fontSize: '13px',
-                color: '#2d2d2d',
-                outline: 'none'
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert('Message envoyé ! (Version démo)');
               }}
-            />
-
-            <textarea
-              name="message"
-              required
-              placeholder="Votre message"
               style={{
                 position: 'absolute',
-                left: '37%',
-                top: '40%',
-                width: '42%',
-                height: '31%',
-                background: 'transparent',
-                border: 'none',
-                padding: '8px',
-                fontSize: '13px',
-                color: '#2d2d2d',
-                outline: 'none',
-                resize: 'none',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
                 fontFamily: 'MyFont, sans-serif'
               }}
-            />
+            >
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="Votre nom"
+                style={{
+                  position: 'absolute',
+                  left: '35%',
+                  top: '26.5%',
+                  width: '42%',
+                  height: '4%',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: '0 8px',
+                  fontSize: '13px',
+                  color: '#2d2d2d',
+                  outline: 'none'
+                }}
+              />
 
-            <button
-              type="submit"
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Votre email"
+                style={{
+                  position: 'absolute',
+                  left: '36%',
+                  top: '33%',
+                  width: '42%',
+                  height: '4%',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: '0 8px',
+                  fontSize: '13px',
+                  color: '#2d2d2d',
+                  outline: 'none'
+                }}
+              />
+
+              <textarea
+                name="message"
+                required
+                placeholder="Votre message"
+                style={{
+                  position: 'absolute',
+                  left: '37%',
+                  top: '40%',
+                  width: '42%',
+                  height: '31%',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: '8px',
+                  fontSize: '13px',
+                  color: '#2d2d2d',
+                  outline: 'none',
+                  resize: 'none',
+                  fontFamily: 'MyFont, sans-serif'
+                }}
+              />
+
+              <button
+                type="submit"
+                style={{
+                  position: 'absolute',
+                  left: '62%',
+                  top: '73.5%',
+                  width: '21%',
+                  height: '6%',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}
+                aria-label="Envoyer le message"
+              />
+            </form>
+          </motion.div>
+        </div>
+
+        {/* Footer */}
+        <div style={{ textAlign: 'center', padding: '32px 0', color: '#374151', fontFamily: 'MyFont, sans-serif' }}>
+          <p style={{ fontSize: '14px' }}>© 2024 Thibaud Pagès</p>
+          <p style={{ fontSize: '12px', marginTop: '4px' }}>Graphiste & Illustrateur</p>
+        </div>
+
+        {/* LIGHTBOX */}
+        <AnimatePresence>
+          {lightboxImage && (
+            <motion.div
               style={{
-                position: 'absolute',
-                left: '62%',
-                top: '73.5%',
-                width: '21%',
-                height: '6%',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                outline: 'none'
+                position: 'fixed',
+                inset: 0,
+                background: 'rgba(0,0,0,0.9)',
+                zIndex: 100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '16px'
               }}
-              aria-label="Envoyer le message"
-            />
-          </form>
-        </motion.div>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setLightboxImage(null)}
+            >
+              <motion.div
+                style={{ position: 'relative', width: '100%', maxWidth: '512px' }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img 
+                  src={lightboxImage.image}
+                  alt={lightboxImage.title}
+                  style={{ width: '100%', borderRadius: '8px', boxShadow: '0 20px 25px rgba(0,0,0,0.5)' }}
+                />
+                
+                <button
+                  onClick={() => setLightboxImage(null)}
+                  style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    right: '-12px',
+                    background: '#fbbf24',
+                    color: '#1f2937',
+                    fontWeight: 'bold',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                    border: '2px solid #1f2937',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    fontSize: '20px'
+                  }}
+                >
+                  ✕
+                </button>
+                
+                <div style={{ marginTop: '16px', textAlign: 'center', color: 'white', fontFamily: 'MyFont, sans-serif' }}>
+                  <h3 style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '4px' }}>{lightboxImage.title}</h3>
+                  <p style={{ fontSize: '14px', color: '#d1d5db' }}>{lightboxImage.description}</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Footer */}
-      <div style={{ textAlign: 'center', padding: '32px 0', color: '#374151', fontFamily: 'MyFont, sans-serif' }}>
-        <p style={{ fontSize: '14px' }}>© 2024 Thibaud Pagès</p>
-        <p style={{ fontSize: '12px', marginTop: '4px' }}>Graphiste & Illustrateur</p>
-      </div>
-
-      {/* Bouton retour en haut */}
+      {/* Bouton retour en haut - SORTI DU CONTENEUR */}
       <AnimatePresence>
         {showBackToTop && (
           <motion.button
@@ -481,73 +552,7 @@ const CorkBoardMobile = () => {
           </motion.button>
         )}
       </AnimatePresence>
-
-      {/* LIGHTBOX */}
-      <AnimatePresence>
-        {lightboxImage && (
-          <motion.div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.9)',
-              zIndex: 100,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '16px'
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setLightboxImage(null)}
-          >
-            <motion.div
-              style={{ position: 'relative', width: '100%', maxWidth: '512px' }}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img 
-                src={lightboxImage.image}
-                alt={lightboxImage.title}
-                style={{ width: '100%', borderRadius: '8px', boxShadow: '0 20px 25px rgba(0,0,0,0.5)' }}
-              />
-              
-              <button
-                onClick={() => setLightboxImage(null)}
-                style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  right: '-12px',
-                  background: '#fbbf24',
-                  color: '#1f2937',
-                  fontWeight: 'bold',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-                  border: '2px solid #1f2937',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  fontSize: '20px'
-                }}
-              >
-                ✕
-              </button>
-              
-              <div style={{ marginTop: '16px', textAlign: 'center', color: 'white', fontFamily: 'MyFont, sans-serif' }}>
-                <h3 style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '4px' }}>{lightboxImage.title}</h3>
-                <p style={{ fontSize: '14px', color: '#d1d5db' }}>{lightboxImage.description}</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    </>
   );
 };
 
