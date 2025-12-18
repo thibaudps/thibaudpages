@@ -9,6 +9,7 @@ const ContactForm = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,20 +18,37 @@ const ContactForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // Ici tu pourras ajouter l'envoi réel (EmailJS, API, etc.)
-    console.log('📧 Formulaire envoyé:', formData);
-    
-    // Afficher le message de confirmation
-    setIsSubmitted(true);
-    
-    // Réinitialiser après 3 secondes
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', message: '' });
-    }, 3000);
+    try {
+      const response = await fetch('https://formspree.io/f/mlgrerjw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        console.log('📧 Message envoyé avec succès !');
+        setIsSubmitted(true);
+        
+        // Réinitialiser après 3 secondes
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ name: '', email: '', message: '' });
+        }, 3000);
+      } else {
+        alert('Erreur lors de l\'envoi. Réessayez.');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de l\'envoi. Réessayez.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ const ContactForm = () => {
         }}
       >
         
-        {/* Champ NAME - à positionner sur la zone foncée */}
+        {/* Champ NAME */}
         <input
           type="text"
           name="name"
@@ -72,36 +90,13 @@ const ContactForm = () => {
           onChange={handleChange}
           required
           placeholder="Votre nom"
+          disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '23%',        // ⚙️ AJUSTE : Position horizontale
-            top: '17%',         // ⚙️ AJUSTE : Position verticale
-            width: '30%',       // ⚙️ AJUSTE : Largeur du champ
-            height: '4%',       // ⚙️ AJUSTE : Hauteur du champ
-            background: 'rgba(139, 98, 63, 0)', // Légère transparence
-            border: 'none',
-            borderRadius: '8px',
-            padding: '0 15px',
-            fontSize: '16px',
-            color: '#2d2d2d',
-            outline: 'none'
-          }}
-        />
-
-        {/* Champ EMAIL - à positionner sur la zone foncée */}
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          placeholder="Votre email"
-          style={{
-            position: 'absolute',
-            left: '23%',        // ⚙️ AJUSTE : Position horizontale
-            top: '21%',         // ⚙️ AJUSTE : Position verticale
-            width: '36%',       // ⚙️ AJUSTE : Largeur du champ
-            height: '4%',       // ⚙️ AJUSTE : Hauteur du champ
+            left: '23%',
+            top: '17%',
+            width: '30%',
+            height: '4%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
             borderRadius: '8px',
@@ -112,19 +107,45 @@ const ContactForm = () => {
           }}
         />
 
-        {/* Champ MESSAGE - à positionner sur la grande zone foncée */}
+        {/* Champ EMAIL */}
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          placeholder="Votre email"
+          disabled={isSubmitting}
+          style={{
+            position: 'absolute',
+            left: '23%',
+            top: '21%',
+            width: '36%',
+            height: '4%',
+            background: 'rgba(139, 98, 63, 0)',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '0 15px',
+            fontSize: '16px',
+            color: '#2d2d2d',
+            outline: 'none'
+          }}
+        />
+
+        {/* Champ MESSAGE */}
         <textarea
           name="message"
           value={formData.message}
           onChange={handleChange}
           required
           placeholder="Votre message"
+          disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '23%',        // ⚙️ AJUSTE : Position horizontale
-            top: '25.5%',         // ⚙️ AJUSTE : Position verticale
-            width: '36%',       // ⚙️ AJUSTE : Largeur du champ
-            height: '34%',      // ⚙️ AJUSTE : Hauteur du champ
+            left: '23%',
+            top: '25.5%',
+            width: '36%',
+            height: '34%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
             borderRadius: '8px',
@@ -137,18 +158,19 @@ const ContactForm = () => {
           }}
         />
 
-        {/* Zone cliquable sur le bouton SEND */}
+        {/* Bouton SEND */}
         <button
           type="submit"
+          disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '37%',        // ⚙️ AJUSTE : Position horizontale du bouton
-            top: '49%',         // ⚙️ AJUSTE : Position verticale du bouton
-            width: '12%',       // ⚙️ AJUSTE : Largeur de la zone cliquable
-            height: '4%',       // ⚙️ AJUSTE : Hauteur de la zone cliquable
+            left: '37%',
+            top: '49%',
+            width: '12%',
+            height: '4%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
-            cursor: 'pointer',
+            cursor: isSubmitting ? 'wait' : 'pointer',
             outline: 'none'
           }}
           aria-label="Envoyer le message"
