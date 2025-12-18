@@ -146,7 +146,7 @@ const CorkBoardMobile = () => {
             <img 
               src="images/logocentre.svg"
               alt="Thibaud Pages"
-              style={{ width: '300px', maxWidth: '70vw', display: 'block' }}
+              style={{ width: '350px', maxWidth: '70vw', display: 'block' }}
             />
           </motion.div>
 

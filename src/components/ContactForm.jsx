@@ -55,8 +55,8 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         style={{
           position: 'absolute',
-          width: '150%',
-          height: '150%',
+          width: '100%',
+          height: '100%',
           top: 0,
           left: -50,
           zIndex: 2,
