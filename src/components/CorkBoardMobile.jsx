@@ -103,7 +103,10 @@ const CorkBoardMobile = () => {
 
   // Fonction pour retourner en haut
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const element = sectionRefs.current['top'];
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const openLightbox = (card) => {
@@ -116,8 +119,6 @@ const CorkBoardMobile = () => {
         position: 'relative',
         width: '100%',
         minHeight: '100vh',
-        overflowY: 'scroll',
-        overflowX: 'hidden',
         backgroundImage: 'url("images/corkboardweb.svg")',
         backgroundSize: '150%',
         backgroundPosition: 'center',
@@ -128,72 +129,66 @@ const CorkBoardMobile = () => {
           SECTION HEADER - Logo + Navigation
       ═══════════════════════════════════════════════════════════ */}
       <div 
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-          backgroundColor: 'rgba(212, 165, 116, 0)' // Semi-transparent pour voir le background à travers
-        }}
+        ref={el => sectionRefs.current['top'] = el}
+        style={{ padding: '20px 16px' }}
       >
-        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '20px 16px' }}>
-          {/* Logo */}
-          <motion.div
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <img 
-              src="images/logocentre.svg"
-              alt="Thibaud Pages"
-              style={{ width: '350px', maxWidth: '70vw', display: 'block' }}
-            />
-          </motion.div>
+        {/* Logo */}
+        <motion.div
+          style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img 
+            src="images/logocentre.svg"
+            alt="Thibaud Pages"
+            style={{ width: '350px', maxWidth: '70vw', display: 'block' }}
+          />
+        </motion.div>
 
-          {/* Grille de boutons 3×2 - AVEC STYLE INLINE */}
-          <motion.div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '4px',
-              maxWidth: '300px',
-              margin: '0 auto'
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            {NAVIGATION_BUTTONS.map((button, idx) => (
-              <motion.button
-                key={button.id}
-                onClick={() => scrollToSection(button.id)}
-                style={{
-                  aspectRatio: '1',
-                  padding: '2px',
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + idx * 0.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <img 
-                  src={button.src}
-                  alt={button.label}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
-                />
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
+        {/* Grille de boutons 3×2 */}
+        <motion.div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '4px',
+            maxWidth: '300px',
+            margin: '0 auto'
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          {NAVIGATION_BUTTONS.map((button, idx) => (
+            <motion.button
+              key={button.id}
+              onClick={() => scrollToSection(button.id)}
+              style={{
+                aspectRatio: '1',
+                padding: '2px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 + idx * 0.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <img 
+                src={button.src}
+                alt={button.label}
+                style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
+              />
+            </motion.button>
+          ))}
+        </motion.div>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════
-          SECTIONS PORTFOLIO - Empilées verticalement
+          SECTIONS PORTFOLIO
       ═══════════════════════════════════════════════════════════ */}
-      {SECTIONS_DATA.map((section, sectionIdx) => (
+      {SECTIONS_DATA.map((section) => (
         <div 
           key={section.id}
           ref={el => sectionRefs.current[section.id] = el}
@@ -214,7 +209,7 @@ const CorkBoardMobile = () => {
             />
           </motion.div>
 
-          {/* Grille de cartes - AVEC STYLE INLINE */}
+          {/* Grille de cartes */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
@@ -330,7 +325,6 @@ const CorkBoardMobile = () => {
         ref={el => sectionRefs.current['contact'] = el}
         style={{ padding: '48px 16px' }}
       >
-        {/* Formulaire avec image de fond */}
         <motion.div
           style={{
             position: 'relative',
@@ -343,7 +337,6 @@ const CorkBoardMobile = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          {/* Image SVG du formulaire */}
           <img 
             src="images/contact-form.svg"
             alt="Formulaire de contact"
@@ -354,7 +347,6 @@ const CorkBoardMobile = () => {
             }}
           />
 
-          {/* Formulaire en overlay avec champs transparents */}
           <form 
             onSubmit={(e) => {
               e.preventDefault();
@@ -369,7 +361,6 @@ const CorkBoardMobile = () => {
               fontFamily: 'MyFont, sans-serif'
             }}
           >
-            {/* Champ NAME */}
             <input
               type="text"
               name="name"
@@ -390,7 +381,6 @@ const CorkBoardMobile = () => {
               }}
             />
 
-            {/* Champ EMAIL */}
             <input
               type="email"
               name="email"
@@ -411,7 +401,6 @@ const CorkBoardMobile = () => {
               }}
             />
 
-            {/* Champ MESSAGE */}
             <textarea
               name="message"
               required
@@ -433,7 +422,6 @@ const CorkBoardMobile = () => {
               }}
             />
 
-            {/* Bouton SEND invisible (zone cliquable) */}
             <button
               type="submit"
               style={{
@@ -450,8 +438,6 @@ const CorkBoardMobile = () => {
               aria-label="Envoyer le message"
             />
           </form>
-
-          {/* Message de confirmation (optionnel) */}
         </motion.div>
       </div>
 
@@ -461,7 +447,7 @@ const CorkBoardMobile = () => {
         <p style={{ fontSize: '12px', marginTop: '4px' }}>Graphiste & Illustrateur</p>
       </div>
 
-      {/* Bouton retour au centre - FIXE en bas à droite */}
+      {/* Bouton retour en haut */}
       <AnimatePresence>
         {showBackToTop && (
           <motion.button
@@ -485,16 +471,14 @@ const CorkBoardMobile = () => {
           >
             <img 
               src="images/retouraucentre.svg"
-              alt="Retour au centre"
+              alt="Retour en haut"
               style={{ width: '100%', height: '100%', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))' }}
             />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* ═══════════════════════════════════════════════════════════
-          LIGHTBOX
-      ═══════════════════════════════════════════════════════════ */}
+      {/* LIGHTBOX */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div
@@ -527,7 +511,6 @@ const CorkBoardMobile = () => {
                 style={{ width: '100%', borderRadius: '8px', boxShadow: '0 20px 25px rgba(0,0,0,0.5)' }}
               />
               
-              {/* Bouton fermer */}
               <button
                 onClick={() => setLightboxImage(null)}
                 style={{
@@ -552,7 +535,6 @@ const CorkBoardMobile = () => {
                 ✕
               </button>
               
-              {/* Info */}
               <div style={{ marginTop: '16px', textAlign: 'center', color: 'white', fontFamily: 'MyFont, sans-serif' }}>
                 <h3 style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '4px' }}>{lightboxImage.title}</h3>
                 <p style={{ fontSize: '14px', color: '#d1d5db' }}>{lightboxImage.description}</p>
