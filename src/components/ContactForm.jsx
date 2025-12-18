@@ -93,9 +93,9 @@ const ContactForm = () => {
           disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '23%',
-            top: '17%',
-            width: '30%',
+            left: '33%',
+            top: '26.5%',
+            width: '34%',
             height: '4%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
@@ -118,8 +118,8 @@ const ContactForm = () => {
           disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '23%',
-            top: '21%',
+            left: '34%',
+            top: '32.5%',
             width: '36%',
             height: '4%',
             background: 'rgba(139, 98, 63, 0)',
@@ -142,10 +142,10 @@ const ContactForm = () => {
           disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '23%',
-            top: '25.5%',
+            left: '35%',
+            top: '40%',
             width: '36%',
-            height: '34%',
+            height: '32%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
             borderRadius: '8px',
@@ -164,10 +164,10 @@ const ContactForm = () => {
           disabled={isSubmitting}
           style={{
             position: 'absolute',
-            left: '37%',
-            top: '49%',
-            width: '12%',
-            height: '4%',
+            left: '56.5%',
+            top: '73.5%',
+            width: '17%',
+            height: '6.5%',
             background: 'rgba(139, 98, 63, 0)',
             border: 'none',
             cursor: isSubmitting ? 'wait' : 'pointer',

@@ -338,127 +338,125 @@ const CorkBoardMobile = () => {
         ))}
 
         {/* ═══════════════════════════════════════════════════════════
-            SECTION CONTACT
-        ═══════════════════════════════════════════════════════════ */}
-        <div 
-          ref={el => sectionRefs.current['contact'] = el}
-          style={{ padding: '48px 16px' }}
-        >
-          <motion.div
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '470px',
-              margin: '0 auto'
-            }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <img 
-              src="images/contact-form.svg"
-              alt="Formulaire de contact"
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block'
-              }}
-            />
+    SECTION CONTACT
+═══════════════════════════════════════════════════════════ */}
+<div 
+  ref={el => sectionRefs.current['contact'] = el}
+  style={{ padding: '48px 16px' }}
+>
+  <motion.div
+    style={{
+      position: 'relative',
+      width: '100%',
+      maxWidth: '470px',
+      margin: '0 auto'
+    }}
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <img 
+      src="images/contact-form.svg"
+      alt="Formulaire de contact"
+      style={{
+        width: '100%',
+        height: 'auto',
+        display: 'block'
+      }}
+    />
 
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert('Message envoyé ! (Version démo)');
-              }}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                fontFamily: 'MyFont, sans-serif'
-              }}
-            >
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="Votre nom"
-                style={{
-                  position: 'absolute',
-                  left: '35%',
-                  top: '26.5%',
-                  width: '42%',
-                  height: '4%',
-                  background: 'transparent',
-                  border: 'none',
-                  padding: '0 8px',
-                  fontSize: '13px',
-                  color: '#2d2d2d',
-                  outline: 'none'
-                }}
-              />
+    <form 
+      action="https://formspree.io/f/mlgrerjw"
+      method="POST"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        fontFamily: 'MyFont, sans-serif'
+      }}
+    >
+      <input
+        type="text"
+        name="name"
+        required
+        placeholder="Votre nom"
+        style={{
+          position: 'absolute',
+          left: '35%',
+          top: '26.5%',
+          width: '42%',
+          height: '4%',
+          background: 'transparent',
+          border: 'none',
+          padding: '0 8px',
+          fontSize: '13px',
+          color: '#2d2d2d',
+          outline: 'none'
+        }}
+      />
 
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="Votre email"
-                style={{
-                  position: 'absolute',
-                  left: '36%',
-                  top: '33%',
-                  width: '42%',
-                  height: '4%',
-                  background: 'transparent',
-                  border: 'none',
-                  padding: '0 8px',
-                  fontSize: '13px',
-                  color: '#2d2d2d',
-                  outline: 'none'
-                }}
-              />
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="Votre email"
+        style={{
+          position: 'absolute',
+          left: '36%',
+          top: '33%',
+          width: '42%',
+          height: '4%',
+          background: 'transparent',
+          border: 'none',
+          padding: '0 8px',
+          fontSize: '13px',
+          color: '#2d2d2d',
+          outline: 'none'
+        }}
+      />
 
-              <textarea
-                name="message"
-                required
-                placeholder="Votre message"
-                style={{
-                  position: 'absolute',
-                  left: '37%',
-                  top: '40%',
-                  width: '42%',
-                  height: '31%',
-                  background: 'transparent',
-                  border: 'none',
-                  padding: '8px',
-                  fontSize: '13px',
-                  color: '#2d2d2d',
-                  outline: 'none',
-                  resize: 'none',
-                  fontFamily: 'MyFont, sans-serif'
-                }}
-              />
+      <textarea
+        name="message"
+        required
+        placeholder="Votre message"
+        style={{
+          position: 'absolute',
+          left: '37%',
+          top: '40%',
+          width: '42%',
+          height: '31%',
+          background: 'transparent',
+          border: 'none',
+          padding: '8px',
+          fontSize: '13px',
+          color: '#2d2d2d',
+          outline: 'none',
+          resize: 'none',
+          fontFamily: 'MyFont, sans-serif'
+        }}
+      />
 
-              <button
-                type="submit"
-                style={{
-                  position: 'absolute',
-                  left: '62%',
-                  top: '73.5%',
-                  width: '21%',
-                  height: '6%',
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  outline: 'none'
-                }}
-                aria-label="Envoyer le message"
-              />
-            </form>
-          </motion.div>
-        </div>
+      <button
+        type="submit"
+        style={{
+          position: 'absolute',
+          left: '62%',
+          top: '73.5%',
+          width: '21%',
+          height: '6%',
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          outline: 'none'
+        }}
+        aria-label="Envoyer le message"
+      />
+    </form>
+  </motion.div>
+</div>
 
         {/* Footer */}
         <div style={{ textAlign: 'center', padding: '32px 0', color: '#374151', fontFamily: 'MyFont, sans-serif' }}>
