@@ -38,7 +38,7 @@ const ContactForm = () => {
       
       {/* Image de fond - ton illustration */}
       <img 
-        src="/images/contact-form.svg"
+        src="images/contact-form.svg"
         alt="Formulaire de contact"
         style={{
           position: 'absolute',
