@@ -67,7 +67,7 @@ const SECTIONS = [
     cards: [
       { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le styel de M. Bablet', image: 'images/portfolio/bablet.jpg', ratio: 'portrait' },
       { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg', ratio: 'portrait' },
-      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.jpg', ratio: 'portrait' },
+      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.png', ratio: 'portrait' },
       { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: 'images/portfolio/juliette.jpg', ratio: 'landscape' },
       { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: 'images/portfolio/skatepark.jpg', ratio: 'landscape' },
     ],
@@ -679,7 +679,7 @@ const CorkBoard = () => {
                   onClick={() => openLightbox(card)}
                 >
                   <img 
-                    src='images/punaises.svg'
+                    src="images/punaises.svg"
                     alt="Punaise"
                     style={{
                       position: 'absolute',

@@ -29,7 +29,7 @@ const SECTIONS_DATA = [
     cards: [
       { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le style de M. Bablet', image: 'images/portfolio/bablet.jpg' },
       { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg' },
-      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.jpg' },
+      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.png' },
       { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: 'images/portfolio/juliette.jpg' },
       { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: 'images/portfolio/skatepark.jpg' },
     ]
@@ -118,7 +118,7 @@ const CorkBoardMobile = () => {
         minHeight: '100vh',
         overflowY: 'scroll',
         overflowX: 'hidden',
-        backgroundImage: 'url("images/corkboard.svg")',
+        backgroundImage: 'url("images/corkboardweb.svg")',
         backgroundSize: '150%',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
@@ -132,13 +132,13 @@ const CorkBoardMobile = () => {
           position: 'sticky',
           top: 0,
           zIndex: 50,
-          backgroundColor: 'rgba(212, 165, 116, 0.95)' // Semi-transparent pour voir le background à travers
+          backgroundColor: 'rgba(212, 165, 116, 0)' // Semi-transparent pour voir le background à travers
         }}
       >
-        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '24px 16px' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '20px 16px' }}>
           {/* Logo */}
           <motion.div
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}
+            style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -146,7 +146,7 @@ const CorkBoardMobile = () => {
             <img 
               src="images/logocentre.svg"
               alt="Thibaud Pages"
-              style={{ width: '200px', maxWidth: '70vw', display: 'block' }}
+              style={{ width: '300px', maxWidth: '70vw', display: 'block' }}
             />
           </motion.div>
 
@@ -155,8 +155,8 @@ const CorkBoardMobile = () => {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '8px',
-              maxWidth: '200px',
+              gap: '4px',
+              maxWidth: '300px',
               margin: '0 auto'
             }}
             initial={{ opacity: 0 }}
@@ -169,7 +169,7 @@ const CorkBoardMobile = () => {
                 onClick={() => scrollToSection(button.id)}
                 style={{
                   aspectRatio: '1',
-                  padding: '4px',
+                  padding: '2px',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer'
@@ -335,7 +335,7 @@ const CorkBoardMobile = () => {
           style={{
             position: 'relative',
             width: '100%',
-            maxWidth: '340px',
+            maxWidth: '470px',
             margin: '0 auto'
           }}
           initial={{ opacity: 0, scale: 0.9 }}
@@ -377,14 +377,14 @@ const CorkBoardMobile = () => {
               placeholder="Votre nom"
               style={{
                 position: 'absolute',
-                left: '23%',
-                top: '17%',
-                width: '30%',
+                left: '35%',
+                top: '26.5%',
+                width: '42%',
                 height: '4%',
                 background: 'transparent',
                 border: 'none',
                 padding: '0 8px',
-                fontSize: '10px',
+                fontSize: '13px',
                 color: '#2d2d2d',
                 outline: 'none'
               }}
@@ -398,14 +398,14 @@ const CorkBoardMobile = () => {
               placeholder="Votre email"
               style={{
                 position: 'absolute',
-                left: '23%',
-                top: '21%',
-                width: '36%',
+                left: '36%',
+                top: '33%',
+                width: '42%',
                 height: '4%',
                 background: 'transparent',
                 border: 'none',
                 padding: '0 8px',
-                fontSize: '10px',
+                fontSize: '13px',
                 color: '#2d2d2d',
                 outline: 'none'
               }}
@@ -418,14 +418,14 @@ const CorkBoardMobile = () => {
               placeholder="Votre message"
               style={{
                 position: 'absolute',
-                left: '23%',
-                top: '25.5%',
-                width: '36%',
-                height: '34%',
+                left: '37%',
+                top: '40%',
+                width: '42%',
+                height: '31%',
                 background: 'transparent',
                 border: 'none',
                 padding: '8px',
-                fontSize: '10px',
+                fontSize: '13px',
                 color: '#2d2d2d',
                 outline: 'none',
                 resize: 'none',
@@ -438,10 +438,10 @@ const CorkBoardMobile = () => {
               type="submit"
               style={{
                 position: 'absolute',
-                left: '37%',
-                top: '49%',
-                width: '12%',
-                height: '4%',
+                left: '62%',
+                top: '73.5%',
+                width: '21%',
+                height: '6%',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
