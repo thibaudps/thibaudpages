@@ -17,16 +17,13 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
+  // Fonction appelée quand le chargement est terminé
+  const handleLoadComplete = () => {
+    setShowLoading(false)
+  }
 
   if (showLoading) {
-    return <LoadingScreen />
+    return <LoadingScreen onLoadComplete={handleLoadComplete} />
   }
 
   return isMobile ? <CorkBoardMobile /> : <CorkBoard />
