@@ -4,12 +4,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './fonts.css';
 import ContactForm from './ContactForm';
+import { SECTIONS_DATA, NAVIGATION_BUTTONS } from '../portfolioConfig';
 
 const BASE = import.meta.env.BASE_URL;
 
-
 // ═══════════════════════════════════════════════════════════
-// CONFIGURATION
+// CONFIGURATION DESKTOP
 // ═══════════════════════════════════════════════════════════
 
 const CONFIG = {
@@ -30,99 +30,43 @@ const CENTRAL_SECTION = {
     width: '350px',
     alt: 'Thibaud Pages'
   },
-  buttons: [
-    { id: 's1', src: 'images/boutons/s1.svg', label: 'Affiches' },
-    { id: 's2', src: 'images/boutons/s2.svg', label: 'Illustrations' },
-    { id: 's3', src: 'images/boutons/s3.svg', label: 'Peintures' },
-    { id: 's4', src: 'images/boutons/s4.svg', label: 'Marketing' },
-    { id: 's5', src: 'images/boutons/s5.svg', label: 'Livres' },
-    { id: 'contact', src: 'images/boutons/contact.svg', label: 'Contact' }
-  ]
+  buttons: NAVIGATION_BUTTONS
 };
 
 // ═══════════════════════════════════════════════════════════
-// SECTIONS - Positions relatives au centre (0,0)
-// ratio: 'portrait' (2/3), 'landscape' (3/2), 'square' (1/1)
+// SECTIONS - Ajout des positions desktop
 // ═══════════════════════════════════════════════════════════
 
-const SECTIONS = [
-  {
-    id: 's1',
-    relativePosition: { x: -900, y: -700 },
-    title: { src: 'images/sections/s1.svg', alt: 'Affiches', width: '350px' },
-    cards: [
-      { title: 'Le Petit Nicolas', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/petitnicolas.png', ratio: 'portrait' },
-      { title: 'Alice', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/alice.jpg', ratio: 'portrait' },
-      { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: 'images/portfolio/corgis.png', ratio: 'portrait' },
-      { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: 'images/portfolio/troublante.png', ratio: 'portrait' },
-      { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac ', image: 'images/portfolio/hdl.png', ratio: 'square' },
-      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: 'images/portfolio/cledesol.png', ratio: 'portrait' },
-    ],
+const SECTIONS = SECTIONS_DATA.map(section => {
+  // Positions spécifiques desktop
+  const positions = {
+    's1': { x: -900, y: -700 },
+    's2': { x: 1100, y: -700 },
+    's3': { x: 2000, y: 0 },
+    's4': { x: 1000, y: 600 },
+    's5': { x: -1800, y: 100 }
+  };
+  
+  return {
+    ...section,
+    relativePosition: positions[section.id] || { x: 0, y: 0 },
+    title: { ...section.title, width: '350px' }, // Largeur desktop
     gridCols: 3
-  },
-  {
-    id: 's2',
-    relativePosition: { x: 1100, y: -700 },
-    title: { src: 'images/sections/s2.svg', alt: 'Illustrations', width: '350px' },
-    cards: [
-      { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le styel de M. Bablet', image: 'images/portfolio/bablet.jpg', ratio: 'portrait' },
-      { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg', ratio: 'portrait' },
-      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.png', ratio: 'portrait' },
-      { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: 'images/portfolio/juliette.jpg', ratio: 'landscape' },
-      { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: 'images/portfolio/skatepark.jpg', ratio: 'landscape' },
-    ],
-    gridCols: 3
-  },
-  {
-    id: 's3',
-    relativePosition: { x: 2000, y: 0 },
-    title: { src: 'images/sections/s3.svg', alt: 'Peintures', width: '350px' },
-    cards: [
-      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png', ratio: 'portrait' },
-      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait' },
-      { title: 'La Fille du LAc', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png', ratio: 'portrait' },
-      { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: 'images/portfolio/monstregentil.jpg', ratio: 'portrait' },
-    ],
-    gridCols: 3
-  },
-  {
-    id: 's4',
-    relativePosition: { x: 1000, y: 600 },
-    title: { src: 'images/sections/s4.svg', alt: 'Marketing', width: '350px' },
-    cards: [
-      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: 'images/portfolio/lunawave.png', ratio: 'square' },
-      { title: 'La Sargane', description: 'Logo design pour La Sargane', image: 'images/portfolio/sargane.png', ratio: 'portrait' },
-      { title: 'Dog & Bio', description: 'Packaging pour la marque Dog & Bio', image: 'images/portfolio/dogbio.png', ratio: 'portrait' },
-    ],
-    gridCols: 3
-  },
-  {
-    id: 's5',
-    relativePosition: { x: -1800, y: 100 },
-    title: { src: 'images/sections/s5.svg', alt: 'Livres', width: '350px' },
-    cards: [
-      { title: 'BD Fruits et Légumes', description: 'Planche réalisée pour promouvoir les fruits et légumes de saison', image: 'images/portfolio/bdlegumes.jpg', ratio: 'portrait' },
-      { title: 'Coccinelle, Demoiselle', description: 'Illustration de comptine', image: 'images/portfolio/cox.png', ratio: 'landscape' },
-      { title: 'Hopi dans son Jardin', description: 'Couverture d\'imagier pour enfants', image: 'images/portfolio/hopicover.png', ratio: 'square' },
-      { title: 'Hopi dans son Jardin', description: 'Imagier pour enfants', image: 'images/portfolio/hopip1.png', ratio: 'landscape' },
-    ],
-    gridCols: 3
-  },
-  {
-    id: 'contact',
-    relativePosition: { x: -600, y: 700 },
-    title: {},
-    cards: [] // Pas de cartes pour contact - utilise le formulaire
-  }
-];
+  };
+}).concat([{
+  id: 'contact',
+  relativePosition: { x: -600, y: 700 },
+  title: {},
+  cards: []
+}]);
 
 // ═══════════════════════════════════════════════════════════
 // CONVERSION : Position relative → Pixels absolus
 // ═══════════════════════════════════════════════════════════
 
 const getAbsolutePosition = (relativePos) => {
-  const centerX = CONFIG.boardWidth / 2;  // 2750
-  const centerY = CONFIG.boardHeight / 2; // 1250
+  const centerX = CONFIG.boardWidth / 2;
+  const centerY = CONFIG.boardHeight / 2;
   return {
     left: centerX + relativePos.x,
     top: centerY + relativePos.y
@@ -131,36 +75,20 @@ const getAbsolutePosition = (relativePos) => {
 
 // ═══════════════════════════════════════════════════════════
 // HELPER : Dimensions des cartes selon ratio
-// Les cartes s'adaptent en largeur ET hauteur au ratio
 // ═══════════════════════════════════════════════════════════
 
 const getCardDimensions = (ratio) => {
-  const baseSize = 240; // Taille de référence
+  const baseSize = 240;
   
   switch(ratio) {
     case 'portrait':
-      // Format A4 portrait (environ 0.707 de ratio largeur/hauteur)
-      return { 
-        width: baseSize * 0.71, 
-        imageHeight: baseSize 
-      };
+      return { width: baseSize * 0.71, imageHeight: baseSize };
     case 'landscape':
-      // Format A4 paysage (environ 1.41 de ratio largeur/hauteur)
-      return { 
-        width: baseSize * 1.41, 
-        imageHeight: baseSize 
-      };
+      return { width: baseSize * 1.41, imageHeight: baseSize };
     case 'square':
-      // Format carré
-      return { 
-        width: baseSize, 
-        imageHeight: baseSize 
-      };
+      return { width: baseSize, imageHeight: baseSize };
     default:
-      return { 
-        width: baseSize, 
-        imageHeight: baseSize 
-      };
+      return { width: baseSize, imageHeight: baseSize };
   }
 };
 
@@ -700,8 +628,18 @@ const CorkBoard = () => {
                       <img 
                         src={card.image} 
                         alt={card.title}
-                        className="w-full h-full object-cover"
-                        style={{ display: 'block' }}
+                        draggable="false"
+                        onContextMenu={(e) => e.preventDefault()}
+                        style={{ 
+                          width: '100%', 
+                          height: '100%', 
+                          objectFit: 'cover',
+                          display: 'block',
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                          MozUserSelect: 'none',
+                          pointerEvents: 'none'
+                        }}
                       />
                     ) : (
                       <div className="text-gray-300 text-sm text-center px-4">
@@ -752,7 +690,14 @@ const CorkBoard = () => {
               <img 
                 src={lightboxImage.image}
                 alt={lightboxImage.title}
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
                 className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                style={{
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  MozUserSelect: 'none'
+                }}
               />
               
               {/* Bouton fermer */}
@@ -775,6 +720,7 @@ const CorkBoard = () => {
       
     </div>
   );
+  
 };
 
 export default CorkBoard;

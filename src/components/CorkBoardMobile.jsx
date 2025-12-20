@@ -1,78 +1,11 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './fonts.css';
+import { SECTIONS_DATA, NAVIGATION_BUTTONS } from '../portfolioConfig';
 
 const BASE = import.meta.env.BASE_URL;
-
-// ═══════════════════════════════════════════════════════════
-// CONFIGURATION MOBILE
-// ═══════════════════════════════════════════════════════════
-
-const SECTIONS_DATA = [
-  {
-    id: 's1',
-    title: { src: 'images/sections/s1.svg', alt: 'Affiches' },
-    cards: [
-      { title: 'Le Petit Nicolas', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/petitnicolas.png' },
-      { title: 'Alice', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/alice.jpg' },
-      { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: 'images/portfolio/corgis.png' },
-      { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: 'images/portfolio/troublante.png' },
-      { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac', image: 'images/portfolio/hdl.png' },
-      { title: 'Clé de Sol', description: 'Affiche pour l\'ouverture d\'un magasin de musique', image: 'images/portfolio/cledesol.png' },
-    ]
-  },
-  {
-    id: 's2',
-    title: { src: 'images/sections/s2.svg', alt: 'Illustrations' },
-    cards: [
-      { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le style de M. Bablet', image: 'images/portfolio/bablet.jpg' },
-      { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg' },
-      { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.png' },
-      { title: 'Juliette, Gaston et Achille', description: 'Character design pour un jeu vidéo', image: 'images/portfolio/juliette.jpg' },
-      { title: 'Le skatepark de Juliette', description: 'Décor pour un jeu vidéo', image: 'images/portfolio/skatepark.jpg' },
-    ]
-  },
-  {
-    id: 's3',
-    title: { src: 'images/sections/s3.svg', alt: 'Peintures' },
-    cards: [
-      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png' },
-      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png' },
-      { title: 'La Fille du LAc', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png' },
-      { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: 'images/portfolio/monstregentil.jpg' },
-    ]
-  },
-  {
-    id: 's4',
-    title: { src: 'images/sections/s4.svg', alt: 'Marketing' },
-    cards: [
-      { title: 'Lunawave Retreats', description: 'Logo design pour Lunawave Retreats', image: 'images/portfolio/lunawave.png' },
-      { title: 'La Sargane', description: 'Logo design pour La Sargane', image: 'images/portfolio/sargane.png' },
-      { title: 'Dog & Bio', description: 'Packaging pour la marque Dog & Bio', image: 'images/portfolio/dogbio.png' },
-    ]
-  },
-  {
-    id: 's5',
-    title: { src: 'images/sections/s5.svg', alt: 'Livres' },
-    cards: [
-      { title: 'BD Fruits et Légumes', description: 'Planche réalisée pour promouvoir les fruits et légumes de saison', image: 'images/portfolio/bdlegumes.jpg' },
-      { title: 'Coccinelle, Demoiselle', description: 'Illustration de comptine', image: 'images/portfolio/cox.png' },
-      { title: 'Hopi dans son Jardin', description: 'Couverture d\'imagier pour enfants', image: 'images/portfolio/hopicover.png' },
-      { title: 'Hopi dans son Jardin', description: 'Imagier pour enfants', image: 'images/portfolio/hopip1.png' },
-    ]
-  }
-];
-
-const NAVIGATION_BUTTONS = [
-  { id: 's1', src: 'images/boutons/s1.svg', label: 'Affiches' },
-  { id: 's2', src: 'images/boutons/s2.svg', label: 'Illustrations' },
-  { id: 's3', src: 'images/boutons/s3.svg', label: 'Peintures' },
-  { id: 's4', src: 'images/boutons/s4.svg', label: 'Marketing' },
-  { id: 's5', src: 'images/boutons/s5.svg', label: 'Livres' },
-  { id: 'contact', src: 'images/boutons/contact.svg', label: 'Contact' }
-];
 
 // ═══════════════════════════════════════════════════════════
 // UTILITAIRE : Rotation aléatoire
@@ -90,7 +23,7 @@ const CorkBoardMobile = () => {
   const sectionRefs = useRef({});
   const containerRef = useRef(null);
   const lastScrollTop = useRef(0);
-  const lastScrollTime = useRef(Date.now());
+  const lastScrollTime = useRef;
 
   // Détecter le scroll et calculer la vélocité
   useEffect(() => {
@@ -115,7 +48,7 @@ const CorkBoardMobile = () => {
     
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fonction pour scroller vers une section
   const scrollToSection = (sectionId) => {
@@ -336,7 +269,7 @@ const CorkBoardMobile = () => {
                       }}
                     />
                     
-                    {/* Image */}
+                    {/* Image protégée */}
                     <div style={{
                       position: 'relative',
                       background: 'white',
@@ -349,6 +282,8 @@ const CorkBoardMobile = () => {
                           src={card.image} 
                           alt={card.title}
                           loading="lazy"
+                          draggable="false"
+                          onContextMenu={(e) => e.preventDefault()}
                           onLoad={(e) => e.target.style.opacity = 1}
                           style={{ 
                             width: '100%', 
@@ -356,7 +291,11 @@ const CorkBoardMobile = () => {
                             objectFit: 'cover', 
                             display: 'block',
                             opacity: 0,
-                            transition: 'opacity 0.3s'
+                            transition: 'opacity 0.3s',
+                            userSelect: 'none',
+                            WebkitUserSelect: 'none',
+                            MozUserSelect: 'none',
+                            pointerEvents: 'none'
                           }}
                         />
                       ) : (
@@ -568,7 +507,16 @@ const CorkBoardMobile = () => {
                 <img 
                   src={lightboxImage.image}
                   alt={lightboxImage.title}
-                  style={{ width: '100%', borderRadius: '8px', boxShadow: '0 20px 25px rgba(0,0,0,0.5)' }}
+                  draggable="false"
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '8px', 
+                    boxShadow: '0 20px 25px rgba(0,0,0,0.5)',
+                    userSelect: 'none',
+                    WebkitUserSelect: 'none',
+                    MozUserSelect: 'none'
+                  }}
                 />
                 
                 <button
