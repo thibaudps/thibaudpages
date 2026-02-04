@@ -8,8 +8,18 @@ export const SECTIONS_DATA = [
     id: 's1',
     title: { src: 'images/sections/s1.svg', alt: 'Affiches' },
     cards: [
-      { title: 'Le Petit Nicolas', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/petitnicolas.png', ratio: 'portrait' },
-      { title: 'Alice', description: 'Affiche pour le spectacle des Ateliers Buissoniers', image: 'images/portfolio/alice.jpg', ratio: 'portrait' },
+      { title: 'La Petite Sirène', 
+        description: 'Affiche pour le spectacle des Ateliers Buissoniers', 
+        image: 'images/portfolio/petitesirene.png', 
+        ratio: 'portrait'},
+      { title: 'Le Petit Nicolas', 
+        description: 'Affiche pour le spectacle des Ateliers Buissoniers', 
+        image: 'images/portfolio/petitnicolas.png', 
+        ratio: 'portrait'},
+      {title: 'Alice', 
+        description: 'Affiche pour le spectacle des Ateliers Buissoniers', 
+        image: 'images/portfolio/alice.jpg', 
+        ratio: 'portrait'},
       { title: 'Corgis de Genève', description: 'Affiche pour la parade annuelle des Corgis de Genève', image: 'images/portfolio/corgis.png', ratio: 'portrait' },
       { title: 'La Troublante Histoire du Rouge de ses Yeux', description: 'Affiche pour le film de Giovanni Lulendo Munsungai', image: 'images/portfolio/troublante.png', ratio: 'portrait' },
       { title: 'L\'Homme du Lac', description: 'Cover de l\'album de l\'Homme du Lac', image: 'images/portfolio/hdl.png', ratio: 'square' },
@@ -20,6 +30,7 @@ export const SECTIONS_DATA = [
     id: 's2',
     title: { src: 'images/sections/s2.svg', alt: 'Illustrations' },
     cards: [
+      { title: 'Semainier Enfant', description: 'Création d\'un petit personnage pour un semainier', image: 'images/portfolio/semainierlion.png', ratio: 'portrait' },
       { title: 'Alien M. Bablet', description: 'Encre et peinture numérique dans le style de M. Bablet', image: 'images/portfolio/bablet.jpg', ratio: 'portrait' },
       { title: 'Alien K. Haring', description: 'Illustration numérique dans le style de K. Haring', image: 'images/portfolio/keith.jpg', ratio: 'portrait' },
       { title: 'Alien A. Mucha', description: 'Illustration numérique dans le style de Alphonse Mucha', image: 'images/portfolio/mucha.png', ratio: 'portrait' },
@@ -31,11 +42,33 @@ export const SECTIONS_DATA = [
     id: 's3',
     title: { src: 'images/sections/s3.svg', alt: 'Peintures' },
     cards: [
-      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png', ratio: 'portrait' },
-      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait' },
-      { title: 'La Fille du LAc', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png', ratio: 'portrait' },
+      { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png', ratio: 'portrait', 
+        // 🆕 EXEMPLE :
+        printAvailable: true,
+        printSizes: [
+          { 
+            name: 'A3 (29,7 × 42 cm)', 
+            price: 45,
+            stripeLink: 'https://google.com',
+            stripeLinkFramed: 'https://google.com'
+          }
+        ]
+      },
+      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait',
+        // 🆕 EXEMPLE :
+        printAvailable: true,
+        printSizes: [
+          { 
+            name: 'A5 (14,8 × 21 cm)', 
+            price: 25,
+            stripeLink: 'https://google.com',
+            stripeLinkFramed: 'https://google.com'
+          }
+      ]
+       },
+      { title: 'La Fille du Lac', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png', ratio: 'portrait' },
       { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: 'images/portfolio/monstregentil.jpg', ratio: 'portrait' },
-    ]
+    ] 
   },
   {
     id: 's4',
@@ -66,3 +99,10 @@ export const NAVIGATION_BUTTONS = [
   { id: 's5', src: 'images/boutons/s5.svg', label: 'Livres' },
   { id: 'contact', src: 'images/boutons/contact.svg', label: 'Contact' }
 ];
+
+// 🆕 NOUVEAU : Configuration pour les prints
+export const PRINT_CONFIG = {
+  framingPrice: 20, // Prix de l'encadrement
+  pickupLocation: 'Nuit Noire Tattoo, Vernier, Suisse',
+  pickupInfo: 'Retrait gratuit possible à Nuit Noire Tattoo, Vernier'
+};

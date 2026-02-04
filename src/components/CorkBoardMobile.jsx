@@ -4,13 +4,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './fonts.css';
 import { SECTIONS_DATA, NAVIGATION_BUTTONS } from '../portfolioConfig';
+import PrintModal from './PrintModal';
+import PrintBadge from './PrintBadge';
 
 const BASE = import.meta.env.BASE_URL;
 
 // ═══════════════════════════════════════════════════════════
 // UTILITAIRE : Rotation aléatoire
 // ═══════════════════════════════════════════════════════════
-const getRandomRotation = () => Math.random() * 4 - 2; // Entre -2° et +2°
+const getRandomRotation = () => Math.random() * 4 - 2;
 
 // ═══════════════════════════════════════════════════════════
 // COMPOSANT MOBILE
@@ -18,12 +20,13 @@ const getRandomRotation = () => Math.random() * 4 - 2; // Entre -2° et +2°
 
 const CorkBoardMobile = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [printModalCard, setPrintModalCard] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [scrollVelocity, setScrollVelocity] = useState(0);
   const sectionRefs = useRef({});
   const containerRef = useRef(null);
   const lastScrollTop = useRef(0);
-  const lastScrollTime = useRef;
+  const lastScrollTime = useRef(0);
 
   // Détecter le scroll et calculer la vélocité
   useEffect(() => {
@@ -38,7 +41,7 @@ const CorkBoardMobile = () => {
       if (timeDelta > 0) {
         const scrollDelta = currentScrollTop - lastScrollTop.current;
         const velocity = scrollDelta / timeDelta;
-        setScrollVelocity(velocity * 10); // Amplifier pour effet visible
+        setScrollVelocity(velocity * 10);
       }
       
       lastScrollTop.current = currentScrollTop;
@@ -48,9 +51,8 @@ const CorkBoardMobile = () => {
     
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Fonction pour scroller vers une section
   const scrollToSection = (sectionId) => {
     const element = sectionRefs.current[sectionId];
     const container = containerRef.current;
@@ -66,7 +68,6 @@ const CorkBoardMobile = () => {
     }
   };
 
-  // Fonction pour retourner en haut
   const scrollToTop = () => {
     if (containerRef.current) {
       containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
@@ -94,14 +95,11 @@ const CorkBoardMobile = () => {
           WebkitOverflowScrolling: 'touch'
         }}
       >
-        {/* ═══════════════════════════════════════════════════════════
-            SECTION HEADER - Logo + Navigation
-        ═══════════════════════════════════════════════════════════ */}
+        {/* SECTION HEADER */}
         <div 
           ref={el => sectionRefs.current['top'] = el}
           style={{ padding: '20px 16px' }}
         >
-          {/* Logo avec oscillement punaise */}
           <motion.div
             style={{ 
               display: 'flex', 
@@ -128,7 +126,6 @@ const CorkBoardMobile = () => {
             />
           </motion.div>
 
-          {/* Grille de boutons avec oscillement punaise */}
           <motion.div
             style={{
               display: 'grid',
@@ -178,16 +175,13 @@ const CorkBoardMobile = () => {
           </motion.div>
         </div>
 
-        {/* ═══════════════════════════════════════════════════════════
-            SECTIONS PORTFOLIO
-        ═══════════════════════════════════════════════════════════ */}
+        {/* SECTIONS PORTFOLIO */}
         {SECTIONS_DATA.map((section) => (
           <div 
             key={section.id}
             ref={el => sectionRefs.current[section.id] = el}
             style={{ padding: '48px 16px' }}
           >
-            {/* Titre de section avec soulèvement scotché */}
             <motion.div
               style={{ 
                 display: 'flex', 
@@ -214,7 +208,6 @@ const CorkBoardMobile = () => {
               />
             </motion.div>
 
-            {/* Grille de cartes avec oscillement punaise */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
@@ -232,7 +225,7 @@ const CorkBoardMobile = () => {
                       background: 'white',
                       borderRadius: '8px',
                       boxShadow: '0 10px 15px rgba(0,0,0,0.3)',
-                      overflow: 'hidden',
+                      overflow: 'visible',
                       border: '2px solid #1f2937',
                       position: 'relative',
                       cursor: 'pointer',
@@ -268,8 +261,16 @@ const CorkBoardMobile = () => {
                         pointerEvents: 'none'
                       }}
                     />
+
+                    {/* Badge Print - Composant centralisé */}
+                    {card.printAvailable && (
+                      <PrintBadge 
+                        onClick={() => setPrintModalCard(card)}
+                        isMobile={true}
+                      />
+                    )}
                     
-                    {/* Image protégée */}
+                    {/* Container de l'image */}
                     <div style={{
                       position: 'relative',
                       background: 'white',
@@ -342,9 +343,7 @@ const CorkBoardMobile = () => {
           </div>
         ))}
 
-        {/* ═══════════════════════════════════════════════════════════
-            SECTION CONTACT
-        ═══════════════════════════════════════════════════════════ */}
+        {/* SECTION CONTACT */}
         <div 
           ref={el => sectionRefs.current['contact'] = el}
           style={{ padding: '48px 16px' }}
@@ -504,20 +503,34 @@ const CorkBoardMobile = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* Badge Print dans la Lightbox */}
+                {lightboxImage.printAvailable && (
+                  <PrintBadge 
+                    isMobile={true}        // ← AJOUT : force mobile
+                    inLightbox={true}
+                    onClick={() => {
+                      setLightboxImage(null);
+                      setPrintModalCard(lightboxImage);
+                    }}
+                  />
+                )}
+                
                 <img 
                   src={lightboxImage.image}
                   alt={lightboxImage.title}
                   draggable="false"
                   onContextMenu={(e) => e.preventDefault()}
                   style={{ 
-                    width: '100%', 
+                    width: '100%',
+                    maxHeight: '70vh',        // ← AJOUT : limite la hauteur
+                    objectFit: 'contain',     // ← AJOUT : garde le ratio
                     borderRadius: '8px', 
                     boxShadow: '0 20px 25px rgba(0,0,0,0.5)',
                     userSelect: 'none',
                     WebkitUserSelect: 'none',
                     MozUserSelect: 'none'
-                  }}
-                />
+  }}
+/>
                 
                 <button
                   onClick={() => setLightboxImage(null)}
@@ -543,7 +556,7 @@ const CorkBoardMobile = () => {
                   ✕
                 </button>
                 
-                <div style={{ marginTop: '16px', textAlign: 'center', color: 'white', fontFamily: 'MyFont, sans-serif' }}>
+                <div style={{ marginTop: '16px', textAlign: 'left', color: 'white', fontFamily: 'MyFont, sans-serif' }}>
                   <h3 style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '4px' }}>{lightboxImage.title}</h3>
                   <p style={{ fontSize: '14px', color: '#d1d5db' }}>{lightboxImage.description}</p>
                 </div>
@@ -551,11 +564,21 @@ const CorkBoardMobile = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* MODAL DE COMMANDE */}
+        <AnimatePresence>
+          {printModalCard && (
+            <PrintModal 
+              card={printModalCard} 
+              onClose={() => setPrintModalCard(null)} 
+            />
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Bouton retour en haut avec oscillement punaise */}
+      {/* Bouton retour en haut - Caché si lightbox ouverte */}
       <AnimatePresence>
-        {showBackToTop && (
+        {showBackToTop && !lightboxImage && !printModalCard && (  // ← AJOUT : && !lightboxImage
           <motion.button
             onClick={scrollToTop}
             style={{

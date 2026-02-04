@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './fonts.css';
 import ContactForm from './ContactForm';
 import { SECTIONS_DATA, NAVIGATION_BUTTONS } from '../portfolioConfig';
+import PrintModal from './PrintModal';
+import PrintBadge from './PrintBadge';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -38,7 +40,6 @@ const CENTRAL_SECTION = {
 // ═══════════════════════════════════════════════════════════
 
 const SECTIONS = SECTIONS_DATA.map(section => {
-  // Positions spécifiques desktop
   const positions = {
     's1': { x: -900, y: -700 },
     's2': { x: 1100, y: -700 },
@@ -50,7 +51,7 @@ const SECTIONS = SECTIONS_DATA.map(section => {
   return {
     ...section,
     relativePosition: positions[section.id] || { x: 0, y: 0 },
-    title: { ...section.title, width: '350px' }, // Largeur desktop
+    title: { ...section.title, width: '350px' },
     gridCols: 3
   };
 }).concat([{
@@ -97,10 +98,11 @@ const getCardDimensions = (ratio) => {
 // ═══════════════════════════════════════════════════════════
 
 const CorkBoard = () => {
+
+  
   
   const [position, setPosition] = useState({ x: 0, y: 0 });
   
-  // Calcul du zoom initial IMMÉDIATEMENT lors de l'initialisation
   const [zoom, setZoom] = useState(() => {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -118,30 +120,23 @@ const CorkBoard = () => {
   });
   
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [printModalCard, setPrintModalCard] = useState(null);
 
-  
-
-  // ═══════════════════════════════════════════════════════════
-  // GÉNÉRER LES VARIATIONS ALÉATOIRES UNE SEULE FOIS
-  // ═══════════════════════════════════════════════════════════
   const cardVariations = useMemo(() => {
     const variations = {};
     SECTIONS.forEach(section => {
       variations[section.id] = section.cards.map(() => ({
-        // Variations pour la punaise
         pinRotation: (Math.random() - 0.5) * 40,
         pinX: (Math.random() - 0.5) * 10,
         pinY: (Math.random() - 0.5) * 6,
-        // Variations pour la carte
         cardRotation: (Math.random() - 0.5) * 4,
         cardY: (Math.random() - 0.5) * 12,
         cardX: (Math.random() - 0.5) * 8
       }));
     });
     return variations;
-  }, []); // Le tableau vide [] = calculer une seule fois au montage
+  }, []);
   
-  // Recalcul du zoom uniquement au resize
   useEffect(() => {
     const calculateInitialZoom = () => {
       const viewportWidth = window.innerWidth;
@@ -160,13 +155,11 @@ const CorkBoard = () => {
       setZoom(calculatedZoom);
     };
     
-    // Seulement écouter le resize, pas au mount initial
     window.addEventListener('resize', calculateInitialZoom);
     
     return () => window.removeEventListener('resize', calculateInitialZoom);
   }, []);
   
-  // Animation zoom vers centre - PROGRESSIVE
   useEffect(() => {
     if (initialZoom === 1) return;
     
@@ -178,7 +171,6 @@ const CorkBoard = () => {
     return () => clearTimeout(timer);
   }, [initialZoom]);
   
-  // Navigation vers section
   const navigateToSection = (sectionId) => {
     const section = SECTIONS.find(s => s.id === sectionId);
     if (!section) return;
@@ -194,21 +186,18 @@ const CorkBoard = () => {
     setZoom(CONFIG.sectionZoom);
   };
   
-  // Retour centre
   const returnToCenter = () => {
     console.log("Retour centre");
     setPosition({ x: 0, y: 0 });
     setZoom(CONFIG.centerZoom);
   };
   
-  // Zoom molette
   const handleWheel = (e) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.05 : 0.05;
     setZoom(prev => Math.max(initialZoom * 0.95, Math.min(1.2, prev + delta)));
   };
   
-  // Ouvrir lightbox
   const openLightbox = (card) => {
     if (card.image) {
       setLightboxImage(card);
@@ -223,10 +212,8 @@ const CorkBoard = () => {
       onWheel={handleWheel}
     >
       
-      {/* Container flex pour centrer le board */}
       <div className="absolute inset-0 flex items-center justify-center">
         
-        {/* Layer Zoom */}
         <motion.div
           animate={{ scale: zoom }}
           transition={{
@@ -240,7 +227,6 @@ const CorkBoard = () => {
           }}
         >
           
-          {/* Board 5500x2500 avec translate pour navigation */}
           <motion.div
             animate={{ x: position.x, y: position.y }}
             transition={{
@@ -256,7 +242,6 @@ const CorkBoard = () => {
             }}
           >
             
-            {/* Background corkboard */}
             <img 
               src="images/corkboard.svg" 
               alt="Cork Board"
@@ -270,7 +255,6 @@ const CorkBoard = () => {
               }}
             />
             
-            {/* Section centrale - Centre du board (2750, 1250) */}
             <motion.div 
               className="absolute"
               style={{ 
@@ -286,7 +270,6 @@ const CorkBoard = () => {
               transition={{ duration: 0.3 }}
             >
               
-              {/* Logo avec animation de balancement */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }} 
                 animate={{ 
@@ -314,7 +297,6 @@ const CorkBoard = () => {
                 />
               </motion.div>
               
-              {/* Boutons */}
               <div className="flex flex-wrap justify-center gap-3 max-w-xl">
                 {CENTRAL_SECTION.buttons.map((btn, idx) => (
                   <motion.button
@@ -380,287 +362,290 @@ const CorkBoard = () => {
               
             </motion.div>
             
-{/* Sections portfolio - Positions en PIXELS ABSOLUS */}
-{SECTIONS.map((section) => {
-  const absPos = getAbsolutePosition(section.relativePosition);
-  
-  return (
-    <div
-      key={section.id}
-      className="absolute"
-      style={{
-        left: `${absPos.left}px`,
-        top: `${absPos.top}px`,
-        transform: 'translate(-50%, -50%)',
-        zIndex: 3
-      }}
-    >
-      
-      {/* CONDITION : Structure différente pour la section contact */}
-      {section.id === 'contact' ? (
-        <div className="relative flex items-start justify-center gap-6">
-          {/* Formulaire de contact */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <ContactForm />
-          </motion.div>
-          
-          {/* Bouton retour positionné en haut à droite du formulaire */}
-          <motion.button
-            onClick={returnToCenter}
-            style={{ 
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transformOrigin: 'center 10%',
-              marginTop: '0px',
-              position: 'absolute',
-              left: 'calc(50% + 100px)',
-              zIndex: 100,           
-            }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ 
-              opacity: 1,
-              scale: 1,
-              rotate: [0, -2, 2, -1, 1, 0]
-            }}
-            transition={{ 
-              opacity: { duration: 0.3 },
-              scale: { duration: 0.3 },
-              rotate: {
-                duration: 4,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-                delay: 0.3
-              }
-            }}
-            whileHover={{ 
-              scale: 1.1,
-              rotate: 5,
-              transition: { 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 10 
-              }
-            }}
-            whileTap={{ 
-              scale: 0.95,
-              rotate: -5,
-              transition: { 
-                type: "spring", 
-                stiffness: 500, 
-                damping: 20 
-              }
-            }}
-          >
-            <img 
-              src="images/retouraucentre.svg"
-              alt="Retour au centre"
-              style={{ width: '120px', height: 'auto' }}
-            />
-          </motion.button>
-        </div>
-      ) : (
-        /* Structure normale pour les autres sections (avec titre) */
-        <>
-          {/* Container pour titre et bouton retour */}
-          <div className="mb-6 flex justify-center items-start gap-6">
-            
-            {/* Titre de section avec animation */}
-            <motion.div
-              style={{ perspective: 1500 }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ 
-                opacity: 1,
-                x: [0, 2, 0, 3, 0], 
-                y: [0, 5, 1, 4, 0],
-                rotateX: [0, -10, -2, -8, 0]
-              }}
-              transition={{
-                opacity: { duration: 0.5 },
-                y: { duration: 0.5 },
-                rotateX: {
-                  duration: 5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                  delay: 0.5
-                }
-              }}
-              style={{ 
-                transformOrigin: 'center 45%',
-                transformStyle: 'preserve-3d'
-              }}
-            >
-              <img 
-                src={section.title.src}
-                alt={section.title.alt}
-                style={{ width: section.title.width, height: 'auto' }}
-              />
-            </motion.div>
-            
-            {/* Bouton retour avec oscillation indépendante */}
-            <motion.button
-              onClick={returnToCenter}
-              style={{ 
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                transformOrigin: 'center 20%',
-                marginTop: '10px',
-                position: 'absolute',  
-                left: 'calc(50% + 200px)', 
-                top: '10px',              
-                zIndex: 10
-              }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ 
-                opacity: 1,
-                scale: 1,
-                rotate: [0, -2, 2, -1, 1, 0]
-              }}
-              transition={{ 
-                opacity: { duration: 0.3 },
-                scale: { duration: 0.3 },
-                rotate: {
-                  duration: 4,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                  delay: 0.3
-                }
-              }}
-              whileHover={{ 
-                scale: 1.1,
-                rotate: 5,
-                transition: { 
-                  type: "spring", 
-                  stiffness: 300, 
-                  damping: 10 
-                }
-              }}
-              whileTap={{ 
-                scale: 0.95,
-                rotate: -5,
-                transition: { 
-                  type: "spring", 
-                  stiffness: 500, 
-                  damping: 20 
-                }
-              }}
-            >
-              <img 
-                src="images/retouraucentre.svg"
-                alt="Retour au centre"
-                style={{ width: '120px', height: 'auto' }}
-              />
-            </motion.button>
-            
-          </div>
-          
-          {/* Grille de cartes */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {section.cards.map((card, idx) => {
-              const dimensions = getCardDimensions(card.ratio);
-              const variations = cardVariations[section.id][idx];
+            {SECTIONS.map((section) => {
+              const absPos = getAbsolutePosition(section.relativePosition);
               
               return (
-                <motion.div
-                  key={idx}
-                  className="bg-white rounded-lg shadow-xl overflow-hidden border-2 border-gray-800 cursor-pointer flex flex-col relative"
-                  style={{ 
-                    width: `${dimensions.width}px`,
-                    transform: `translateY(${variations.cardY}px) translateX(${variations.cardX}px) rotate(${variations.cardRotation}deg)`,
-                    transformOrigin: 'center 10%'
+                <div
+                  key={section.id}
+                  className="absolute"
+                  style={{
+                    left: `${absPos.left}px`,
+                    top: `${absPos.top}px`,
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 3
                   }}
-                  initial={{ opacity: 0, y: 30, x: 0 }}
-                  animate={{ 
-                    opacity: 1,
-                    y: variations.cardY,
-                    x: variations.cardX,
-                    rotate: [
-                      variations.cardRotation,
-                      variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.15,
-                      variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.2,
-                      variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.1,
-                      variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.1,
-                    ]
-                  }}
-                  transition={{
-                    opacity: { delay: idx * 0.1, duration: 0.5 },
-                    y: { delay: idx * 0.1, duration: 0.5 },
-                    x: { delay: idx * 0.1, duration: 0.5 },
-                    rotate: {
-                      delay: idx * 0.1 + 0.5,
-                      duration: 3.5 + idx * 0.2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut"
-                    }
-                  }}
-                  onClick={() => openLightbox(card)}
                 >
-                  <img 
-                    src="images/punaises.svg"
-                    alt="Punaise"
-                    style={{
-                      position: 'absolute',
-                      top: `${-4 + variations.pinY}px`,
-                      left: `calc(50% + ${variations.pinX}px)`,
-                      transform: `translate(-50%, 0) rotate(${variations.pinRotation}deg)`,
-                      width: '30px',
-                      height: 'auto',
-                      zIndex: 10,
-                      pointerEvents: 'none'
-                    }}
-                  />
                   
-                  <div 
-                    className="relative bg-white border-b-2 border-gray-800 flex items-center justify-center overflow-hidden flex-grow"
-                  >
-                    {card.image ? (
-                      <img 
-                        src={card.image} 
-                        alt={card.title}
-                        draggable="false"
-                        onContextMenu={(e) => e.preventDefault()}
+                  {section.id === 'contact' ? (
+                    <div className="relative flex items-start justify-center gap-6">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        <ContactForm />
+                      </motion.div>
+                      
+                      <motion.button
+                        onClick={returnToCenter}
                         style={{ 
-                          width: '100%', 
-                          height: '100%', 
-                          objectFit: 'cover',
-                          display: 'block',
-                          userSelect: 'none',
-                          WebkitUserSelect: 'none',
-                          MozUserSelect: 'none',
-                          pointerEvents: 'none'
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          transformOrigin: 'center 10%',
+                          marginTop: '0px',
+                          position: 'absolute',
+                          left: 'calc(50% + 100px)',
+                          zIndex: 100,           
                         }}
-                      />
-                    ) : (
-                      <div className="text-gray-300 text-sm text-center px-4">
-                        [Image à venir]
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ 
+                          opacity: 1,
+                          scale: 1,
+                          rotate: [0, -2, 2, -1, 1, 0]
+                        }}
+                        transition={{ 
+                          opacity: { duration: 0.3 },
+                          scale: { duration: 0.3 },
+                          rotate: {
+                            duration: 4,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            ease: "easeInOut",
+                            delay: 0.3
+                          }
+                        }}
+                        whileHover={{ 
+                          scale: 1.1,
+                          rotate: 5,
+                          transition: { 
+                            type: "spring", 
+                            stiffness: 300, 
+                            damping: 10 
+                          }
+                        }}
+                        whileTap={{ 
+                          scale: 0.95,
+                          rotate: -5,
+                          transition: { 
+                            type: "spring", 
+                            stiffness: 500, 
+                            damping: 20 
+                          }
+                        }}
+                      >
+                        <img 
+                          src="images/retouraucentre.svg"
+                          alt="Retour au centre"
+                          style={{ width: '120px', height: 'auto' }}
+                        />
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-6 flex justify-center items-start gap-6">
+                        
+                        <motion.div
+                          style={{ perspective: 1500 }}
+                          initial={{ opacity: 0, y: -20 }}
+                          animate={{ 
+                            opacity: 1,
+                            x: [0, 2, 0, 3, 0], 
+                            y: [0, 5, 1, 4, 0],
+                            rotateX: [0, -10, -2, -8, 0]
+                          }}
+                          transition={{
+                            opacity: { duration: 0.5 },
+                            y: { duration: 0.5 },
+                            rotateX: {
+                              duration: 5,
+                              repeat: Infinity,
+                              repeatType: "reverse",
+                              ease: "easeInOut",
+                              delay: 0.5
+                            }
+                          }}
+                          style={{ 
+                            transformOrigin: 'center 45%',
+                            transformStyle: 'preserve-3d'
+                          }}
+                        >
+                          <img 
+                            src={section.title.src}
+                            alt={section.title.alt}
+                            style={{ width: section.title.width, height: 'auto' }}
+                          />
+                        </motion.div>
+                        
+                        <motion.button
+                          onClick={returnToCenter}
+                          style={{ 
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0,
+                            transformOrigin: 'center 20%',
+                            marginTop: '10px',
+                            position: 'absolute',  
+                            left: 'calc(50% + 200px)', 
+                            top: '10px',              
+                            zIndex: 10
+                          }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ 
+                            opacity: 1,
+                            scale: 1,
+                            rotate: [0, -2, 2, -1, 1, 0]
+                          }}
+                          transition={{ 
+                            opacity: { duration: 0.3 },
+                            scale: { duration: 0.3 },
+                            rotate: {
+                              duration: 4,
+                              repeat: Infinity,
+                              repeatType: "reverse",
+                              ease: "easeInOut",
+                              delay: 0.3
+                            }
+                          }}
+                          whileHover={{ 
+                            scale: 1.1,
+                            rotate: 5,
+                            transition: { 
+                              type: "spring", 
+                              stiffness: 300, 
+                              damping: 10 
+                            }
+                          }}
+                          whileTap={{ 
+                            scale: 0.95,
+                            rotate: -5,
+                            transition: { 
+                              type: "spring", 
+                              stiffness: 500, 
+                              damping: 20 
+                            }
+                          }}
+                        >
+                          <img 
+                            src="images/retouraucentre.svg"
+                            alt="Retour au centre"
+                            style={{ width: '120px', height: 'auto' }}
+                          />
+                        </motion.button>
+                        
                       </div>
-                    )}
-                  </div>
-                  <div className="p-3 bg-yellow-50 flex-shrink-0" style={{ fontFamily: 'MyFont, sans-serif' }}>
-                    <h3 className="font-bold text-sm mb-1 text-gray-800">{card.title}</h3>
-                    <p className="text-xs text-gray-600">{card.description}</p>
-                  </div>
-                </motion.div>
+                      
+                      <div className="flex flex-wrap justify-center gap-4">
+                        {section.cards.map((card, idx) => {
+                          const dimensions = getCardDimensions(card.ratio);
+                          const variations = cardVariations[section.id][idx];
+                          
+                          return (
+                            <motion.div
+                              key={idx}
+                              className="bg-white rounded-lg shadow-xl overflow-visible border-2 border-gray-800 cursor-pointer flex flex-col relative"
+                              style={{ 
+                                width: `${dimensions.width}px`,
+                                transform: `translateY(${variations.cardY}px) translateX(${variations.cardX}px) rotate(${variations.cardRotation}deg)`,
+                                transformOrigin: 'center 10%'
+                              }}
+                              initial={{ opacity: 0, y: 30, x: 0 }}
+                              animate={{ 
+                                opacity: 1,
+                                y: variations.cardY,
+                                x: variations.cardX,
+                                rotate: [
+                                  variations.cardRotation,
+                                  variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.15,
+                                  variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.2,
+                                  variations.cardRotation + (idx % 2 ? -1 : 1) * (idx + 1) * 0.1,
+                                  variations.cardRotation + (idx % 2 ? 1 : -1) * (idx + 1) * 0.1,
+                                ]
+                              }}
+                              transition={{
+                                opacity: { delay: idx * 0.1, duration: 0.5 },
+                                y: { delay: idx * 0.1, duration: 0.5 },
+                                x: { delay: idx * 0.1, duration: 0.5 },
+                                rotate: {
+                                  delay: idx * 0.1 + 0.5,
+                                  duration: 3.5 + idx * 0.2,
+                                  repeat: Infinity,
+                                  repeatType: "reverse",
+                                  ease: "easeInOut"
+                                }
+                              }}
+                              onClick={() => openLightbox(card)}
+                            >
+                              {/* Punaise */}
+                              <img 
+                                src="images/punaises.svg"
+                                alt="Punaise"
+                                style={{
+                                  position: 'absolute',
+                                  top: `${-4 + variations.pinY}px`,
+                                  left: `calc(50% + ${variations.pinX}px)`,
+                                  transform: `translate(-50%, 0) rotate(${variations.pinRotation}deg)`,
+                                  width: '30px',
+                                  height: 'auto',
+                                  zIndex: 10,
+                                  pointerEvents: 'none'
+                                }}
+                              />
+                              
+                              {/* Badge Print - AU NIVEAU DE LA CARTE */}
+                              {card.printAvailable && (
+                                <PrintBadge 
+                                  isMobile={false}
+                                  onClick={() => setPrintModalCard(card)}
+                                />
+                              )}
+                              
+                              {/* Container image */}
+                              <div 
+                                className="relative bg-white border-b-2 border-gray-800 flex items-center justify-center overflow-hidden flex-grow"
+                              >
+                                {card.image ? (
+                                  <img 
+                                    src={card.image} 
+                                    alt={card.title}
+                                    draggable="false"
+                                    onContextMenu={(e) => e.preventDefault()}
+                                    style={{ 
+                                      width: '100%', 
+                                      height: '100%', 
+                                      objectFit: 'cover',
+                                      display: 'block',
+                                      userSelect: 'none',
+                                      WebkitUserSelect: 'none',
+                                      MozUserSelect: 'none',
+                                      pointerEvents: 'none'
+                                    }}
+                                  />
+                                ) : (
+                                  <div className="text-gray-300 text-sm text-center px-4">
+                                    [Image à venir]
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {/* Description */}
+                              <div className="p-3 bg-yellow-50 flex-shrink-0" style={{ fontFamily: 'MyFont, sans-serif' }}>
+                                <h3 className="font-bold text-sm mb-1 text-gray-800">{card.title}</h3>
+                                <p className="text-xs text-gray-600">{card.description}</p>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                  
+                </div>
               );
             })}
-          </div>
-        </>
-      )}
-      
-    </div>
-  );
-})}
             
           </motion.div>
           
@@ -668,8 +653,7 @@ const CorkBoard = () => {
         
       </div>
       
-      
-      {/* Lightbox */}
+      {/* LIGHTBOX */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div
@@ -687,20 +671,35 @@ const CorkBoard = () => {
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Badge Print dans la Lightbox */}
+              {lightboxImage.printAvailable && (
+                <PrintBadge 
+                  isMobile={false}       // ← AJOUT : force desktop
+                  inLightbox={true}
+                  onClick={() => {
+                    setLightboxImage(null);
+                    setPrintModalCard(lightboxImage);
+                  }}
+                />
+              )}
+              
               <img 
                 src={lightboxImage.image}
                 alt={lightboxImage.title}
                 draggable="false"
                 onContextMenu={(e) => e.preventDefault()}
-                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
                 style={{
+                  maxWidth: '90vw',
+                  maxHeight: '80vh',
+                  objectFit: 'contain',
+                  borderRadius: '8px',
+                  boxShadow: '0 20px 25px rgba(0,0,0,0.5)',
                   userSelect: 'none',
                   WebkitUserSelect: 'none',
                   MozUserSelect: 'none'
                 }}
               />
               
-              {/* Bouton fermer */}
               <button
                 onClick={() => setLightboxImage(null)}
                 className="absolute -top-4 -right-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold w-10 h-10 rounded-full shadow-lg border-2 border-gray-800 flex items-center justify-center"
@@ -708,13 +707,22 @@ const CorkBoard = () => {
                 ✕
               </button>
               
-              {/* Info */}
-              <div className="absolute -bottom-20 left-0 right-0 text-center text-white" style={{ fontFamily: 'myfont, sans-serif' }}>
+              <div className="absolute -bottom-19 left-0 right-0 text-left text-white" style={{ fontFamily: 'myfont, sans-serif' }}>
                 <h3 className="font-bold text-xl mb-1">{lightboxImage.title}</h3>
                 <p className="text-sm text-gray-300">{lightboxImage.description}</p>
               </div>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL DE COMMANDE */}
+      <AnimatePresence>
+        {printModalCard && (
+          <PrintModal 
+            card={printModalCard} 
+            onClose={() => setPrintModalCard(null)} 
+          />
         )}
       </AnimatePresence>
       
