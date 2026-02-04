@@ -44,7 +44,7 @@ export const SECTIONS_DATA = [
     cards: [
       { title: 'Ma Maison dans la Forêt', description: 'Peinture à l\'acrylique', image: 'images/portfolio/maisonforet.png', ratio: 'portrait', 
         // 🆕 EXEMPLE :
-        printAvailable: true,
+        printAvailable: false,
         printSizes: [
           { 
             name: 'A3 (29,7 × 42 cm)', 
@@ -54,18 +54,7 @@ export const SECTIONS_DATA = [
           }
         ]
       },
-      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait',
-        // 🆕 EXEMPLE :
-        printAvailable: true,
-        printSizes: [
-          { 
-            name: 'A5 (14,8 × 21 cm)', 
-            price: 25,
-            stripeLink: 'https://google.com',
-            stripeLinkFramed: 'https://google.com'
-          }
-      ]
-       },
+      { title: 'La Grenouille du Chill', description: 'Peinture à l\'acrylique', image: 'images/portfolio/grenouillechill.png', ratio: 'portrait'},
       { title: 'La Fille du Lac', description: 'Peinture à l\'acrylique', image: 'images/portfolio/filledulac.png', ratio: 'portrait' },
       { title: 'Mon Gentil Monstre', description: 'Peinture à l\'aquarelle', image: 'images/portfolio/monstregentil.jpg', ratio: 'portrait' },
     ] 

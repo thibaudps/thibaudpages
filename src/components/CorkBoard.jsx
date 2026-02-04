@@ -448,7 +448,10 @@ const CorkBoard = () => {
                       <div className="mb-6 flex justify-center items-start gap-6">
                         
                         <motion.div
-                          style={{ perspective: 1500 }}
+                          style={{ perspective: 1500,
+                            transformOrigin: 'center 45%',
+                            transformStyle: 'preserve-3d'
+                          }}
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ 
                             opacity: 1,
@@ -467,10 +470,7 @@ const CorkBoard = () => {
                               delay: 0.5
                             }
                           }}
-                          style={{ 
-                            transformOrigin: 'center 45%',
-                            transformStyle: 'preserve-3d'
-                          }}
+                      
                         >
                           <img 
                             src={section.title.src}
