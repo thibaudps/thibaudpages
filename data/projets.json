@@ -1,323 +1,406 @@
 {
   "projects": [
     {
-      "title": "Hopi dans son Jardin",
-      "titleEn": "Hopi dans son Jardin",
-      "cat": "Edition",
-      "year": "2025",
-      "image": "public/images/projects/hopi.webp",
-      "cropZoom": 1.4,
+      "titleEn": "Nuit Noire Guests",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.1,
+      "descriptionEn": "its cool",
       "cropX": 50,
-      "cropY": 27,
+      "cropY": 50,
       "href": "#",
-      "description": "Imagier interactif pour enfants autour du jardin et de ses petits habitants. Chaque double-page invite à explorer un nouvel élément du quotidien d'Hopi, dans un univers doux et accessible.",
-      "descriptionEn": "An interactive picture book for kids exploring the garden and its little creatures. Each spread invites children to discover a new piece of Hopi's everyday world, in a gentle and welcoming universe.",
-      "images": [],
+      "cat": "Web",
+      "title": "Guests Nuit Noire ",
+      "images": [
+        {
+          "media": "/public/images/projects/Semainier2.webp"
+        }
+      ],
+      "image": "/public/images/projects/babletalien.webp",
+      "description": "cest cool",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Hopi dans son Jardin",
       "reader": {
         "url": "public/images/projects/hopi/HopiReader.html",
         "ratio": 0.7
-      }
-    },
-    {
-      "title": "Podcast « La Voie de la Savane »",
-      "titleEn": "'La Voie de la Savane' Podcast",
-      "cat": "Illustration",
-      "year": "2026",
-      "image": "public/images/projects/savane.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Série d'illustrations réalisée pour le podcast «\u00a0La Voie de la Savane\u00a0», autour des animaux et des paysages de la savane africaine. Un travail tout en aplats colorés pour habiller chaque épisode.",
-      "descriptionEn": "A series of illustrations for the podcast 'La Voie de la Savane', celebrating the animals and landscapes of the African savanna. Bold, flat-colored visuals designed to bring each episode to life.",
-      "images": [
-        { "media": "public/images/projects/savane6.webp" },
-        { "media": "public/images/projects/savane7.webp" },
-        { "media": "public/images/projects/savane1.webp" },
-        { "media": "public/images/projects/savane2.webp" },
-        { "media": "public/images/projects/savane3.webp" },
-        { "media": "public/images/projects/savane4.webp" },
-        { "media": "public/images/projects/savane5.webp" }
-      ]
-    },
-    {
-      "title": "Bande dessinée « Manger de saison »",
-      "titleEn": "Eat Veggies Comic Strip",
-      "cat": "Edition",
-      "year": "2026",
-      "image": "public/images/projects/bdlegumes1.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Comic strip réalisé pour le département de la Dordogne, autour de la consommation de fruits et légumes de saison. L'idée : sensibiliser de façon ludique, en passant par le ton de la BD plutôt que celui de l'affiche institutionnelle.",
-      "descriptionEn": "Comic strip created for the Dordogne département, advocating for seasonal fruits and vegetables. The idea: deliver the message through humor and storytelling rather than the usual institutional poster.",
-      "images": [
-        { "media": "public/images/projects/bdlegumes.webp" }
-      ]
-    },
-    {
-      "title": "Character design de jeu vidéo",
-      "titleEn": "Videogame Character Design",
-      "cat": "Illustration",
-      "year": "2025",
-      "image": "public/images/projects/juliette1.webp",
+      },
       "cropZoom": 1.4,
-      "cropX": 50,
-      "cropY": 35,
-      "href": "#",
-      "description": "Character design et level design pour un jeu vidéo, réalisé dans le cadre de ma formation. L'occasion d'explorer la cohérence visuelle entre un personnage et son univers, de la silhouette aux décors.",
-      "descriptionEn": "Character design and level design for a video game project, developed as part of my training. A chance to explore the visual coherence between a character and their world, from silhouettes to environments.",
-      "images": [
-        { "media": "public/images/projects/juliette4.webp" },
-        { "media": "public/images/projects/juliette2.webp" },
-        { "media": "public/images/projects/juliette3.webp" },
-        { "media": "public/images/projects/juliette1.webp" }
-      ]
-    },
-    {
-      "title": "Peintures d'extraterrestres perdus",
-      "titleEn": "Lost Alien Paintings",
-      "cat": "Print",
-      "year": "2025",
-      "image": "public/images/projects/muchaalien.webp",
-      "cropZoom": 1.4,
-      "cropX": 50,
-      "cropY": 35,
-      "href": "#",
-      "description": "Série d'illustrations imaginaire autour d'un alien échoué sur une planète inconnue, en hommage à trois influences majeures : Alphonse Mucha pour les compositions ornementales, Keith Haring pour le trait franc, et Mathieu Bablet pour la science-fiction contemplative.",
-      "descriptionEn": "An imaginary illustration series following an alien stranded on an unknown planet, paying tribute to three major influences: Alphonse Mucha for ornamental compositions, Keith Haring for bold linework, and Mathieu Bablet for contemplative sci-fi.",
-      "images": [
-        { "media": "public/images/projects/muchaalien.webp" },
-        { "media": "public/images/projects/babletalien.webp" },
-        { "media": "public/images/projects/keithalien.webp" }
-      ]
-    },
-    {
-      "title": "Semainier pour enfants",
-      "titleEn": "Children Weekly Planner",
-      "cat": "Print",
-      "year": "2026",
-      "image": "public/images/projects/semainier.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 12,
-      "href": "#",
-      "description": "Semainier illustré commandé pour aider un enfant à organiser sa semaine. Pensé comme un outil ludique et coloré, où chaque jour a son ambiance et où il y a toujours quelque chose à attendre.",
-      "descriptionEn": "An illustrated weekly planner commissioned to help a child get organized week by week. Designed as a playful, colorful tool where every day has its own atmosphere and something to look forward to.",
-      "images": [
-        { "media": "public/images/projects/semainier2.webp" }
-      ]
-    },
-    {
-      "title": "Affiche pour la sortie d'album de Lone Assembly",
-      "titleEn": "Lone Assembly Album Release",
-      "cat": "Print",
-      "year": "2026",
-      "image": "public/images/projects/loneassembly.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 12,
-      "href": "#",
-      "description": "Affiche pour la sortie d'album du groupe Lone Assembly. Un visuel pensé comme une porte d'entrée dans l'univers sonore du projet, à mi-chemin entre l'introspection et la poésie graphique.",
-      "descriptionEn": "Poster for the album release of the band Lone Assembly. A visual designed as a gateway into the project's sonic universe, somewhere between introspection and graphic poetry.",
-      "images": [
-        { "media": "public/images/projects/loneassembly.webp" }
-      ]
-    },
-    {
-      "title": "Pâques chez Deux Parts et d'Autres",
-      "titleEn": "Easter at Deux Parts et d'Autres",
-      "cat": "Illustration",
-      "year": "2026",
-      "image": "public/images/projects/deuxparts3.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Décor de Pâques illustré pour la pâtisserie Deux Parts et d'Autres à Veigy. Un univers tendre et printanier pensé pour habiller la vitrine et accompagner les gourmandises de saison.",
-      "descriptionEn": "Easter window display illustration for the Deux Parts et d'Autres pastry shop in Veigy. A tender, springy universe designed to dress the storefront and complement the seasonal treats.",
-      "images": [
-        { "media": "public/images/projects/deuxparts1.webp" },
-        { "media": "public/images/projects/deuxparts2.webp" }
-      ]
-    },
-    {
-      "title": "Décor pour Bzopse",
-      "titleEn": "Bzopse Background",
-      "cat": "Illustration",
-      "year": "2025",
-      "image": "public/images/projects/filleforet2.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Décor de scène pour un spectacle de clown jeune public sur le thème de l'écologie. Le défi : créer un environnement immersif qui dialogue avec le jeu de l'artiste et porte le message sans jamais l'alourdir.",
-      "descriptionEn": "Stage backdrop for a children's clown show on the theme of ecology. The challenge: build an immersive environment that supports the performer's act and carries the message without ever weighing it down.",
-      "images": [
-        { "media": "public/images/projects/filleforet1.webp" }
-      ]
-    },
-    {
-      "title": "Identité visuelle pour La Sargane",
-      "titleEn": "La Sargane Identity",
-      "cat": "Identity",
-      "year": "2025",
-      "image": "public/images/projects/sargane1.webp",
-      "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Identité visuelle complète pour La Sargane, pâtisserie et salon de thé. Un univers graphique chaleureux pensé pour refléter la générosité et le caractère artisanal du lieu, du logo à la signalétique.",
-      "descriptionEn": "Full visual identity for La Sargane, a pastry shop and tea room. A warm graphic universe designed to reflect the place's generosity and craftsmanship, from logo to in-store signage.",
-      "images": [
-        { "media": "public/images/projects/sargane2.webp" },
-        { "media": "public/images/projects/sargane3.webp" }
-      ]
-    },
-    {
-      "title": "Logo pour Lunawave Retreats",
-      "titleEn": "Lunawave Retreats Logo",
-      "cat": "Identity",
-      "year": "2026",
-      "image": "public/images/projects/lunawave.svg",
-      "cropZoom": 1.4,
+      "descriptionEn": "An interactive picture book for kids exploring the garden and its little creatures. Each spread invites children to discover a new piece of Hopi's everyday world, in a gentle and welcoming universe.",
       "cropX": 50,
       "cropY": 27,
       "href": "#",
-      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.",
-      "descriptionEn": "Visual identity for Lunawave Retreats, a wellness retreat project by the water. The logo combines the moon and the wave to evoke natural cycles and serenity.",
-      "images": [
-        { "media": "public/images/projects/lunawave.svg" }
-      ]
+      "cat": "Edition",
+      "title": "Hopi dans son Jardin",
+      "images": [],
+      "image": "public/images/projects/hopi.webp",
+      "description": "Imagier interactif pour enfants autour du jardin et de ses petits habitants. Chaque double-page invite à explorer un nouvel élément du quotidien d'Hopi, dans un univers doux et accessible.",
+      "year": "2025"
     },
     {
-      "title": "Affiche Parade d'Halloween des Corgis",
-      "titleEn": "Corgi Parade Poster",
-      "cat": "Print",
-      "year": "2025",
-      "image": "public/images/projects/corgi.svg",
+      "titleEn": "'La Voie de la Savane' Podcast",
+      "cropZoom": 1.1,
+      "descriptionEn": "A series of illustrations for the podcast 'La Voie de la Savane', celebrating the animals and landscapes of the African savanna. Bold, flat-colored visuals designed to bring each episode to life.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Podcast « La Voie de la Savane »",
+      "images": [
+        {
+          "media": "public/images/projects/savane6.webp"
+        },
+        {
+          "media": "public/images/projects/savane7.webp"
+        },
+        {
+          "media": "public/images/projects/savane1.webp"
+        },
+        {
+          "media": "public/images/projects/savane2.webp"
+        },
+        {
+          "media": "public/images/projects/savane3.webp"
+        },
+        {
+          "media": "public/images/projects/savane4.webp"
+        },
+        {
+          "media": "public/images/projects/savane5.webp"
+        }
+      ],
+      "image": "public/images/projects/savane.webp",
+      "description": "Série d'illustrations réalisée pour le podcast « La Voie de la Savane », autour des animaux et des paysages de la savane africaine. Un travail tout en aplats colorés pour habiller chaque épisode.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Eat Veggies Comic Strip",
+      "cropZoom": 1.1,
+      "descriptionEn": "Comic strip created for the Dordogne département, advocating for seasonal fruits and vegetables. The idea: deliver the message through humor and storytelling rather than the usual institutional poster.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Edition",
+      "title": "Bande dessinée « Manger de saison »",
+      "images": [
+        {
+          "media": "public/images/projects/bdlegumes.webp"
+        }
+      ],
+      "image": "public/images/projects/bdlegumes1.webp",
+      "description": "Comic strip réalisé pour le département de la Dordogne, autour de la consommation de fruits et légumes de saison. L'idée : sensibiliser de façon ludique, en passant par le ton de la BD plutôt que celui de l'affiche institutionnelle.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Videogame Character Design",
       "cropZoom": 1.4,
+      "descriptionEn": "Character design and level design for a video game project, developed as part of my training. A chance to explore the visual coherence between a character and their world, from silhouettes to environments.",
+      "cropX": 50,
+      "cropY": 35,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Character design de jeu vidéo",
+      "images": [
+        {
+          "media": "public/images/projects/juliette4.webp"
+        },
+        {
+          "media": "public/images/projects/juliette2.webp"
+        },
+        {
+          "media": "public/images/projects/juliette3.webp"
+        },
+        {
+          "media": "public/images/projects/juliette1.webp"
+        }
+      ],
+      "image": "public/images/projects/juliette1.webp",
+      "description": "Character design et level design pour un jeu vidéo, réalisé dans le cadre de ma formation. L'occasion d'explorer la cohérence visuelle entre un personnage et son univers, de la silhouette aux décors.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "Lost Alien Paintings",
+      "cropZoom": 1.4,
+      "descriptionEn": "An imaginary illustration series following an alien stranded on an unknown planet, paying tribute to three major influences: Alphonse Mucha for ornamental compositions, Keith Haring for bold linework, and Mathieu Bablet for contemplative sci-fi.",
+      "cropX": 50,
+      "cropY": 35,
+      "href": "#",
+      "cat": "Print",
+      "title": "Peintures d'extraterrestres perdus",
+      "images": [
+        {
+          "media": "public/images/projects/muchaalien.webp"
+        },
+        {
+          "media": "public/images/projects/babletalien.webp"
+        },
+        {
+          "media": "public/images/projects/keithalien.webp"
+        }
+      ],
+      "image": "public/images/projects/muchaalien.webp",
+      "description": "Série d'illustrations imaginaire autour d'un alien échoué sur une planète inconnue, en hommage à trois influences majeures : Alphonse Mucha pour les compositions ornementales, Keith Haring pour le trait franc, et Mathieu Bablet pour la science-fiction contemplative.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "Children Weekly Planner",
+      "cropZoom": 1.1,
+      "descriptionEn": "An illustrated weekly planner commissioned to help a child get organized week by week. Designed as a playful, colorful tool where every day has its own atmosphere and something to look forward to.",
+      "cropX": 50,
+      "cropY": 12,
+      "href": "#",
+      "cat": "Print",
+      "title": "Semainier pour enfants",
+      "images": [
+        {
+          "media": "public/images/projects/semainier2.webp"
+        }
+      ],
+      "image": "public/images/projects/semainier.webp",
+      "description": "Semainier illustré commandé pour aider un enfant à organiser sa semaine. Pensé comme un outil ludique et coloré, où chaque jour a son ambiance et où il y a toujours quelque chose à attendre.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Lone Assembly Album Release",
+      "cropZoom": 1.1,
+      "descriptionEn": "Poster for the album release of the band Lone Assembly. A visual designed as a gateway into the project's sonic universe, somewhere between introspection and graphic poetry.",
+      "cropX": 50,
+      "cropY": 12,
+      "href": "#",
+      "cat": "Print",
+      "title": "Affiche pour la sortie d'album de Lone Assembly",
+      "images": [
+        {
+          "media": "public/images/projects/loneassembly.webp"
+        }
+      ],
+      "image": "public/images/projects/loneassembly.webp",
+      "description": "Affiche pour la sortie d'album du groupe Lone Assembly. Un visuel pensé comme une porte d'entrée dans l'univers sonore du projet, à mi-chemin entre l'introspection et la poésie graphique.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Easter at Deux Parts et d'Autres",
+      "cropZoom": 1.1,
+      "descriptionEn": "Easter window display illustration for the Deux Parts et d'Autres pastry shop in Veigy. A tender, springy universe designed to dress the storefront and complement the seasonal treats.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Pâques chez Deux Parts et d'Autres",
+      "images": [
+        {
+          "media": "public/images/projects/deuxparts1.webp"
+        },
+        {
+          "media": "public/images/projects/deuxparts2.webp"
+        }
+      ],
+      "image": "public/images/projects/deuxparts3.webp",
+      "description": "Décor de Pâques illustré pour la pâtisserie Deux Parts et d'Autres à Veigy. Un univers tendre et printanier pensé pour habiller la vitrine et accompagner les gourmandises de saison.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Bzopse Background",
+      "cropZoom": 1.1,
+      "descriptionEn": "Stage backdrop for a children's clown show on the theme of ecology. The challenge: build an immersive environment that supports the performer's act and carries the message without ever weighing it down.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Décor pour Bzopse",
+      "images": [
+        {
+          "media": "public/images/projects/filleforet1.webp"
+        }
+      ],
+      "image": "public/images/projects/filleforet2.webp",
+      "description": "Décor de scène pour un spectacle de clown jeune public sur le thème de l'écologie. Le défi : créer un environnement immersif qui dialogue avec le jeu de l'artiste et porte le message sans jamais l'alourdir.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "La Sargane Identity",
+      "cropZoom": 1.1,
+      "descriptionEn": "Full visual identity for La Sargane, a pastry shop and tea room. A warm graphic universe designed to reflect the place's generosity and craftsmanship, from logo to in-store signage.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Identity",
+      "title": "Identité visuelle pour La Sargane",
+      "images": [
+        {
+          "media": "public/images/projects/sargane2.webp"
+        },
+        {
+          "media": "public/images/projects/sargane3.webp"
+        }
+      ],
+      "image": "public/images/projects/sargane1.webp",
+      "description": "Identité visuelle complète pour La Sargane, pâtisserie et salon de thé. Un univers graphique chaleureux pensé pour refléter la générosité et le caractère artisanal du lieu, du logo à la signalétique.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "Lunawave Retreats Logo",
+      "cropZoom": 1.4,
+      "descriptionEn": "Visual identity for Lunawave Retreats, a wellness retreat project by the water. The logo combines the moon and the wave to evoke natural cycles and serenity.",
+      "cropX": 50,
+      "cropY": 27,
+      "href": "#",
+      "cat": "Identity",
+      "title": "Logo pour Lunawave Retreats",
+      "images": [
+        {
+          "media": "public/images/projects/lunawave.svg"
+        }
+      ],
+      "image": "public/images/projects/lunawave.svg",
+      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Corgi Parade Poster",
+      "cropZoom": 1.4,
+      "descriptionEn": "Poster for the Corgis Geneva Halloween parade. The idea: blend classic vintage horror poster aesthetics with the irresistible faces of corgis for a result that makes you smile before it scares you.",
       "cropX": 50,
       "cropY": 2,
       "href": "#",
-      "description": "Affiche réalisée pour la parade d'Halloween de Corgis Geneva. L'idée : marier l'esthétique vintage du poster d'horreur classique avec la bouille irrésistible des corgis pour un résultat qui fait sourire avant de faire peur.",
-      "descriptionEn": "Poster for the Corgis Geneva Halloween parade. The idea: blend classic vintage horror poster aesthetics with the irresistible faces of corgis for a result that makes you smile before it scares you.",
+      "cat": "Print",
+      "title": "Affiche Parade d'Halloween des Corgis",
       "images": [
-        { "media": "public/images/projects/corgi.svg" }
-      ]
+        {
+          "media": "public/images/projects/corgi.svg"
+        }
+      ],
+      "image": "public/images/projects/corgi.svg",
+      "description": "Affiche réalisée pour la parade d'Halloween de Corgis Geneva. L'idée : marier l'esthétique vintage du poster d'horreur classique avec la bouille irrésistible des corgis pour un résultat qui fait sourire avant de faire peur.",
+      "year": "2025"
     },
     {
-      "title": "Affiche de La Petite Sirène",
       "titleEn": "La Petite Sirène Poster",
-      "cat": "Print",
-      "year": "2026",
-      "image": "public/images/projects/petitesirene.webp",
       "cropZoom": 1.4,
+      "descriptionEn": "Poster for La Petite Sirène, a show by Les Ateliers Buissoniers. A visual designed to intrigue passersby and make them want to dive in, both literally and figuratively.",
       "cropX": 45,
       "cropY": 80,
       "href": "#",
-      "description": "Affiche réalisée pour le spectacle La Petite Sirène des Ateliers Buissoniers. Un visuel pensé pour intriguer le passant et donner envie de plonger, au sens propre comme au figuré.",
-      "descriptionEn": "Poster for La Petite Sirène, a show by Les Ateliers Buissoniers. A visual designed to intrigue passersby and make them want to dive in, both literally and figuratively.",
+      "cat": "Print",
+      "title": "Affiche de La Petite Sirène",
       "images": [
-        { "media": "public/images/projects/petitesirene.webp" }
-      ]
+        {
+          "media": "public/images/projects/petitesirene.webp"
+        }
+      ],
+      "image": "public/images/projects/petitesirene.webp",
+      "description": "Affiche réalisée pour le spectacle La Petite Sirène des Ateliers Buissoniers. Un visuel pensé pour intriguer le passant et donner envie de plonger, au sens propre comme au figuré.",
+      "year": "2026"
     },
     {
-      "title": "Affiche pour Le Petit Nicolas",
       "titleEn": "Le Petit Nicolas Poster",
-      "cat": "Print",
-      "year": "2026",
-      "image": "public/images/projects/petitnicolas.webp",
       "cropZoom": 1.4,
+      "descriptionEn": "Poster for Le Petit Nicolas, a show by Les Ateliers Buissoniers. A nod to Sempé's universe while keeping the company's own graphic identity.",
       "cropX": 50,
       "cropY": 10,
       "href": "#",
-      "description": "Affiche réalisée pour le spectacle Le Petit Nicolas des Ateliers Buissoniers. Un clin d'œil à l'univers de Sempé tout en gardant l'identité graphique de la compagnie.",
-      "descriptionEn": "Poster for Le Petit Nicolas, a show by Les Ateliers Buissoniers. A nod to Sempé's universe while keeping the company's own graphic identity.",
+      "cat": "Print",
+      "title": "Affiche pour Le Petit Nicolas",
       "images": [
-        { "media": "public/images/projects/petitnicolas.webp" }
-      ]
+        {
+          "media": "public/images/projects/petitnicolas.webp"
+        }
+      ],
+      "image": "public/images/projects/petitnicolas.webp",
+      "description": "Affiche réalisée pour le spectacle Le Petit Nicolas des Ateliers Buissoniers. Un clin d'œil à l'univers de Sempé tout en gardant l'identité graphique de la compagnie.",
+      "year": "2026"
     },
     {
-      "title": "Memory apprentissage anglais",
       "titleEn": "English Learning Memory",
-      "cat": "Illustration",
-      "year": "2026",
-      "image": "public/images/projects/memory.svg",
       "cropZoom": 1,
+      "descriptionEn": "A small memory game designed to support English learning in preschool. Clear, readable illustrations crafted so that word recognition happens through the joy of play.",
       "cropX": 83,
       "cropY": 23,
       "href": "#",
-      "description": "Petit jeu de memory imaginé pour accompagner l'apprentissage de l'anglais en maternelle. Des illustrations claires et lisibles, pensées pour que la reconnaissance des mots passe par le plaisir du jeu.",
-      "descriptionEn": "A small memory game designed to support English learning in preschool. Clear, readable illustrations crafted so that word recognition happens through the joy of play.",
+      "cat": "Illustration",
+      "title": "Memory apprentissage anglais",
       "images": [
-        { "media": "public/images/projects/memory.svg" }
-      ]
+        {
+          "media": "public/images/projects/memory.svg"
+        }
+      ],
+      "image": "public/images/projects/memory.svg",
+      "description": "Petit jeu de memory imaginé pour accompagner l'apprentissage de l'anglais en maternelle. Des illustrations claires et lisibles, pensées pour que la reconnaissance des mots passe par le plaisir du jeu.",
+      "year": "2026"
     },
     {
-      "title": "Site web de Jolan Chappaz",
       "titleEn": "Jolan Chappaz Website",
-      "cat": "Web",
-      "year": "2026",
-      "image": "public/images/projects/jolan1.webp",
       "cropZoom": 1.5,
+      "descriptionEn": "Portfolio website for Jolan Chappaz, built in vanilla JavaScript and deployed on GitHub Pages. A project where every interaction was tailored to reflect his practice.",
       "cropX": 50,
       "cropY": 65,
       "href": "#",
+      "cat": "Web",
+      "title": "Site web de Jolan Chappaz",
+      "images": [
+        {
+          "media": "public/video/jolan.webm"
+        }
+      ],
+      "image": "public/images/projects/jolan1.webp",
       "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript vanilla et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique.",
-      "descriptionEn": "Portfolio website for Jolan Chappaz, built in vanilla JavaScript and deployed on GitHub Pages. A project where every interaction was tailored to reflect his practice.",
-      "images": [
-        { "media": "public/video/jolan.webm" }
-      ]
+      "year": "2026"
     },
     {
-      "title": "La Grenouille qui chill",
       "titleEn": "Chill Froggy",
-      "cat": "Illustration",
-      "year": "2025",
-      "image": "public/images/projects/chillfroggy2.webp",
       "cropZoom": 1.1,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une grenouille en pause, perdue dans ses pensées, comme un petit moment suspendu.",
       "descriptionEn": "Acrylic painting on the theme of nature and isolation. A frog on a break, lost in thought — a small suspended moment.",
-      "images": [
-        { "media": "public/images/projects/chillfroggy.webp" }
-      ]
-    },
-    {
-      "title": "La Fille du Lac",
-      "titleEn": "Lake Girl",
-      "cat": "Illustration",
-      "year": "2025",
-      "image": "public/images/projects/filledulac2.webp",
-      "cropZoom": 1.1,
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant tranquille où le paysage prend toute la place.",
-      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A silhouette facing the lake, in that quiet moment where the landscape takes over.",
+      "cat": "Illustration",
+      "title": "La Grenouille qui chill",
       "images": [
-        { "media": "public/images/projects/filledulac.webp" }
-      ]
+        {
+          "media": "public/images/projects/chillfroggy.webp"
+        }
+      ],
+      "image": "public/images/projects/chillfroggy2.webp",
+      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une grenouille en pause, perdue dans ses pensées, comme un petit moment suspendu.",
+      "year": "2025"
     },
     {
-      "title": "Retraite en Forêt",
-      "titleEn": "Forest Retreat",
+      "titleEn": "Lake Girl",
+      "cropZoom": 1.1,
+      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A silhouette facing the lake, in that quiet moment where the landscape takes over.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
       "cat": "Illustration",
-      "year": "2025",
-      "image": "public/images/projects/forestretreat.webp",
+      "title": "La Fille du Lac",
+      "images": [
+        {
+          "media": "public/images/projects/filledulac.webp"
+        }
+      ],
+      "image": "public/images/projects/filledulac2.webp",
+      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant tranquille où le paysage prend toute la place.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "Forest Retreat",
       "cropZoom": 1.9,
+      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A forest retreat where silence and filtered light say everything that needs to be said.",
       "cropX": 52,
       "cropY": 70,
       "href": "#",
-      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une retraite en forêt, où le silence et la lumière filtrée se chargent de tout dire.",
-      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A forest retreat where silence and filtered light say everything that needs to be said.",
+      "cat": "Illustration",
+      "title": "Retraite en Forêt",
       "images": [
-        { "media": "public/images/projects/forestretreat.webp" }
-      ]
+        {
+          "media": "public/images/projects/forestretreat.webp"
+        }
+      ],
+      "image": "public/images/projects/forestretreat.webp",
+      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une retraite en forêt, où le silence et la lumière filtrée se chargent de tout dire.",
+      "year": "2025"
     }
   ]
 }
