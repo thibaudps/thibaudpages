@@ -17,6 +17,11 @@ body.page-home nav {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 60px);
+  /* Empêche la fleur (qui fait 185% de large sur petit mobile) de déborder
+     horizontalement et de créer un scroll horizontal. La fleur sera clippée
+     visuellement mais son positionnement reste intact. */
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 #home-animation {

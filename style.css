@@ -37,7 +37,16 @@
   cursor: none !important;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Empêche le scroll horizontal au niveau racine. overflow-x: clip
+     sur <body> seul ne suffit pas sur Safari iOS et certains Android :
+     il faut le poser AUSSI sur <html> sinon le viewport peut s'élargir
+     quand un élément enfant déborde (la fleur sur la home, le singe sur
+     contact, etc.). */
+  overflow-x: clip;
+  width: 100%;
+}
 
 body {
   background: var(--bg);
@@ -47,6 +56,7 @@ body {
   line-height: 1.6;
   transition: background 0.35s ease, color 0.35s ease;
   overflow-x: clip;
+  max-width: 100vw;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -1070,6 +1080,11 @@ body.page-contact #page-content > footer {
 .page-contact-content {
   padding: 0 2.5rem;
   position: relative;  /* ancre le positionnement absolu du singe */
+  /* Empêche le singe (230% de large sur mobile) de déborder horizontalement
+     et de créer un scroll horizontal. Il sera clippé visuellement aux
+     bords du viewport, ce qui est exactement le comportement souhaité. */
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 /* Bandeau d'animation décoratif en haut de la page contact :
@@ -1222,7 +1237,27 @@ footer {
   .hero-name { font-size: clamp(38px, 12vw, 80px); padding: 1rem 1.2rem 0.8rem; }
   .hero-sub { flex-direction: column; padding: 1.2rem; }
   .hero-desc { text-align: left; max-width: 100%; }
-  .filter { padding: 0.6rem 1.2rem; top: 63px; font-size: 14px; }  /* nav plus petite sur mobile, font-size conservé à l'ancienne valeur (évite le wrap sur 2 lignes) */
+  .filter {
+    /* Typo adaptative pour qu'on tienne sur une seule ligne quel que soit
+       le viewport mobile. Entre 11px (sur ~320px de large) et 14px (sur
+       tablette ou plus). On force aussi no-wrap pour interdire le passage
+       à la ligne, et on permet un overflow scrollable au doigt en sécurité
+       (sans scrollbar visible). */
+    padding: 0.6rem 1.2rem;
+    top: 63px;
+    font-size: clamp(11px, 3.4vw, 14px);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .filter::-webkit-scrollbar {
+    display: none;
+  }
+  /* Resserre le séparateur "—" pour gagner encore un peu de place */
+  .filter-item::after {
+    margin: 0 0.5rem;
+  }
   footer { padding: 1rem 1.2rem; flex-direction: column; gap: 0.4rem; }
   .music-label {
     /* Remonté pour passer sous la nav (zone libre au-dessus de la barre de filtre)
@@ -1240,6 +1275,10 @@ footer {
   .nav-links { gap: 0.7rem; font-size: 9px; letter-spacing: 1px; }
   .music-btn, .paint-btn { transform: scale(0.85); }
   .filter { top: 59px; }
+  /* Séparateur "—" encore plus serré pour les plus petits écrans */
+  .filter-item::after {
+    margin: 0 0.35rem;
+  }
 }
 
 /* Petit écran (≤ 360px) : dernière compression */

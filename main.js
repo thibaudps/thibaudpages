@@ -213,10 +213,75 @@ function initLangButton() {
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+// ════════════════════════════════════════════════════════════
+// CHARGEMENT DES PROJETS DEPUIS LE CMS (data/projets.json)
+// ════════════════════════════════════════════════════════════
+// Le JSON est édité via Decap CMS (/admin/). On le fetch au
+// démarrage et on l'injecte dans CONFIG.projects en adaptant
+// le format pour qu'il matche l'ancienne structure de config.js.
+async function loadProjectsFromCMS() {
+  try {
+    const response = await fetch('data/projets.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('projets.json introuvable');
+    const data = await response.json();
+    if (!data || !Array.isArray(data.projects)) {
+      throw new Error('Format projets.json invalide');
+    }
+
+    CONFIG.projects = data.projects.map(p => {
+      const normalized = {
+        title: p.title,
+        titleEn: p.titleEn,
+        cat: p.cat,
+        year: p.year,
+        image: p.image,
+        crop: {
+          zoom: p.cropZoom != null ? p.cropZoom : 1.1,
+          x:    p.cropX    != null ? p.cropX    : 50,
+          y:    p.cropY    != null ? p.cropY    : 50,
+        },
+        href: p.href || '#',
+        details: {
+          description:   p.description   || '',
+          descriptionEn: p.descriptionEn || '',
+        },
+      };
+
+      // Galerie : Decap stocke chaque item comme { media: "chemin" },
+      // on aplatit en strings pour rester compat avec l'ancien format.
+      if (Array.isArray(p.images) && p.images.length > 0) {
+        normalized.details.images = p.images
+          .map(item => (typeof item === 'string' ? item : item.media))
+          .filter(Boolean);
+      }
+
+      // Reader interactif (livre feuilletable). Optionnel.
+      if (p.reader && p.reader.url) {
+        normalized.details.reader = p.reader.url;
+        if (typeof p.reader.ratio === 'number' && p.reader.ratio > 0) {
+          normalized.details.readerRatio = p.reader.ratio;
+        }
+      }
+
+      return normalized;
+    });
+
+    console.log(`✓ ${CONFIG.projects.length} projets chargés depuis le CMS`);
+  } catch (err) {
+    console.warn('Chargement projets CMS échoué, fallback config.js :', err);
+    // Fallback : on garde CONFIG.projects tel que défini dans config.js
+    // (utile si le fetch échoue ou si on ouvre le site en file:// local)
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', async () => {
 
   // Init i18n (lang, title, meta) avant tout rendu
   initLang();
+
+  // ⚠️ Charge les projets depuis le CMS AVANT le premier render
+  await loadProjectsFromCMS();
 
   // Rendu commun (ne plante jamais : chaque renderer vérifie l'existence)
   renderNav();
