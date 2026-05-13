@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: thibaudps/thibaudpagesdesigns
+  repo: thibaudps/thibaudpages
   branch: master
 
 media_folder: "public/images/projects" # Où les images seront stockées
