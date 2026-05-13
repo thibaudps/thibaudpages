@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ton-pseudo/ton-repo # À remplacer par ton vrai repo
+  repo: thibaudps/thibaudpagesdesigns
   branch: main
 
 media_folder: "public/images/projects" # Où les images seront stockées
