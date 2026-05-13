@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Lien vers ton nouveau sitemap
+Sitemap: https://thibaudpages.com/sitemap.xml

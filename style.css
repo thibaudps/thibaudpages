@@ -1,0 +1,1337 @@
+/* ============================================================
+   STYLE.CSS — Mise en forme du site
+   Ne modifier que si vous souhaitez changer le design.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Variables de thème ─────────────────────────────────── */
+:root {
+  --bg:       #ffffff;
+  --fg:       #1a1a1a;
+  --bg-inv:   #1a1a1a;
+  --border:   #e0e0e0;
+  --mid:      #888888;
+  --card:     #f5f5f5;
+}
+
+/* ── Accessibilité / SEO — éléments lus par les bots et lecteurs d'écran
+   mais invisibles à l'œil (technique standard W3C) ───────── */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: none !important;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  transition: background 0.35s ease, color 0.35s ease;
+  overflow-x: clip;
+}
+
+a { color: inherit; text-decoration: none; }
+
+
+/* ============================================================
+   ── CURSEUR CUSTOM ──────────────────────────────────────────
+   ============================================================ */
+#cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--fg);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.18s ease, height 0.18s ease, background 0.35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#cursor.hov { width: 30px; height: 30px; }
+
+#cursor-eye {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+#cursor.hov #cursor-eye { opacity: 1; }
+
+/* L'oeil prend 70% du curseur noir pour laisser une petite bordure */
+#cursor-eye svg {
+  width: 70%;
+  height: 70%;
+}
+
+/* On applique la couleur dynamique (beige/blanc) à tous les tracés */
+#cursor-eye path {
+  fill: var(--bg);
+  stroke: none;
+}
+
+
+/* ============================================================
+   ── NAVIGATION ──────────────────────────────────────────────
+   ============================================================ */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+  transition: background 0.35s ease, border-color 0.35s ease;
+  gap: 1rem;  /* gap minimum entre la zone brand et la zone nav-right */
+}
+
+.nav-brand {
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;  /* empêche "THIBAUD PAGÈS" de wrap sur 2 lignes */
+}
+.brand-icon { width: 24px; height: 24px; flex-shrink: 0; }
+
+/* Brand suffix (texte italique à droite du nom, sur about/contact) */
+.brand-suffix {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--mid);
+  margin-left: 8px;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  display: inline-block; /* nécessaire pour que transform fonctionne */
+  opacity: 0;
+  transition: color 0.35s;
+}
+
+/* Entrée : fade-in + slide depuis la gauche */
+.brand-suffix.visible {
+  animation: suffix-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Sortie : fade-out + slide vers la gauche */
+.brand-suffix.leaving {
+  animation: suffix-leave 0.4s ease forwards;
+}
+
+@keyframes suffix-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes suffix-leave {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+}
+
+/* Liens + boutons collés à droite */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;  /* empêche "ABOUT ME" et autres de wrap */
+}
+.nav-links a {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { border-bottom-color: var(--fg); }
+
+
+/* ============================================================
+   ── POT DE PEINTURE (changement de palette) ─────────────────
+   ============================================================ */
+.paint-wrap { position: relative; display: flex; align-items: center; }
+
+.paint-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: transform 0.2s, border-color 0.35s, background 0.35s;
+}
+.paint-btn:hover { transform: scale(1.1); }
+
+/* Bouton de langue dans la nav, même style que paint-btn et music-btn */
+.lang-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  text-transform: uppercase;
+  transition: transform 0.2s, border-color 0.35s, background 0.35s, color 0.35s;
+}
+.lang-btn:hover { transform: scale(1.1); }
+.lang-btn:focus { outline: none; }
+.lang-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+/* Fade pendant le switch de langue */
+.lang-switching {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.paint-tray {
+  position: absolute;
+  right: 38px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s, background 0.35s, border-color 0.35s;
+  white-space: nowrap;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+.paint-tray.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(-50%) translateX(0);
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.swatch:hover { transform: scale(1.2); }
+.swatch.active { box-shadow: 0 0 0 2px var(--fg); }
+
+
+/* ============================================================
+   ── BOUTON MUSIQUE ──────────────────────────────────────────
+   ============================================================ */
+.music-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font: inherit;
+  flex-shrink: 0;
+  transition: transform 0.2s, border-color 0.35s, background 0.35s, color 0.35s;
+}
+.music-btn:hover {
+  transform: scale(1.1);
+}
+.music-btn .music-icon-play {
+  margin-left: 1px; /* compense l'asymétrie visuelle du triangle */
+}
+.music-btn .music-icon-pause { display: none; }
+.music-btn.playing .music-icon-play { display: none; }
+.music-btn.playing .music-icon-pause { display: block; }
+
+/* Label musique (sous la nav) */
+.music-label {
+  position: fixed;
+  top: calc(1.4rem + 50px + 0.5rem); /* sous la nav (padding nav + hauteur bouton) */
+  right: 2.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: var(--mid);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.35s;
+  z-index: 99;
+}
+.music-label.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.music-label .music-label-artist { font-weight: 400; }
+.music-label .music-label-sep {
+  margin: 0 0.4em;
+  opacity: 0.5;
+}
+
+
+/* ============================================================
+   ── HERO (page d'accueil) ───────────────────────────────────
+   ============================================================ */
+#hero-section {
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.35s;
+  overflow: hidden;
+}
+
+.hero-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: clamp(48px, 10vw, 124px);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  padding: 1.4rem 2.5rem 1rem;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.hero-name.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Walker zone (petit personnage qui marche) */
+#walker-zone {
+  position: relative;
+  height: 58px;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.35s;
+}
+#walker {
+  position: absolute;
+  bottom: 8px;
+  left: -50px;
+  width: 28px;
+  height: 42px;
+}
+#walker.walk { animation: walk-across 3.5s linear forwards; }
+@keyframes walk-across {
+  0%   { left: -50px; }
+  100% { left: calc(100% + 60px); }
+}
+.ll { transform-origin: 14px 30px; animation: leg-l 0.26s steps(1) infinite; }
+.lr { transform-origin: 14px 30px; animation: leg-r 0.26s steps(1) infinite; }
+@keyframes leg-l { 0%,100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+@keyframes leg-r { 0%,100% { transform: rotate(16deg);  } 50% { transform: rotate(-16deg); } }
+.al { transform-origin: 7px 14px;  animation: arm-l 0.26s steps(1) infinite; }
+.ar { transform-origin: 21px 14px; animation: arm-r 0.26s steps(1) infinite; }
+@keyframes arm-l { 0%,100% { transform: rotate(13deg);  } 50% { transform: rotate(-13deg); } }
+@keyframes arm-r { 0%,100% { transform: rotate(-13deg); } 50% { transform: rotate(13deg);  } }
+
+/* Sous le hero : tagline + description */
+.hero-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.8rem 2.5rem 2rem;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.35s;
+}
+.hero-tagline {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mid);
+  transition: color 0.35s;
+  flex-shrink: 0;
+}
+.hero-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--mid);
+  max-width: 360px;
+  text-align: right;
+  line-height: 1.7;
+  transition: color 0.35s;
+}
+.hero-cta {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--fg);
+  padding-bottom: 2px;
+  transition: opacity 0.2s, border-color 0.35s;
+}
+.hero-cta:hover { opacity: 0.4; }
+
+
+/* ============================================================
+   ── PAGE PROJETS : filtres + grille ─────────────────────────
+   ============================================================ */
+
+/* Filtres (Tout / Identity / Prints / ...) */
+.filter {
+  padding: 0.75rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--mid);
+  transition: border-color 0.35s, color 0.35s;
+}
+.filter-item {
+  padding: 0.25rem 0;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.filter-item::after {
+  content: '—';
+  margin: 0 0.75rem;
+  opacity: 0.3;
+}
+.filter-item:last-child::after { display: none; }
+.filter-item:hover,
+.filter-item.active { color: var(--fg); font-weight: 500; }
+
+/* Grille projets : 3 colonnes, vignettes ratio 4:3 uniformes */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  max-width: 1500px;
+  margin: 0 auto;
+  background: var(--bg);
+  transition: background 0.35s;
+}
+
+/* Card projet */
+.project-card {
+  background: var(--card);
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  text-decoration: none;
+  transition: background 0.35s;
+}
+.project-card.hidden { display: none; }
+
+/* Image / vidéo dans la card (zoom centré sur le contenu) */
+.card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: block;
+  overflow: hidden;
+}
+
+.card-img img,
+.card-img video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--crop-x, 50%) var(--crop-y, 50%);
+  transform: scale(var(--zoom, 1));
+  transform-origin: var(--crop-x, 50%) var(--crop-y, 50%);
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover : caméra qui dérive autour du cadrage défini */
+.project-card:hover .card-img img,
+.project-card:hover .card-img video {
+  animation: camera-drift 12s ease-in-out infinite;
+}
+
+@keyframes camera-drift {
+  0% {
+    transform: scale(var(--zoom, 1)) translate(0, 0);
+  }
+  25% {
+    transform: scale(var(--zoom, 1)) translate(-2%, 1.5%);
+  }
+  50% {
+    transform: scale(calc(var(--zoom, 1) * 1.05)) translate(1.5%, -1.5%);
+  }
+  75% {
+    transform: scale(var(--zoom, 1)) translate(-1%, -2%);
+  }
+  100% {
+    transform: scale(var(--zoom, 1)) translate(0, 0);
+  }
+}
+
+/* Placeholder texte (quand pas d'image) */
+.card-img span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: rgba(0,0,0,0.12);
+}
+
+/* Hover : léger zoom de l'image */
+.project-card:hover .card-img {
+  transform: scale(1.04);
+}
+
+/* Bandeau d'infos qui monte du bas au hover */
+.card-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.2rem 1.4rem;
+  background: rgba(0, 0, 0, 0.7);
+  transform: translateY(100%);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.project-card:hover .card-body {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card-cat {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.3rem;
+}
+.card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+.card-year {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 0.2rem;
+  font-weight: 300;
+}
+
+/* ── Body flex pour pousser le footer en bas (page projets) ── */
+body.page-projects {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+body.page-projects main#page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+/* La grille prend tout l'espace dispo, le footer est poussé en bas */
+body.page-projects #page-content > .grid {
+  flex: 1;
+  width: 100%;
+}
+body.page-projects #page-content > footer {
+  margin-top: auto;
+}
+
+/* ── Filter sticky sous la nav ── */
+.filter {
+  position: sticky;
+  top: 74px; /* hauteur de la nav — ajuste entre 70 et 78 selon le rendu */
+  background: var(--bg);
+  z-index: 50;
+}
+
+
+
+/* ============================================================
+   ── MODAL PROJET ────────────────────────────────────────────
+   ============================================================ */
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 3rem;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+.project-modal.open {
+  pointer-events: all;
+  visibility: visible;
+  transition: visibility 0s;
+}
+
+/* Backdrop flouté derrière */
+.project-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    background 0.5s ease,
+    backdrop-filter 0.5s ease,
+    -webkit-backdrop-filter 0.5s ease;
+}
+.project-modal.open .project-modal-backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Contenu : tient dans l'écran sans scroll */
+.project-modal-content {
+  position: relative;
+  background: var(--bg);
+  width: min(90vw, 1100px);
+  height: calc(100vh - 6rem);   /* hauteur fixe pour que flex:1 enfants fonctionnent */
+  max-height: calc(100vh - 6rem);
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-modal.open .project-modal-content {
+  transform: scale(1);
+}
+
+/* Bouton fermer en haut à droite, en absolu */
+.project-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 3;
+  transition: transform 0.2s, background 0.35s, color 0.35s;
+}
+.project-modal-close:hover {
+  transform: scale(1.1);
+}
+
+/* Contenu intérieur */
+.project-modal-inner {
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.project-modal-cat {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.project-modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  color: var(--fg);
+}
+.project-modal-year {
+  font-size: 13px;
+  color: var(--mid);
+}
+.project-modal-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg);
+  max-width: 700px;
+  transition: opacity 0.2s ease;
+}
+
+/* Wrapper de la description avec toggle FR/EN à droite */
+.project-modal-desc-wrapper {
+  position: relative;
+  padding-right: 3.5rem;  /* place pour le bouton FR/EN */
+}
+
+/* Bouton FR/EN dans la modal projet */
+.project-modal-lang {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s, background 0.35s, color 0.35s, border-color 0.35s;
+}
+.project-modal-lang:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Pendant le fade out → swap → fade in */
+.project-modal-description.fading {
+  opacity: 0;
+}
+
+/* Conteneur d'images : prend l'espace restant et les images s'adaptent */
+
+.project-modal-images {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Carrousel : slides ────────────────────────────────── */
+.carousel-track {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.carousel-slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.carousel-slide img,
+.carousel-slide video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+}
+
+/* ── Carrousel : barre de contrôle (flèches + dots) ───── */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.8rem 0.3rem;
+  flex-shrink: 0;
+}
+
+/* ── Carrousel : flèches ───────────────────────────────── */
+.carousel-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s, background 0.35s, color 0.35s, border-color 0.35s;
+}
+.carousel-arrow:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+/* ── Carrousel : dots indicateurs ──────────────────────── */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: transparent;
+  padding: 0;
+  opacity: 0.4;
+  transition: opacity 0.2s, background 0.2s;
+}
+.carousel-dot.active {
+  background: var(--fg);
+  opacity: 1;
+}
+.carousel-dot:hover {
+  opacity: 0.8;
+}
+
+.project-modal-reader {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: transparent;
+  height: calc(100vh - 6rem - 12rem);
+}
+.project-modal-reader iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Bloque le scroll de la page derrière */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .project-modal {
+    padding: 1rem;
+  }
+  .project-modal-inner {
+    padding: 1.5rem 1.2rem;
+  }
+  .project-modal-content {
+    max-height: calc(100vh - 2rem);
+  }
+}
+
+/* ============================================================
+   ── PAGES ABOUT & CONTACT ───────────────────────────────────
+   ============================================================ */
+
+/* Le body devient flex column pour que le footer soit poussé en bas */
+body.page-about,
+body.page-contact {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+body.page-about #page-content,
+body.page-contact #page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+body.page-about #page-content > footer,
+body.page-contact #page-content > footer {
+  margin-top: auto;
+}
+
+/* ─── Page About ─── */
+.page-about-content {
+  padding: 0 2.5rem;
+}
+
+.about-layout {
+  position: relative;
+  max-width: 1400px;
+  margin: auto;
+  width: 100%;
+  padding: 2rem 0;
+  min-height: 500px;
+}
+
+/* Tous les éléments positionnés en absolu */
+.about-image,
+.about-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Portrait : passe AU-DESSUS du texte */
+.about-image {
+  width: 35%;
+  left: 2rem;
+  z-index: 5;
+  transition: left 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.about-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Texte : simple fade in/out synchronisé */
+.about-text {
+  width: 55%;
+  z-index: 1;
+}
+
+#about-text-fr {
+  right: 2rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+  /* Le texte FR fade-out lentement, en commençant DÈS le début de l'animation du portrait */
+  transition-delay: 0.5s;
+}
+
+#about-text-en {
+  left: 2rem;
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+  /* Le texte EN apparait APRÈS que le portrait ait commencé à bouger */
+  transition-delay: 0.4s;
+}
+
+/* ─── ÉTAT ANGLAIS ───────────────────────────────────────── */
+.lang-en .about-image {
+  left: calc(100% - 35% - 2rem);
+}
+
+.lang-en #about-text-fr {
+  opacity: 0;
+  /* Délai pour que le texte FR ne disparaisse pas instantanément */
+  transition-delay: 0s;
+}
+
+.lang-en #about-text-en {
+  opacity: 1;
+  transition-delay: 0.4s;
+}
+/* Bouton de switch */
+.about-lang-toggle {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+  background: transparent;
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: none;
+  z-index: 10;
+  transition:
+    transform 0.25s ease,
+    border-color 0.35s,
+    color 0.35s;
+}
+.about-lang-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .about-layout {
+    min-height: auto;
+    padding: 4rem 1rem 2rem;
+  }
+  .about-image,
+  .about-text {
+    position: static;
+    transform: none;
+    width: 100%;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .about-image {
+    margin-bottom: 2rem;
+  }
+  .about-text-en {
+    display: none;
+  }
+  .lang-en .about-text-en {
+    display: block;
+  }
+  .lang-en #about-text-fr {
+    display: none;
+  }
+}
+
+/* ─── Page Contact ─── */
+.page-contact-content {
+  padding: 0 2.5rem;
+  position: relative;  /* ancre le positionnement absolu du singe */
+}
+
+/* Bandeau d'animation décoratif en haut de la page contact :
+   le singe se balance de gauche à droite, positionné en absolu
+   pour qu'il passe par-dessus le contenu sans le pousser.
+   L'apparition/disparition est gérée en JS (initContactSinge dans main.js)
+   pour permettre un délai initial de 5s et une pause de 10s entre boucles. */
+.contact-singe {
+  position: absolute;
+  top: -2rem;         /* léger rehaussement, mord un peu sur la nav */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 135%;        /* +35% par rapport à la largeur du viewport */
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.contact-singe.is-visible {
+  opacity: 1;
+}
+
+/* Sur mobile le singe descend un peu (au lieu de mordre sur la nav) */
+@media (max-width: 900px) {
+  .contact-singe {
+    top: -1rem;
+    width: 230%;    /* plus gros que les 135% desktop */
+    transform: translateX(-50%);  /* doit rester sinon il se décentre */
+  }
+}
+
+.contact-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+.contact-headline {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  text-align: center;
+  letter-spacing: -1px;
+  margin: 3rem 0 4rem;
+  color: var(--fg);
+  transition: color 0.35s;
+}
+.contact-headline em {
+  font-style: italic;
+  font-weight: 400;
+  font-family: 'Outfit', sans-serif;
+}
+.contact-sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+.contact-section { text-align: center; }
+.contact-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+  transition: color 0.35s;
+}
+.contact-section-subtitle {
+  font-size: 12px;
+  color: var(--mid);
+  margin-bottom: 0.5rem;
+  transition: color 0.35s;
+}
+.contact-email {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--fg);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: opacity 0.2s, color 0.35s;
+}
+.contact-email:hover { opacity: 0.5; }
+
+
+/* ============================================================
+   ── FOOTER ──────────────────────────────────────────────────
+   ============================================================ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.3rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--mid);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  transition: border-color 0.35s, color 0.35s;
+}
+
+/* ============================================================
+   ── TRANSITIONS DE PAGE ─────────────────────────────────────
+   ============================================================ */
+
+#page-content.fading-out {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#page-content.fading-in {
+  animation: page-fade-in 0.5s ease forwards;
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ============================================================
+   ── RESPONSIVE ──────────────────────────────────────────────
+   ============================================================ */
+
+/* Tablette (≤ 900px) : grille en 2 colonnes */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile (≤ 700px) : ajustements généraux */
+@media (max-width: 700px) {
+  nav { padding: 1rem 1.2rem; }
+  .nav-brand { font-size: 13px; gap: 6px; }
+  .brand-icon { width: 20px; height: 20px; }
+  .nav-right { gap: 1.2rem; }
+  .nav-links { gap: 1rem; font-size: 10px; letter-spacing: 1.5px; }
+  .hero-name { font-size: clamp(38px, 12vw, 80px); padding: 1rem 1.2rem 0.8rem; }
+  .hero-sub { flex-direction: column; padding: 1.2rem; }
+  .hero-desc { text-align: left; max-width: 100%; }
+  .filter { padding: 0.6rem 1.2rem; top: 63px; font-size: 14px; }  /* nav plus petite sur mobile, font-size conservé à l'ancienne valeur (évite le wrap sur 2 lignes) */
+  footer { padding: 1rem 1.2rem; flex-direction: column; gap: 0.4rem; }
+  .music-label {
+    /* Remonté pour passer sous la nav (zone libre au-dessus de la barre de filtre)
+       et légèrement réduit pour bien tenir sur petits écrans */
+    top: calc(1.4rem + 30px + 0.35rem);
+  }
+}
+
+/* Très petit mobile (≤ 480px) : on resserre encore pour que tout tienne */
+@media (max-width: 480px) {
+  nav { padding: 0.9rem 0.8rem; }
+  .nav-brand { font-size: 11px; letter-spacing: 0.3px; }
+  .brand-icon { width: 18px; height: 18px; }
+  .nav-right { gap: 0.7rem; }
+  .nav-links { gap: 0.7rem; font-size: 9px; letter-spacing: 1px; }
+  .music-btn, .paint-btn { transform: scale(0.85); }
+  .filter { top: 59px; }
+}
+
+/* Petit écran (≤ 360px) : dernière compression */
+@media (max-width: 360px) {
+  nav { padding: 0.8rem 0.6rem; }
+  .nav-brand { font-size: 10px; }
+  .nav-links { gap: 0.5rem; font-size: 8px; letter-spacing: 0.8px; }
+  .nav-right { gap: 0.5rem; }
+}
+
+/* Écrans tactiles (téléphone, tablette) : masque le curseur custom
+   et restaure le curseur natif. (hover: none) + (pointer: coarse)
+   est la combinaison fiable pour détecter le tactile, indépendamment
+   de la largeur de viewport. */
+@media (hover: none) and (pointer: coarse) {
+  #cursor { display: none !important; }
+  body, html, *, *::before, *::after {
+    cursor: auto !important;
+  }
+  /* Restaure les curseurs spéciaux sur les éléments interactifs */
+  a, button, [role="button"], .filter-item, .card,
+  .paint-btn, .music-btn, .paint-tray > *, .about-lang-toggle {
+    cursor: pointer !important;
+  }
+  /* Sur tactile : pas de :hover → les transform:scale du hover resteraient
+     "collés" après tap. On neutralise donc le scale du hover sur les boutons
+     circulaires de la nav et le bouton lang de la page about, pour qu'ils
+     restent à leur taille de repos. */
+  .paint-btn:hover,
+  .music-btn:hover,
+  .lang-btn:hover,
+  .about-lang-toggle:hover {
+    transform: none;
+  }
+}
+
+/* Préserve le scale(0.85) des boutons music/paint sur très petit mobile
+   tactile, même pendant le tap (sinon :hover du bloc précédent les
+   ramènerait à scale 1). Doit venir APRÈS la règle tactile pour gagner. */
+@media (hover: none) and (pointer: coarse) and (max-width: 480px) {
+  .music-btn,
+  .paint-btn,
+  .music-btn:hover,
+  .paint-btn:hover {
+    transform: scale(0.85);
+  }
+}
+
+/* Pages About / Contact (≤ 800px) */
+@media (max-width: 800px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .about-text p { font-size: 18px; }
+  .contact-headline { margin: 2rem 0 3rem; }
+  .brand-suffix { display: none !important; }
+}
+
+/* Petit mobile (≤ 500px) : grille en 1 colonne, bandeau toujours visible */
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  /* Sur mobile : bandeau toujours visible (pas de hover possible) */
+  .card-body {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* ============================================================
+   CRÉNAGE MANUEL — paires autour du A
+   Compense le kerning insuffisant d'Outfit à grande échelle.
+   Appliqué automatiquement par applyManualKerning() dans main.js
+   sur le titre principal de la home (.main-name) et sur le
+   nom dans la nav bar (.brand-full).
+
+   Une classe par paire pour permettre un réglage fin indépendant.
+   Côté gauche du A (margin-left)  : .kern-ba, .kern-pa
+   Côté droit du A  (margin-right) : .kern-au, .kern-ag
+
+   Note : le P a une contre-forme plus ouverte en bas que le B,
+   donc .kern-pa est généralement plus serré que .kern-ba.
+   Plage utile : -0.02em (subtil) à -0.08em (très serré).
+   ============================================================ */
+
+/* Côté gauche du A — rapproche le A de la lettre précédente */
+.kern-ba { margin-left: -0.03em; }   /* B → A : resserrement modéré */
+.kern-pa { margin-left: -0.080em; }   /* P → A : plus serré (vide ouvert sous le P) */
+
+/* Côté droit du A — rapproche la lettre suivante du A */
+.kern-au { margin-right: -0.04em; }  /* A → U */
+.kern-ag { margin-right: -0.04em; }  /* A → G */

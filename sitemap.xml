@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://thibaudpages.com/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://thibaudpages.com/projets.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/hopi.webp</image:loc>
+      <image:title>Hopi dans son Jardin</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/savane.webp</image:loc>
+      <image:title>Podcast La Voie de la Savane</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/bdlegumes1.webp</image:loc>
+      <image:title>Eat Veggies Comic Strip</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/juliette1.webp</image:loc>
+      <image:title>Videogame Character Design</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/muchaalien.webp</image:loc>
+      <image:title>Lost Alien Paintings</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/semainier.webp</image:loc>
+      <image:title>Children Weekly Planner</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/loneassembly.webp</image:loc>
+      <image:title>Lone Assembly Album Release</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/deuxparts3.webp</image:loc>
+      <image:title>Easter at Deux Parts et d'Autres</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/filleforet2.webp</image:loc>
+      <image:title>Bzopse Background</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/sargane1.webp</image:loc>
+      <image:title>La Sargane Identity</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/lunawave.svg</image:loc>
+      <image:title>Lunawave Retreats Logo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/corgi.svg</image:loc>
+      <image:title>Corgi Parade Poster</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/petitesirene.webp</image:loc>
+      <image:title>La Petite Sirène Poster</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/petitnicolas.webp</image:loc>
+      <image:title>Le Petit Nicolas Poster</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/memory.svg</image:loc>
+      <image:title>Memory Apprentissage Anglais</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/jolan1.webp</image:loc>
+      <image:title>Jolan Chappaz Website</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/chillfroggy2.webp</image:loc>
+      <image:title>Chill Froggy</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/filledulac2.webp</image:loc>
+      <image:title>Lake Girl</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://thibaudpages.com/public/images/projects/forestretreat.webp</image:loc>
+      <image:title>Forest Retreat</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://thibaudpages.com/about.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://thibaudpages.com/contact.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>

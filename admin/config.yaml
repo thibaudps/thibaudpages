@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: ton-pseudo/ton-repo # À remplacer par ton vrai repo
+  branch: main
+
+media_folder: "public/images/projects" # Où les images seront stockées
+public_folder: "public/images/projects"
+
+collections:
+  - name: "projets"
+    label: "Mes Projets"
+    folder: "data/projets" # Le CMS va créer un fichier par projet ici
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titre (FR)", name: "title", widget: "string" }
+      - { label: "Title (EN)", name: "titleEn", widget: "string" }
+      - { label: "Année", name: "year", widget: "string" }
+      - { label: "Catégorie", name: "category", widget: "select", options: ["Identity", "Print", "Illustration", "Edition", "Web"] }
+      - { label: "Image Principale", name: "image", widget: "image" }
+      - { label: "Description (FR)", name: "description", widget: "text" }
+      - { label: "Description (EN)", name: "descriptionEn", widget: "text" }
