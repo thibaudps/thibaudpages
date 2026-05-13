@@ -1,27 +1,6 @@
 {
   "projects": [
     {
-      "titleEn": "Nuit Noire Guests",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.1,
-      "descriptionEn": "its cool",
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Web",
-      "title": "Guests Nuit Noire ",
-      "images": [
-        {
-          "media": "/public/images/projects/Semainier2.webp"
-        }
-      ],
-      "image": "/public/images/projects/babletalien.webp",
-      "description": "cest cool",
-      "year": "2026"
-    },
-    {
       "titleEn": "Hopi dans son Jardin",
       "reader": {
         "url": "public/images/projects/hopi/HopiReader.html",
