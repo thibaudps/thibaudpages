@@ -1,0 +1,123 @@
+/* ============================================================
+   STYLE-HOME.CSS — Styles spécifiques à la page d'accueil
+   ============================================================ */
+
+/* Page d'accueil : pleine hauteur, pas de scroll */
+body.page-home {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.page-home nav {
+  position: relative;
+}
+
+.home-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
+
+#home-animation {
+  position: absolute;
+  bottom: 10vh;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Sur mobile/tablette : la fleur remonte juste sous le titre
+   au lieu de rester collée en bas de l'écran */
+@media (max-width: 900px) {
+  #home-animation {
+    bottom: auto;
+    top: 42vh;
+    width: 125%;    /* plus large = fleur plus grosse */
+    left: -12.5%;   /* recentre le surplus */
+  }
+}
+@media (max-width: 500px) {
+    #home-animation {
+    bottom: auto;
+    top: 30vh;
+    width: 185%;    /* plus large = fleur plus grosse */
+    left: -12.5%;   /* recentre le surplus */
+  }
+}
+
+.home-name-wrap {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 26vh;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  overflow: visible !important;
+  min-height: 0;
+}
+
+.home-name {
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  user-select: none;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* THIBAUD PAGÈS : Très gras et collé */
+.main-name {
+  font-weight: 800;
+  line-height: 0.85;
+  white-space: nowrap;
+}
+
+/* GRAPHISME ET ILLUSTRATION : Fin, environ moitié de la largeur du titre */
+.sub-name {
+  font-weight: 300;
+  font-size: 0.23em;
+  letter-spacing: 0.28em;
+  margin-top: 0.4em;
+  white-space: nowrap;
+  margin-right: -0.18em;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.home-name.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cache le nom dans la nav uniquement sur la page d'accueil */
+.page-home .brand-full {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Le brand-suffix suit le brand-full : invisible sur la home */
+.page-home .brand-suffix {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Sauf si l'animation l'a explicitement révélé (transition home → autre page) */
+.page-home .brand-full[data-revealed="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.brand-full {
+  text-transform: uppercase;
+  white-space: nowrap;
+}
