@@ -1,31 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager – Thibaud Pagès</title>
-  <link href="config.yaml" type="text/yaml" rel="cms-config-url">
-
-  <!-- Fonts identiques au site pour un rendu fidèle -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-  <script>
+<script>
   /* ════════════════════════════════════════════════════════════
-     PREVIEW PERSONNALISÉ POUR LA COLLECTION "PROJETS"
-     Affiche fidèlement vignette + modal avec toggle de vue
-     et sélecteur de thème (Crème/Encre/Sauge/Nuit/Blanc).
+     PREVIEW PERSONNALISÉ POUR LA COLLECTION "PROJETS" — v2
+     - Sélection du projet via dropdown
+     - Curseur natif visible dans la preview
+     - Modal correctement isolée du contenu du site
      ════════════════════════════════════════════════════════════ */
 
   // Charge le style du site dans l'iframe de preview pour rendu fidèle
   CMS.registerPreviewStyle('/style.css');
 
-  // Style additionnel spécifique à la preview (toggle, sélecteur de thème)
+  // Style additionnel spécifique à la preview
   CMS.registerPreviewStyle(`
+    /* Force le curseur natif visible dans la preview */
+    html, body, * { cursor: auto !important; }
+    a, button, [role="button"], select { cursor: pointer !important; }
+
+    /* Cache le curseur custom du site s'il était chargé */
+    #cursor { display: none !important; }
+
     .preview-controls {
       display: flex;
       align-items: center;
@@ -42,6 +34,17 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--mid);
+    }
+    .preview-project-select {
+      flex: 1 1 200px;
+      min-width: 200px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
     }
     .preview-view-toggle {
       display: flex;
@@ -101,7 +104,7 @@
     .preview-card-stage .project-card {
       max-width: 420px;
       width: 100%;
-      cursor: default;
+      cursor: default !important;
     }
     .preview-card-stage .card-body {
       transform: translateY(0);
@@ -142,6 +145,7 @@
       line-height: 1.6;
       color: var(--fg);
       margin-bottom: 2rem;
+      white-space: pre-wrap;
     }
     .preview-modal-stage .project-modal-images {
       margin-top: 1.5rem;
@@ -161,6 +165,7 @@
       height: auto;
       display: block;
       border-radius: 4px;
+      background: var(--card);
     }
     .preview-modal-stage .project-modal-reader {
       width: 100%;
@@ -182,9 +187,19 @@
       font-family: 'Outfit', sans-serif;
       font-size: 14px;
     }
+    .preview-missing-media {
+      padding: 2rem;
+      text-align: center;
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      color: var(--mid);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+    }
   `);
 
-  // ── Palettes (copie de CONFIG.themes côté site) ─────────────
+  // ── Palettes ─────────────────────────────────────────────────
   const PREVIEW_THEMES = {
     'Crème':  { swatch: '#FFFDF2', bg: '#FFFDF2', fg: '#2A2A24', border: '#D8D0C0', mid: '#8A8678', card: '#EDE8DC' },
     'Encre':  { swatch: '#2A2A24', bg: '#2A2A24', fg: '#F5F0E8', border: '#444438', mid: '#9A9A88', card: '#3A3A30' },
@@ -193,15 +208,12 @@
     'Blanc':  { swatch: '#ffffff', bg: '#ffffff', fg: '#1a1a1a', border: '#e0e0e0', mid: '#888888', card: '#f5f5f5' },
   };
 
-  // Cherche dans tous les widgets-fields le champ "projects" (qui est une List)
-  // Le preview reçoit l'entry entière (l'objet projets-list), pas un projet unique.
-  // On affiche le PREMIER projet de la liste pour la preview, ou un message si vide.
-
   const ProjectPreview = createClass({
     getInitialState: function() {
       return {
         view: 'card',
         theme: 'Crème',
+        selectedIndex: 0,
       };
     },
 
@@ -213,61 +225,80 @@
       this.setState({ theme: theme });
     },
 
-    // Récupère le projet à prévisualiser : le premier de la liste s'il y en a un
-    getCurrentProject: function() {
-      const entry = this.props.entry;
-      const data = entry.getIn(['data']);
-      if (!data) return null;
-
-      const projects = data.get('projects');
-      if (!projects || projects.size === 0) return null;
-
-      // Le premier projet de la liste (Decap n'expose pas l'index actif facilement,
-      // donc on prend le premier comme convention)
-      return projects.get(0).toJS();
+    setSelectedIndex: function(index) {
+      this.setState({ selectedIndex: parseInt(index, 10) });
     },
 
-    // Résout l'URL d'une image : si c'est un upload récent non encore committé,
-    // on utilise getAsset pour récupérer un blob URL local
+    getProjects: function() {
+      const entry = this.props.entry;
+      const data = entry.getIn(['data']);
+      if (!data) return [];
+      const projects = data.get('projects');
+      if (!projects || projects.size === 0) return [];
+      return projects.toJS();
+    },
+
+    getCurrentProject: function() {
+      const projects = this.getProjects();
+      if (projects.length === 0) return null;
+      const idx = Math.min(this.state.selectedIndex, projects.length - 1);
+      return projects[idx];
+    },
+
+    // Résout l'URL d'une image, en distinguant les uploads récents (via getAsset)
+    // et les chemins déjà committés (URL relatives sur le site).
+    // IMPORTANT : retourne null si le chemin est vide, pour éviter
+    // que le navigateur ne tente de charger l'URL courante.
     resolveImage: function(path) {
-      if (!path) return '';
-      // Si c'est déjà une URL absolue (http/https), on la garde
+      if (!path || typeof path !== 'string' || path.trim() === '') return null;
       if (/^https?:\/\//.test(path)) return path;
-      // Sinon, on demande à Decap de résoudre via getAsset
       const asset = this.props.getAsset(path);
-      return asset ? asset.toString() : path;
+      const url = asset ? asset.toString() : path;
+      // Garde-fou : si l'URL résolue est vide ou ne ressemble à rien, return null
+      if (!url || url === '' || url === '#') return null;
+      return url;
+    },
+
+    renderMedia: function(src, alt, options) {
+      options = options || {};
+      const resolved = this.resolveImage(src);
+      if (!resolved) {
+        return h('div', { className: 'preview-missing-media' },
+          options.label || 'Média manquant ou en cours d\'upload'
+        );
+      }
+      const isVideo = /\.(mp4|webm|mov)$/i.test(resolved);
+      if (isVideo) {
+        return h('video', {
+          src: resolved,
+          muted: true,
+          loop: true,
+          autoPlay: options.autoPlay !== false,
+          playsInline: true,
+          controls: options.controls === true,
+        });
+      }
+      return h('img', { src: resolved, alt: alt || '' });
     },
 
     renderCard: function(project) {
-      const { theme } = this.state;
-      const t = PREVIEW_THEMES[theme];
       const crop = {
         zoom: project.cropZoom != null ? project.cropZoom : 1.1,
         x:    project.cropX    != null ? project.cropX    : 50,
         y:    project.cropY    != null ? project.cropY    : 50,
       };
 
-      const imageUrl = this.resolveImage(project.image);
-      const isVideo = imageUrl && /\.(mp4|webm|mov)$/i.test(imageUrl);
-
       return h('div', { className: 'preview-card-stage' },
-        h('a', {
+        h('div', {
           className: 'project-card',
-          href: '#',
           style: {
             '--zoom': crop.zoom,
             '--crop-x': crop.x + '%',
             '--crop-y': crop.y + '%',
           },
-          onClick: function(e) { e.preventDefault(); }
         },
           h('div', { className: 'card-img' },
-            imageUrl
-              ? (isVideo
-                  ? h('video', { src: imageUrl, muted: true, loop: true, autoPlay: true, playsInline: true })
-                  : h('img', { src: imageUrl, alt: project.title || '' })
-                )
-              : h('span', null, 'Vignette manquante')
+            this.renderMedia(project.image, project.title, { label: 'Vignette manquante' })
           ),
           h('div', { className: 'card-body' },
             h('div', { className: 'card-cat' }, project.cat || ''),
@@ -280,15 +311,35 @@
 
     renderModal: function(project) {
       const description = project.description || '';
-      const hasReader = project.reader && project.reader.url;
+      const hasReader = project.reader && project.reader.url && project.reader.url.trim() !== '';
 
-      // Galerie d'images (médias)
       const images = Array.isArray(project.images) ? project.images : [];
       const galleryItems = images
         .map(item => typeof item === 'string' ? item : (item && item.media))
-        .filter(Boolean);
+        .filter(src => src && typeof src === 'string' && src.trim() !== '');
 
       const self = this;
+
+      // Construit le contenu média (reader OU galerie OU rien)
+      let mediaContent = null;
+      if (hasReader) {
+        mediaContent = h('div', { className: 'project-modal-reader' },
+          h('iframe', { src: project.reader.url, title: project.title || '', allowFullScreen: true })
+        );
+      } else if (galleryItems.length > 0) {
+        mediaContent = h('div', { className: 'project-modal-images' },
+          h('div', { className: 'carousel-track' },
+            galleryItems.map(function(src, i) {
+              return h('div', {
+                  key: i,
+                  className: 'carousel-slide' + (i === 0 ? ' active' : '')
+                },
+                self.renderMedia(src, project.title, { controls: true, autoPlay: false })
+              );
+            })
+          )
+        );
+      }
 
       return h('div', { className: 'preview-modal-stage' },
         h('div', { className: 'project-modal-inner' },
@@ -296,41 +347,17 @@
           h('h2', { className: 'project-modal-title' }, project.title || 'Sans titre'),
           h('div', { className: 'project-modal-year' }, project.year || ''),
           description ? h('p', { className: 'project-modal-description' }, description) : null,
-
-          // Si reader interactif (HopiReader), on affiche l'iframe
-          hasReader
-            ? h('div', { className: 'project-modal-reader' },
-                h('iframe', { src: project.reader.url, title: project.title, allowFullScreen: true })
-              )
-            : (galleryItems.length > 0
-                ? h('div', { className: 'project-modal-images' },
-                    h('div', { className: 'carousel-track' },
-                      galleryItems.map(function(src, i) {
-                        const resolvedSrc = self.resolveImage(src);
-                        const isVid = /\.(mp4|webm|mov)$/i.test(resolvedSrc);
-                        return h('div', {
-                            key: i,
-                            className: 'carousel-slide' + (i === 0 ? ' active' : '')
-                          },
-                          isVid
-                            ? h('video', { src: resolvedSrc, controls: true, muted: true, loop: true, playsInline: true })
-                            : h('img', { src: resolvedSrc, alt: project.title || '' })
-                        );
-                      })
-                    )
-                  )
-                : null
-              )
+          mediaContent
         )
       );
     },
 
     render: function() {
+      const projects = this.getProjects();
       const project = this.getCurrentProject();
-      const { view, theme } = this.state;
+      const { view, theme, selectedIndex } = this.state;
       const t = PREVIEW_THEMES[theme];
 
-      // Inline les variables CSS du thème dans le wrapper de preview
       const wrapperStyle = {
         '--bg': t.bg,
         '--fg': t.fg,
@@ -345,8 +372,24 @@
 
       return h('div', { className: 'preview-wrapper', style: wrapperStyle },
 
-        // Contrôles : toggle vue + sélecteur de thème
+        // Contrôles : sélecteur de projet + toggle vue + sélecteur de thème
         h('div', { className: 'preview-controls' },
+
+          // Sélecteur de projet
+          projects.length > 0
+            ? h('select', {
+                className: 'preview-project-select',
+                value: Math.min(selectedIndex, projects.length - 1),
+                onChange: function(e) { self.setSelectedIndex(e.target.value); }
+              },
+              projects.map(function(p, i) {
+                const label = (p.title || 'Sans titre') + (p.year ? ' — ' + p.year : '');
+                return h('option', { key: i, value: i }, (i + 1) + '. ' + label);
+              })
+            )
+            : null,
+
+          // Toggle vue
           h('span', { className: 'preview-controls-label' }, 'Vue'),
           h('div', { className: 'preview-view-toggle' },
             h('button', {
@@ -358,7 +401,9 @@
               onClick: function() { self.setView('modal'); }
             }, 'Modal')
           ),
-          h('span', { className: 'preview-controls-label', style: { marginLeft: '1rem' } }, 'Thème'),
+
+          // Sélecteur de thème
+          h('span', { className: 'preview-controls-label' }, 'Thème'),
           h('div', { className: 'preview-theme-toggle' },
             Object.keys(PREVIEW_THEMES).map(function(name) {
               const tt = PREVIEW_THEMES[name];
@@ -373,20 +418,15 @@
           )
         ),
 
-        // Contenu : projet ou message si vide
+        // Contenu : projet sélectionné ou message si vide
         project
           ? (view === 'card' ? this.renderCard(project) : this.renderModal(project))
           : h('div', { className: 'preview-empty' },
-              'Ajoute au moins un projet à la liste pour voir l\'aperçu. ',
-              h('br'),
-              'L\'aperçu affiche toujours le PREMIER projet de la liste.'
+              'Ajoute au moins un projet à la liste pour voir l\'aperçu.'
             )
       );
     }
   });
 
-  // Enregistre le template pour la collection "projets" → fichier "projets-list"
   CMS.registerPreviewTemplate('projets-list', ProjectPreview);
   </script>
-</body>
-</html>
