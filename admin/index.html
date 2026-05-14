@@ -142,6 +142,8 @@
         padding: 2rem;
         max-width: 900px;
         margin: 0 auto;
+        overflow: visible !important;
+        height: auto !important;
       }
       .preview-modal-stage .project-modal-cat {
         font-size: 11px;
@@ -171,16 +173,29 @@
         white-space: pre-wrap;
       }
       .preview-modal-stage .project-modal-images {
-        margin-top: 1.5rem;
+        margin-top: 1.5rem !important;
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+        width: 100% !important;
       }
       .preview-modal-stage .carousel-track {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
+        display: flex !important;
+        gap: 1rem !important;
+        flex-wrap: wrap !important;
+        height: auto !important;
+        min-height: 200px !important;
+        overflow: visible !important;
+        align-items: flex-start !important;
+        width: 100% !important;
       }
       .preview-modal-stage .carousel-slide {
-        flex: 1 1 280px;
-        max-width: 100%;
+        flex: 1 1 280px !important;
+        max-width: 100% !important;
+        min-width: 200px !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
       }
       .preview-modal-stage .carousel-slide img,
       .preview-modal-stage .carousel-slide video {
@@ -192,8 +207,8 @@
         background: var(--card);
         object-fit: contain;
       }
-      .preview-modal-stage .carousel-slide {
-        min-height: 200px;
+      .preview-modal-stage .project-modal-inner {
+        overflow: visible !important;
       }
       .preview-modal-stage .project-modal-reader {
         width: 100%;
