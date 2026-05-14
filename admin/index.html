@@ -1,432 +1,449 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager – Thibaud Pagès</title>
+  <link href="config.yaml" type="text/yaml" rel="cms-config-url">
+
+  <!-- Fonts identiques au site pour un rendu fidèle -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <script>
   /* ════════════════════════════════════════════════════════════
-     PREVIEW PERSONNALISÉ POUR LA COLLECTION "PROJETS" — v2
+     PREVIEW PERSONNALISÉ POUR LA COLLECTION "PROJETS" — v3
+     - Wrappé dans window.onload pour s'assurer que CMS est chargé
      - Sélection du projet via dropdown
      - Curseur natif visible dans la preview
      - Modal correctement isolée du contenu du site
      ════════════════════════════════════════════════════════════ */
 
-  // Charge le style du site dans l'iframe de preview pour rendu fidèle
-  CMS.registerPreviewStyle('/style.css');
+  // Attend que decap-cms.js soit complètement chargé avant d'exécuter
+  window.addEventListener('load', function() {
 
-  // Style additionnel spécifique à la preview
-  CMS.registerPreviewStyle(`
-    /* Force le curseur natif visible dans la preview */
-    html, body, * { cursor: auto !important; }
-    a, button, [role="button"], select { cursor: pointer !important; }
+    if (typeof CMS === 'undefined') {
+      console.error('CMS not loaded after window.load — preview template not registered');
+      return;
+    }
 
-    /* Cache le curseur custom du site s'il était chargé */
-    #cursor { display: none !important; }
+    // Charge le style du site dans l'iframe de preview pour rendu fidèle
+    CMS.registerPreviewStyle('/style.css');
 
-    .preview-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      font-family: 'Outfit', sans-serif;
-      flex-wrap: wrap;
-    }
-    .preview-controls-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-    .preview-project-select {
-      flex: 1 1 200px;
-      min-width: 200px;
-      padding: 6px 10px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-    }
-    .preview-view-toggle {
-      display: flex;
-      gap: 4px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 3px;
-    }
-    .preview-view-toggle button {
-      border: none;
-      background: transparent;
-      color: var(--mid);
-      font-family: 'Outfit', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .preview-view-toggle button.active {
-      background: var(--fg);
-      color: var(--bg);
-    }
-    .preview-theme-toggle {
-      display: flex;
-      gap: 6px;
-    }
-    .preview-theme-toggle button {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      cursor: pointer;
-      padding: 0;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .preview-theme-toggle button:hover { transform: scale(1.15); }
-    .preview-theme-toggle button.active {
-      border-color: var(--fg);
-      box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--fg);
-    }
-    .preview-wrapper {
-      background: var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
-    }
-    .preview-card-stage {
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-    }
-    .preview-card-stage .project-card {
-      max-width: 420px;
-      width: 100%;
-      cursor: default !important;
-    }
-    .preview-card-stage .card-body {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .preview-modal-stage {
-      padding: 1.5rem;
-    }
-    .preview-modal-stage .project-modal-inner {
-      background: var(--card);
-      border-radius: 8px;
-      padding: 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .preview-modal-stage .project-modal-cat {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 0.5rem;
-    }
-    .preview-modal-stage .project-modal-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      margin: 0.2rem 0 0.4rem;
-      color: var(--fg);
-    }
-    .preview-modal-stage .project-modal-year {
-      font-size: 14px;
-      color: var(--mid);
-      margin-bottom: 1.5rem;
-    }
-    .preview-modal-stage .project-modal-description {
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--fg);
-      margin-bottom: 2rem;
-      white-space: pre-wrap;
-    }
-    .preview-modal-stage .project-modal-images {
-      margin-top: 1.5rem;
-    }
-    .preview-modal-stage .carousel-track {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .preview-modal-stage .carousel-slide {
-      flex: 1 1 280px;
-      max-width: 100%;
-    }
-    .preview-modal-stage .carousel-slide img,
-    .preview-modal-stage .carousel-slide video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 4px;
-      background: var(--card);
-    }
-    .preview-modal-stage .project-modal-reader {
-      width: 100%;
-      aspect-ratio: 1 / 1.4;
-      max-height: 600px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .preview-modal-stage .project-modal-reader iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .preview-empty {
-      padding: 3rem;
-      text-align: center;
-      color: var(--mid);
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-    }
-    .preview-missing-media {
-      padding: 2rem;
-      text-align: center;
-      background: var(--card);
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      color: var(--mid);
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-    }
-  `);
+    // Style additionnel spécifique à la preview
+    CMS.registerPreviewStyle(`
+      html, body, * { cursor: auto !important; }
+      a, button, [role="button"], select { cursor: pointer !important; }
+      #cursor { display: none !important; }
 
-  // ── Palettes ─────────────────────────────────────────────────
-  const PREVIEW_THEMES = {
-    'Crème':  { swatch: '#FFFDF2', bg: '#FFFDF2', fg: '#2A2A24', border: '#D8D0C0', mid: '#8A8678', card: '#EDE8DC' },
-    'Encre':  { swatch: '#2A2A24', bg: '#2A2A24', fg: '#F5F0E8', border: '#444438', mid: '#9A9A88', card: '#3A3A30' },
-    'Sauge':  { swatch: '#E8EDE4', bg: '#E8EDE4', fg: '#2A3424', border: '#C8D4C0', mid: '#728060', card: '#DDE5D8' },
-    'Nuit':   { swatch: '#1C2B3A', bg: '#1C2B3A', fg: '#E8F0F8', border: '#2E4258', mid: '#7A9AB8', card: '#243444' },
-    'Blanc':  { swatch: '#ffffff', bg: '#ffffff', fg: '#1a1a1a', border: '#e0e0e0', mid: '#888888', card: '#f5f5f5' },
-  };
-
-  const ProjectPreview = createClass({
-    getInitialState: function() {
-      return {
-        view: 'card',
-        theme: 'Crème',
-        selectedIndex: 0,
-      };
-    },
-
-    setView: function(view) {
-      this.setState({ view: view });
-    },
-
-    setTheme: function(theme) {
-      this.setState({ theme: theme });
-    },
-
-    setSelectedIndex: function(index) {
-      this.setState({ selectedIndex: parseInt(index, 10) });
-    },
-
-    getProjects: function() {
-      const entry = this.props.entry;
-      const data = entry.getIn(['data']);
-      if (!data) return [];
-      const projects = data.get('projects');
-      if (!projects || projects.size === 0) return [];
-      return projects.toJS();
-    },
-
-    getCurrentProject: function() {
-      const projects = this.getProjects();
-      if (projects.length === 0) return null;
-      const idx = Math.min(this.state.selectedIndex, projects.length - 1);
-      return projects[idx];
-    },
-
-    // Résout l'URL d'une image, en distinguant les uploads récents (via getAsset)
-    // et les chemins déjà committés (URL relatives sur le site).
-    // IMPORTANT : retourne null si le chemin est vide, pour éviter
-    // que le navigateur ne tente de charger l'URL courante.
-    resolveImage: function(path) {
-      if (!path || typeof path !== 'string' || path.trim() === '') return null;
-      if (/^https?:\/\//.test(path)) return path;
-      const asset = this.props.getAsset(path);
-      const url = asset ? asset.toString() : path;
-      // Garde-fou : si l'URL résolue est vide ou ne ressemble à rien, return null
-      if (!url || url === '' || url === '#') return null;
-      return url;
-    },
-
-    renderMedia: function(src, alt, options) {
-      options = options || {};
-      const resolved = this.resolveImage(src);
-      if (!resolved) {
-        return h('div', { className: 'preview-missing-media' },
-          options.label || 'Média manquant ou en cours d\'upload'
-        );
+      .preview-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+        font-family: 'Outfit', sans-serif;
+        flex-wrap: wrap;
       }
-      const isVideo = /\.(mp4|webm|mov)$/i.test(resolved);
-      if (isVideo) {
-        return h('video', {
-          src: resolved,
-          muted: true,
-          loop: true,
-          autoPlay: options.autoPlay !== false,
-          playsInline: true,
-          controls: options.controls === true,
-        });
+      .preview-controls-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--mid);
       }
-      return h('img', { src: resolved, alt: alt || '' });
-    },
+      .preview-project-select {
+        flex: 1 1 200px;
+        min-width: 200px;
+        padding: 6px 10px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: 'Outfit', sans-serif;
+        font-size: 13px;
+      }
+      .preview-view-toggle {
+        display: flex;
+        gap: 4px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px;
+      }
+      .preview-view-toggle button {
+        border: none;
+        background: transparent;
+        color: var(--mid);
+        font-family: 'Outfit', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      }
+      .preview-view-toggle button.active {
+        background: var(--fg);
+        color: var(--bg);
+      }
+      .preview-theme-toggle {
+        display: flex;
+        gap: 6px;
+      }
+      .preview-theme-toggle button {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border);
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.2s, border-color 0.2s;
+      }
+      .preview-theme-toggle button:hover { transform: scale(1.15); }
+      .preview-theme-toggle button.active {
+        border-color: var(--fg);
+        box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--fg);
+      }
+      .preview-wrapper {
+        background: var(--bg);
+        color: var(--fg);
+        min-height: 100vh;
+        transition: background 0.3s, color 0.3s;
+      }
+      .preview-card-stage {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+      .preview-card-stage .project-card {
+        max-width: 420px;
+        width: 100%;
+        cursor: default !important;
+      }
+      .preview-card-stage .card-body {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .preview-modal-stage {
+        padding: 1.5rem;
+      }
+      .preview-modal-stage .project-modal-inner {
+        background: var(--card);
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .preview-modal-stage .project-modal-cat {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--mid);
+        margin-bottom: 0.5rem;
+      }
+      .preview-modal-stage .project-modal-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0.2rem 0 0.4rem;
+        color: var(--fg);
+      }
+      .preview-modal-stage .project-modal-year {
+        font-size: 14px;
+        color: var(--mid);
+        margin-bottom: 1.5rem;
+      }
+      .preview-modal-stage .project-modal-description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--fg);
+        margin-bottom: 2rem;
+        white-space: pre-wrap;
+      }
+      .preview-modal-stage .project-modal-images {
+        margin-top: 1.5rem;
+      }
+      .preview-modal-stage .carousel-track {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .preview-modal-stage .carousel-slide {
+        flex: 1 1 280px;
+        max-width: 100%;
+      }
+      .preview-modal-stage .carousel-slide img,
+      .preview-modal-stage .carousel-slide video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 4px;
+        background: var(--card);
+      }
+      .preview-modal-stage .project-modal-reader {
+        width: 100%;
+        aspect-ratio: 1 / 1.4;
+        max-height: 600px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .preview-modal-stage .project-modal-reader iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      .preview-empty {
+        padding: 3rem;
+        text-align: center;
+        color: var(--mid);
+        font-family: 'Outfit', sans-serif;
+        font-size: 14px;
+      }
+      .preview-missing-media {
+        padding: 2rem;
+        text-align: center;
+        background: var(--card);
+        border: 1px dashed var(--border);
+        border-radius: 4px;
+        color: var(--mid);
+        font-family: 'Outfit', sans-serif;
+        font-size: 13px;
+      }
+    `);
 
-    renderCard: function(project) {
-      const crop = {
-        zoom: project.cropZoom != null ? project.cropZoom : 1.1,
-        x:    project.cropX    != null ? project.cropX    : 50,
-        y:    project.cropY    != null ? project.cropY    : 50,
-      };
+    // ── Palettes ─────────────────────────────────────────────
+    var PREVIEW_THEMES = {
+      'Crème':  { swatch: '#FFFDF2', bg: '#FFFDF2', fg: '#2A2A24', border: '#D8D0C0', mid: '#8A8678', card: '#EDE8DC' },
+      'Encre':  { swatch: '#2A2A24', bg: '#2A2A24', fg: '#F5F0E8', border: '#444438', mid: '#9A9A88', card: '#3A3A30' },
+      'Sauge':  { swatch: '#E8EDE4', bg: '#E8EDE4', fg: '#2A3424', border: '#C8D4C0', mid: '#728060', card: '#DDE5D8' },
+      'Nuit':   { swatch: '#1C2B3A', bg: '#1C2B3A', fg: '#E8F0F8', border: '#2E4258', mid: '#7A9AB8', card: '#243444' },
+      'Blanc':  { swatch: '#ffffff', bg: '#ffffff', fg: '#1a1a1a', border: '#e0e0e0', mid: '#888888', card: '#f5f5f5' },
+    };
 
-      return h('div', { className: 'preview-card-stage' },
-        h('div', {
-          className: 'project-card',
-          style: {
-            '--zoom': crop.zoom,
-            '--crop-x': crop.x + '%',
-            '--crop-y': crop.y + '%',
+    var ProjectPreview = createClass({
+      getInitialState: function() {
+        return {
+          view: 'card',
+          theme: 'Crème',
+          selectedIndex: 0,
+        };
+      },
+
+      setView: function(view) {
+        this.setState({ view: view });
+      },
+
+      setTheme: function(theme) {
+        this.setState({ theme: theme });
+      },
+
+      setSelectedIndex: function(index) {
+        this.setState({ selectedIndex: parseInt(index, 10) });
+      },
+
+      getProjects: function() {
+        var entry = this.props.entry;
+        var data = entry.getIn(['data']);
+        if (!data) return [];
+        var projects = data.get('projects');
+        if (!projects || projects.size === 0) return [];
+        return projects.toJS();
+      },
+
+      getCurrentProject: function() {
+        var projects = this.getProjects();
+        if (projects.length === 0) return null;
+        var idx = Math.min(this.state.selectedIndex, projects.length - 1);
+        return projects[idx];
+      },
+
+      resolveImage: function(path) {
+        if (!path || typeof path !== 'string' || path.trim() === '') return null;
+        if (/^https?:\/\//.test(path)) return path;
+        var asset = this.props.getAsset(path);
+        var url = asset ? asset.toString() : path;
+        if (!url || url === '' || url === '#') return null;
+        return url;
+      },
+
+      renderMedia: function(src, alt, options) {
+        options = options || {};
+        var resolved = this.resolveImage(src);
+        if (!resolved) {
+          return h('div', { className: 'preview-missing-media' },
+            options.label || 'Média manquant ou en cours d\'upload'
+          );
+        }
+        var isVideo = /\.(mp4|webm|mov)$/i.test(resolved);
+        if (isVideo) {
+          return h('video', {
+            src: resolved,
+            muted: true,
+            loop: true,
+            autoPlay: options.autoPlay !== false,
+            playsInline: true,
+            controls: options.controls === true,
+          });
+        }
+        return h('img', { src: resolved, alt: alt || '' });
+      },
+
+      renderCard: function(project) {
+        var crop = {
+          zoom: project.cropZoom != null ? project.cropZoom : 1.1,
+          x:    project.cropX    != null ? project.cropX    : 50,
+          y:    project.cropY    != null ? project.cropY    : 50,
+        };
+
+        return h('div', { className: 'preview-card-stage' },
+          h('div', {
+            className: 'project-card',
+            style: {
+              '--zoom': crop.zoom,
+              '--crop-x': crop.x + '%',
+              '--crop-y': crop.y + '%',
+            },
           },
-        },
-          h('div', { className: 'card-img' },
-            this.renderMedia(project.image, project.title, { label: 'Vignette manquante' })
-          ),
-          h('div', { className: 'card-body' },
-            h('div', { className: 'card-cat' }, project.cat || ''),
-            h('div', { className: 'card-title' }, project.title || 'Sans titre'),
-            h('div', { className: 'card-year' }, project.year || '')
-          )
-        )
-      );
-    },
-
-    renderModal: function(project) {
-      const description = project.description || '';
-      const hasReader = project.reader && project.reader.url && project.reader.url.trim() !== '';
-
-      const images = Array.isArray(project.images) ? project.images : [];
-      const galleryItems = images
-        .map(item => typeof item === 'string' ? item : (item && item.media))
-        .filter(src => src && typeof src === 'string' && src.trim() !== '');
-
-      const self = this;
-
-      // Construit le contenu média (reader OU galerie OU rien)
-      let mediaContent = null;
-      if (hasReader) {
-        mediaContent = h('div', { className: 'project-modal-reader' },
-          h('iframe', { src: project.reader.url, title: project.title || '', allowFullScreen: true })
-        );
-      } else if (galleryItems.length > 0) {
-        mediaContent = h('div', { className: 'project-modal-images' },
-          h('div', { className: 'carousel-track' },
-            galleryItems.map(function(src, i) {
-              return h('div', {
-                  key: i,
-                  className: 'carousel-slide' + (i === 0 ? ' active' : '')
-                },
-                self.renderMedia(src, project.title, { controls: true, autoPlay: false })
-              );
-            })
+            h('div', { className: 'card-img' },
+              this.renderMedia(project.image, project.title, { label: 'Vignette manquante' })
+            ),
+            h('div', { className: 'card-body' },
+              h('div', { className: 'card-cat' }, project.cat || ''),
+              h('div', { className: 'card-title' }, project.title || 'Sans titre'),
+              h('div', { className: 'card-year' }, project.year || '')
+            )
           )
         );
-      }
+      },
 
-      return h('div', { className: 'preview-modal-stage' },
-        h('div', { className: 'project-modal-inner' },
-          h('div', { className: 'project-modal-cat' }, project.cat || ''),
-          h('h2', { className: 'project-modal-title' }, project.title || 'Sans titre'),
-          h('div', { className: 'project-modal-year' }, project.year || ''),
-          description ? h('p', { className: 'project-modal-description' }, description) : null,
-          mediaContent
-        )
-      );
-    },
+      renderModal: function(project) {
+        var description = project.description || '';
+        var hasReader = project.reader && project.reader.url && project.reader.url.trim() !== '';
 
-    render: function() {
-      const projects = this.getProjects();
-      const project = this.getCurrentProject();
-      const { view, theme, selectedIndex } = this.state;
-      const t = PREVIEW_THEMES[theme];
+        var images = Array.isArray(project.images) ? project.images : [];
+        var galleryItems = images
+          .map(function(item) { return typeof item === 'string' ? item : (item && item.media); })
+          .filter(function(src) { return src && typeof src === 'string' && src.trim() !== ''; });
 
-      const wrapperStyle = {
-        '--bg': t.bg,
-        '--fg': t.fg,
-        '--border': t.border,
-        '--mid': t.mid,
-        '--card': t.card,
-        background: t.bg,
-        color: t.fg,
-      };
+        var self = this;
 
-      const self = this;
-
-      return h('div', { className: 'preview-wrapper', style: wrapperStyle },
-
-        // Contrôles : sélecteur de projet + toggle vue + sélecteur de thème
-        h('div', { className: 'preview-controls' },
-
-          // Sélecteur de projet
-          projects.length > 0
-            ? h('select', {
-                className: 'preview-project-select',
-                value: Math.min(selectedIndex, projects.length - 1),
-                onChange: function(e) { self.setSelectedIndex(e.target.value); }
-              },
-              projects.map(function(p, i) {
-                const label = (p.title || 'Sans titre') + (p.year ? ' — ' + p.year : '');
-                return h('option', { key: i, value: i }, (i + 1) + '. ' + label);
+        var mediaContent = null;
+        if (hasReader) {
+          mediaContent = h('div', { className: 'project-modal-reader' },
+            h('iframe', { src: project.reader.url, title: project.title || '', allowFullScreen: true })
+          );
+        } else if (galleryItems.length > 0) {
+          mediaContent = h('div', { className: 'project-modal-images' },
+            h('div', { className: 'carousel-track' },
+              galleryItems.map(function(src, i) {
+                return h('div', {
+                    key: i,
+                    className: 'carousel-slide' + (i === 0 ? ' active' : '')
+                  },
+                  self.renderMedia(src, project.title, { controls: true, autoPlay: false })
+                );
               })
             )
-            : null,
+          );
+        }
 
-          // Toggle vue
-          h('span', { className: 'preview-controls-label' }, 'Vue'),
-          h('div', { className: 'preview-view-toggle' },
-            h('button', {
-              className: view === 'card' ? 'active' : '',
-              onClick: function() { self.setView('card'); }
-            }, 'Vignette'),
-            h('button', {
-              className: view === 'modal' ? 'active' : '',
-              onClick: function() { self.setView('modal'); }
-            }, 'Modal')
+        return h('div', { className: 'preview-modal-stage' },
+          h('div', { className: 'project-modal-inner' },
+            h('div', { className: 'project-modal-cat' }, project.cat || ''),
+            h('h2', { className: 'project-modal-title' }, project.title || 'Sans titre'),
+            h('div', { className: 'project-modal-year' }, project.year || ''),
+            description ? h('p', { className: 'project-modal-description' }, description) : null,
+            mediaContent
+          )
+        );
+      },
+
+      render: function() {
+        var projects = this.getProjects();
+        var project = this.getCurrentProject();
+        var view = this.state.view;
+        var theme = this.state.theme;
+        var selectedIndex = this.state.selectedIndex;
+        var t = PREVIEW_THEMES[theme];
+
+        var wrapperStyle = {
+          '--bg': t.bg,
+          '--fg': t.fg,
+          '--border': t.border,
+          '--mid': t.mid,
+          '--card': t.card,
+          background: t.bg,
+          color: t.fg,
+        };
+
+        var self = this;
+
+        return h('div', { className: 'preview-wrapper', style: wrapperStyle },
+
+          h('div', { className: 'preview-controls' },
+
+            projects.length > 0
+              ? h('select', {
+                  className: 'preview-project-select',
+                  value: Math.min(selectedIndex, projects.length - 1),
+                  onChange: function(e) { self.setSelectedIndex(e.target.value); }
+                },
+                projects.map(function(p, i) {
+                  var label = (p.title || 'Sans titre') + (p.year ? ' — ' + p.year : '');
+                  return h('option', { key: i, value: i }, (i + 1) + '. ' + label);
+                })
+              )
+              : null,
+
+            h('span', { className: 'preview-controls-label' }, 'Vue'),
+            h('div', { className: 'preview-view-toggle' },
+              h('button', {
+                className: view === 'card' ? 'active' : '',
+                onClick: function() { self.setView('card'); }
+              }, 'Vignette'),
+              h('button', {
+                className: view === 'modal' ? 'active' : '',
+                onClick: function() { self.setView('modal'); }
+              }, 'Modal')
+            ),
+
+            h('span', { className: 'preview-controls-label' }, 'Thème'),
+            h('div', { className: 'preview-theme-toggle' },
+              Object.keys(PREVIEW_THEMES).map(function(name) {
+                var tt = PREVIEW_THEMES[name];
+                return h('button', {
+                  key: name,
+                  className: theme === name ? 'active' : '',
+                  style: { background: tt.swatch },
+                  title: name,
+                  onClick: function() { self.setTheme(name); }
+                });
+              })
+            )
           ),
 
-          // Sélecteur de thème
-          h('span', { className: 'preview-controls-label' }, 'Thème'),
-          h('div', { className: 'preview-theme-toggle' },
-            Object.keys(PREVIEW_THEMES).map(function(name) {
-              const tt = PREVIEW_THEMES[name];
-              return h('button', {
-                key: name,
-                className: theme === name ? 'active' : '',
-                style: { background: tt.swatch },
-                title: name,
-                onClick: function() { self.setTheme(name); }
-              });
-            })
-          )
-        ),
+          project
+            ? (view === 'card' ? this.renderCard(project) : this.renderModal(project))
+            : h('div', { className: 'preview-empty' },
+                'Ajoute au moins un projet à la liste pour voir l\'aperçu.'
+              )
+        );
+      }
+    });
 
-        // Contenu : projet sélectionné ou message si vide
-        project
-          ? (view === 'card' ? this.renderCard(project) : this.renderModal(project))
-          : h('div', { className: 'preview-empty' },
-              'Ajoute au moins un projet à la liste pour voir l\'aperçu.'
-            )
-      );
-    }
-  });
+    CMS.registerPreviewTemplate('projets-list', ProjectPreview);
 
-  CMS.registerPreviewTemplate('projets-list', ProjectPreview);
+  }); // fin de window.addEventListener('load', ...)
   </script>
+</body>
+</html>
