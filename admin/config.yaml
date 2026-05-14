@@ -7,7 +7,7 @@
 backend:
   name: git-gateway
   repo: thibaudps/thibaudpages
-  branch: master                  # ⚠️ Mettre "master" si ton repo est resté en master
+  branch: master
   auth_type: pkce
   base_url: https://auth.decapbridge.com
   auth_endpoint: /sites/36dc7e8e-8f5d-48c9-a36a-dda795f34f64/pkce
@@ -30,7 +30,7 @@ auth:
   last_name_claim: last_name
   avatar_url_claim: avatar_url
 
-# Logo Decap + Bridge dans le CMS (joli)
+# Logo Decap + Bridge dans le CMS
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 
 # Liens du site dans le CMS
@@ -67,108 +67,4 @@ collections:
             summary: "{{fields.title}} — {{fields.cat}} ({{fields.year}})"
             fields:
 
-              # ── Identité du projet ─────────────────────────
-              - { label: "Titre (FR)", name: "title", widget: "string" }
-              - { label: "Titre (EN)", name: "titleEn", widget: "string" }
-
-              - label: "Catégorie"
-                name: "cat"
-                widget: "select"
-                options: ["Identity", "Print", "Illustration", "Edition", "Web"]
-
-              - { label: "Année", name: "year", widget: "string", hint: "Ex: 2026" }
-
-              # ── Vignette ───────────────────────────────────
-              - label: "Image vignette"
-                name: "image"
-                widget: "image"
-                hint: "L'image affichée dans la grille de projets."
-
-              # ── Cadrage de la vignette (crop) ──────────────
-              - label: "Zoom de la vignette"
-                name: "cropZoom"
-                widget: "number"
-                value_type: "float"
-                default: 1.1
-                min: 1
-                max: 3
-                step: 0.1
-                hint: "1 = image entière, 2 = très zoomé. Tester 1.1, 1.4, 1.9..."
-
-              - label: "Position horizontale (x)"
-                name: "cropX"
-                widget: "number"
-                value_type: "int"
-                default: 50
-                min: 0
-                max: 100
-                hint: "Position du centre du cadrage de gauche (0) à droite (100). 50 = centré."
-
-              - label: "Position verticale (y)"
-                name: "cropY"
-                widget: "number"
-                value_type: "int"
-                default: 50
-                min: 0
-                max: 100
-                hint: "Position du centre du cadrage de haut (0) à bas (100). 50 = centré."
-
-              # ── Lien externe optionnel ─────────────────────
-              - label: "Lien externe (optionnel)"
-                name: "href"
-                widget: "string"
-                required: false
-                default: "#"
-                hint: "Laisser '#' pour ouvrir le modal du site. Sinon, URL externe."
-
-              # ── Détails du projet ──────────────────────────
-              - label: "Description (FR)"
-                name: "description"
-                widget: "text"
-
-              - label: "Description (EN)"
-                name: "descriptionEn"
-                widget: "text"
-
-              # ── Médias de la galerie ───────────────────────
-              - label: "Images / vidéos de la galerie"
-                name: "images"
-                widget: "list"
-                required: false
-                summary: "{{fields.media}}"
-                hint: "Ajoute autant d'images ou de vidéos (.webm) que tu veux. Glisser-déposer pour réorganiser."
-                fields:
-                  - label: "Média"
-                    name: "media"
-                    widget: "file"
-                    media_library:
-                      config:
-                        multiple: false
-
-              # ── Reader interactif (optionnel) ──────────────
-              - label: "Livre interactif (optionnel)"
-                name: "reader"
-                widget: "object"
-                required: false
-                collapsed: true
-                hint: "Pour les projets de type livre feuilletable (comme Hopi). Laisser vide sinon."
-                fields:
-                  - label: "Chemin du reader HTML"
-                    name: "url"
-                    widget: "string"
-                    required: false
-                    hint: "Ex: public/images/projects/hopi/HopiReader.html"
-                  - label: "Ratio des pages (largeur / hauteur)"
-                    name: "ratio"
-                    widget: "number"
-                    value_type: "float"
-                    required: false
-                    default: 0.7
-                    step: 0.01
-                    hint: "Ex: 0.7 pour un livre portrait. Utilisé pour calculer la taille du modal."
-
-  # ════════════════════════════════════════════════════════════
-  #  Pour plus tard : tu pourrais ajouter d'autres collections
-  #  (About, Contact) si tu veux les éditer depuis le CMS.
-  #  Pour l'instant on garde ça dans config.js, c'est plus simple.
-  # ════════════════════════════════════════════════════════════
+              # ── I
