@@ -274,6 +274,138 @@ async function loadProjectsFromCMS() {
   }
 }
 
+/* ============================================================
+   ── PRÉCHARGEMENT INTELLIGENT DES IMAGES ────────────────────
+   Évite les flashs blancs à l'ouverture des modals et améliore
+   l'expérience perçue, sans surcharger le chargement initial.
+   ============================================================ */
+
+// Cache des URLs déjà préchargées (évite les doublons)
+const _preloadedImages = new Set();
+
+// Précharge une URL d'image (ou vidéo) en arrière-plan
+function preloadMedia(url) {
+  if (!url || _preloadedImages.has(url)) return;
+  _preloadedImages.add(url);
+
+  // Vidéos : on précharge juste les métadonnées (poster + premier frame)
+  // pour ne pas exploser la bande passante
+  if (/\.(mp4|webm|mov)$/i.test(url)) {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.src = url;
+    return;
+  }
+
+  // Images : on les place dans le cache du navigateur via new Image()
+  const img = new Image();
+  img.decoding = 'async';
+  img.src = url;
+}
+
+// Précharge plusieurs URLs en série (pour ne pas saturer la connexion)
+function preloadMediaList(urls) {
+  urls.forEach(url => preloadMedia(url));
+}
+
+// Détecte la qualité de connexion via Network Information API.
+// Retourne le nombre de cards à précharger immédiatement.
+function getPreloadBudget() {
+  const conn = navigator.connection
+    || navigator.mozConnection
+    || navigator.webkitConnection;
+
+  // Pas d'API dispo (Safari, Firefox sur iOS) → on suppose connexion correcte
+  if (!conn) return 12;
+
+  // Mode économie de données → strict minimum
+  if (conn.saveData) return 3;
+
+  // Adapte selon la qualité estimée de la connexion
+  switch (conn.effectiveType) {
+    case 'slow-2g': return 2;
+    case '2g':      return 4;
+    case '3g':      return 8;
+    case '4g':      return 16;
+    default:        return 12;
+  }
+}
+
+// Précharge les images des cards de la grille selon le budget connexion.
+// À appeler APRÈS renderProjects().
+function preloadGridImages() {
+  if (!Array.isArray(CONFIG.projects)) return;
+  const budget = getPreloadBudget();
+
+  // Les N premières : préchargement immédiat (au-dessus de la ligne de flottaison)
+  const immediate = CONFIG.projects.slice(0, budget);
+  immediate.forEach(p => {
+    if (p.image) preloadMedia(p.image);
+  });
+
+  // Les suivantes : préchargement différé en arrière-plan, sans pression
+  // sur le réseau (via requestIdleCallback si dispo, sinon setTimeout)
+  const deferred = CONFIG.projects.slice(budget);
+  const scheduleIdle = window.requestIdleCallback
+    || (cb => setTimeout(cb, 1500));
+
+  deferred.forEach((p, i) => {
+    scheduleIdle(() => {
+      if (p.image) preloadMedia(p.image);
+    }, { timeout: 5000 + i * 200 });
+  });
+}
+
+// Précharge toutes les images d'un projet (pour le modal).
+// Appelé au survol/touch d'une card → quand l'utilisateur clique
+// quelques centaines de ms plus tard, tout est déjà en cache.
+function preloadProjectModal(projectIndex) {
+  const project = CONFIG.projects[projectIndex];
+  if (!project) return;
+
+  const details = project.details || {};
+  const images = details.images || (project.image ? [project.image] : []);
+  preloadMediaList(images);
+}
+
+// Attache les écouteurs de préchargement sur les cards de la grille.
+// À appeler APRÈS renderProjects() (les cards doivent exister dans le DOM).
+function bindCardPreload() {
+  const cards = document.querySelectorAll('.project-card');
+  cards.forEach(card => {
+    const idx = parseInt(card.dataset.index, 10);
+    if (isNaN(idx)) return;
+
+    let triggered = false;
+    const trigger = () => {
+      if (triggered) return;
+      triggered = true;
+      preloadProjectModal(idx);
+    };
+
+    // Desktop : déclenche au survol (le délai entre hover et clic est
+    // largement suffisant pour charger les images)
+    card.addEventListener('mouseenter', trigger, { passive: true });
+
+    // Mobile : déclenche au touchstart (le tap dure ~100-200ms, on a
+    // le temps de commencer le téléchargement avant l'ouverture du modal)
+    card.addEventListener('touchstart', trigger, { passive: true });
+
+    // Sécurité : aussi au focus clavier (accessibilité)
+    card.addEventListener('focus', trigger, { passive: true });
+  });
+}
+
+// Expose pour debug / usage externe éventuel
+window._preloadStats = () => ({
+  preloaded: _preloadedImages.size,
+  budget: getPreloadBudget(),
+  connection: navigator.connection ? {
+    effectiveType: navigator.connection.effectiveType,
+    saveData: navigator.connection.saveData,
+    downlink: navigator.connection.downlink,
+  } : 'unavailable'
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -698,6 +830,8 @@ function renderProjects(projects) {
 
   bindCursorHover();
   bindVideoHover();
+  bindCardPreload();    // ← attache les écouteurs hover/touch pour précharger les modals
+  preloadGridImages();  // ← précharge les images des cards selon connexion
 }
 
 function bindVideoHover() {
@@ -1065,4 +1199,39 @@ function initContactSinge() {
 
   // Première apparition après le délai initial
   contactSingeTimers.push(setTimeout(showSinge, CONTACT_SINGE_DELAY_INITIAL));
+
+  /* ============================================================
+   ── HOPIREADER : PRÉCHARGEMENT DES PAGES VOISINES ───────────
+   Le parent ne connaît pas le contenu de l'iframe, mais on lui
+   envoie un signal "preload-neighbors" pour qu'elle précharge
+   N+1 et N+2 dès qu'elle arrive sur la page N.
+   L'iframe doit avoir le listener correspondant côté HopiReader.
+   ============================================================ */
+window.addEventListener('message', (event) => {
+  // Sécurité : on ne répond qu'aux messages d'iframes embarquées
+  // dans une modal de notre site (pas de cross-origin malveillant)
+  const iframe = document.querySelector('.project-modal-reader iframe');
+  if (!iframe || event.source !== iframe.contentWindow) return;
+
+  const data = event.data;
+  if (!data || typeof data !== 'object') return;
+
+  // L'iframe annonce qu'elle est sur la page N (envoyé par HopiReader
+  // à chaque changement de page). On lui demande de précharger N+1 et N+2.
+  if (data.type === 'hopi:page-changed') {
+    iframe.contentWindow.postMessage({
+      type: 'hopi:preload-neighbors',
+      pages: [data.currentPage + 1, data.currentPage + 2]
+    }, '*');
+  }
+
+  // L'iframe annonce qu'elle est prête au démarrage : on lui demande
+  // de précharger les 3 premières pages en plus de la page 0.
+  if (data.type === 'hopi:ready') {
+    iframe.contentWindow.postMessage({
+      type: 'hopi:preload-neighbors',
+      pages: [1, 2, 3]
+    }, '*');
+  }
+});
 }
