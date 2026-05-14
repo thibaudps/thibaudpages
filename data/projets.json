@@ -1,22 +1,58 @@
 {
   "projects": [
     {
-      "titleEn": "Hopi dans son Jardin",
-      "reader": {
-        "url": "public/images/projects/hopi/HopiReader.html",
-        "ratio": 0.7
-      },
+      "titleEn": "Lunawave Retreats Logo",
       "cropZoom": 1.4,
-      "descriptionEn": "An interactive picture book for kids exploring the garden and its little creatures. Each spread invites children to discover a new piece of Hopi's everyday world, in a gentle and welcoming universe.",
+      "descriptionEn": "Visual identity for Lunawave Retreats, a project offering wellness retreats by the water or in the mountains. The logo combines the moon and the wave to evoke natural cycles and serenity.",
       "cropX": 50,
       "cropY": 27,
       "href": "#",
-      "cat": "Edition",
-      "title": "Hopi dans son Jardin",
-      "images": [],
-      "image": "public/images/projects/hopi.webp",
-      "description": "Imagier interactif pour enfants autour du jardin et de ses petits habitants. Chaque double-page invite à explorer un nouvel élément du quotidien d'Hopi, dans un univers doux et accessible.",
-      "year": "2025"
+      "cat": "Identity",
+      "title": "Logo pour Lunawave Retreats",
+      "images": [
+        {
+          "media": "public/images/projects/lunawave.svg"
+        }
+      ],
+      "image": "public/images/projects/lunawave.svg",
+      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau ou à la montagne. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "La Petite Sirène Poster",
+      "cropZoom": 1.4,
+      "descriptionEn": "Poster created for the play 'The Little Mermaid' by Les Ateliers Buissonniers. A visual designed to intrigue passersby and invite them to dive in, both literally and figuratively.",
+      "cropX": 45,
+      "cropY": 80,
+      "href": "#",
+      "cat": "Print",
+      "title": "Affiche de La Petite Sirène",
+      "images": [
+        {
+          "media": "public/images/projects/petitesirene.webp"
+        }
+      ],
+      "image": "public/images/projects/petitesirene.webp",
+      "description": "Affiche réalisée pour le spectacle La Petite Sirène des Ateliers Buissonniers. Un visuel pensé pour intriguer le passant et donner envie de plonger, au sens propre comme au figuré.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Jolan Chappaz Website",
+      "cropZoom": 1.5,
+      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.",
+      "cropX": 50,
+      "cropY": 65,
+      "href": "#",
+      "cat": "Web",
+      "title": "Site web de Jolan Chappaz",
+      "images": [
+        {
+          "media": "public/video/jolan.webm"
+        }
+      ],
+      "image": "public/images/projects/jolan1.webp",
+      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.",
+      "year": "2026"
     },
     {
       "titleEn": "'La Voie de la Savane' Podcast",
@@ -55,6 +91,42 @@
       "year": "2026"
     },
     {
+      "titleEn": "Hopi dans son Jardin",
+      "reader": {
+        "url": "public/images/projects/hopi/HopiReader.html",
+        "ratio": 0.7
+      },
+      "cropZoom": 1.4,
+      "descriptionEn": "An interactive picture book for kids exploring the garden and its little creatures. Each spread invites children to discover a new piece of Hopi's everyday world, in a gentle and welcoming universe.",
+      "cropX": 50,
+      "cropY": 27,
+      "href": "#",
+      "cat": "Edition",
+      "title": "Hopi dans son Jardin",
+      "images": [],
+      "image": "public/images/projects/hopi.webp",
+      "description": "Imagier interactif pour enfants autour du jardin et de ses petits habitants. Chaque double-page invite à explorer un nouvel élément du quotidien d'Hopi, dans un univers doux et accessible.",
+      "year": "2025"
+    },
+    {
+      "titleEn": "Lone Assembly Album Release",
+      "cropZoom": 1.1,
+      "descriptionEn": "Poster for the album release of the band Lone Assembly. A visual designed as a gateway into the project's sonic universe, somewhere between introspection and graphic poetry.",
+      "cropX": 50,
+      "cropY": 12,
+      "href": "#",
+      "cat": "Print",
+      "title": "Affiche pour la sortie d'album de Lone Assembly",
+      "images": [
+        {
+          "media": "public/images/projects/loneassembly.webp"
+        }
+      ],
+      "image": "public/images/projects/loneassembly.webp",
+      "description": "Affiche pour la sortie de l'album \"Knots & Chains\" du groupe Lone Assembly. Un visuel pensé comme une porte d'entrée dans l'univers sonore du projet, à mi-chemin entre l'introspection et la poésie graphique.",
+      "year": "2026"
+    },
+    {
       "titleEn": "Eat Veggies Comic Strip",
       "cropZoom": 1.1,
       "descriptionEn": "Comic strip created for the Dordogne département, advocating for seasonal fruits and vegetables. The idea: deliver the message through humor and storytelling rather than the usual institutional poster.",
@@ -70,6 +142,27 @@
       ],
       "image": "public/images/projects/bdlegumes1.webp",
       "description": "Comic strip réalisé pour le département de la Dordogne, autour de la consommation de fruits et légumes de saison. L'idée : sensibiliser de façon ludique, en passant par le biais de la bande dessinée plutôt que celui de l'affiche institutionnelle.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Easter at Deux Parts et d'Autres",
+      "cropZoom": 1.1,
+      "descriptionEn": "Easter decorations illustrated for the pastry shop 'Deux Parts et d'Autres' in Veigy-Foncenex (74140). A soft and spring-like universe designed to adorn storefronts and complement seasonal treats.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Pâques chez Deux Parts et d'Autres",
+      "images": [
+        {
+          "media": "public/images/projects/deuxparts1.webp"
+        },
+        {
+          "media": "public/images/projects/deuxparts2.webp"
+        }
+      ],
+      "image": "public/images/projects/deuxparts3.webp",
+      "description": "Décor de Pâques illustré pour la pâtisserie Deux Parts et d'Autres à Veigy-Foncenex (74140). Un univers tendre et printanier pensé pour habiller les vitrines et accompagner les gourmandises de saison.",
       "year": "2026"
     },
     {
@@ -124,6 +217,24 @@
       "year": "2025"
     },
     {
+      "titleEn": "Bzopse Background",
+      "cropZoom": 1.1,
+      "descriptionEn": "Stage set for a children's clown show themed around ecology. The challenge: create an immersive environment that interacts with the performer's act and carries the message without ever weighing it down. The illustrations, printed on roll-ups, are unfurled as the show progresses.",
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Décor pour Bzopsé",
+      "images": [
+        {
+          "media": "public/images/projects/filleforet1.webp"
+        }
+      ],
+      "image": "public/images/projects/filleforet2.webp",
+      "description": "Décor de scène pour un spectacle de clown jeune public sur le thème de l'écologie. Le défi : créer un environnement immersif qui dialogue avec le jeu de l'artiste et porte le message sans jamais l'alourdir. Les illustrations, imprimées sur des roll-ups, sont déroulées au fur et à mesure du spectacle.",
+      "year": "2025"
+    },
+    {
       "titleEn": "Children Weekly Planner",
       "cropZoom": 1.1,
       "descriptionEn": "An illustrated weekly planner commissioned to help a child get organized week by week. Designed as a playful, colorful tool where every day has its own atmosphere and something to look forward to.",
@@ -142,61 +253,22 @@
       "year": "2026"
     },
     {
-      "titleEn": "Lone Assembly Album Release",
-      "cropZoom": 1.1,
-      "descriptionEn": "Poster for the album release of the band Lone Assembly. A visual designed as a gateway into the project's sonic universe, somewhere between introspection and graphic poetry.",
-      "cropX": 50,
-      "cropY": 12,
-      "href": "#",
-      "cat": "Print",
-      "title": "Affiche pour la sortie d'album de Lone Assembly",
-      "images": [
-        {
-          "media": "public/images/projects/loneassembly.webp"
-        }
-      ],
-      "image": "public/images/projects/loneassembly.webp",
-      "description": "Affiche pour la sortie de l'album \"Knots & Chains\" du groupe Lone Assembly. Un visuel pensé comme une porte d'entrée dans l'univers sonore du projet, à mi-chemin entre l'introspection et la poésie graphique.",
-      "year": "2026"
-    },
-    {
-      "titleEn": "Easter at Deux Parts et d'Autres",
-      "cropZoom": 1.1,
-      "descriptionEn": "Easter decorations illustrated for the pastry shop 'Deux Parts et d'Autres' in Veigy-Foncenex (74140). A soft and spring-like universe designed to adorn storefronts and complement seasonal treats.",
-      "cropX": 50,
-      "cropY": 50,
+      "titleEn": "English Learning Memory",
+      "cropZoom": 1,
+      "descriptionEn": "Memory game designed to assist with English language learning in kindergarten. Clear and readable illustrations, designed so that word recognition is achieved through the fun of play.",
+      "cropX": 83,
+      "cropY": 23,
       "href": "#",
       "cat": "Illustration",
-      "title": "Pâques chez Deux Parts et d'Autres",
+      "title": "Memory apprentissage anglais",
       "images": [
         {
-          "media": "public/images/projects/deuxparts1.webp"
-        },
-        {
-          "media": "public/images/projects/deuxparts2.webp"
+          "media": "public/images/projects/memory.svg"
         }
       ],
-      "image": "public/images/projects/deuxparts3.webp",
-      "description": "Décor de Pâques illustré pour la pâtisserie Deux Parts et d'Autres à Veigy-Foncenex (74140). Un univers tendre et printanier pensé pour habiller les vitrines et accompagner les gourmandises de saison.",
+      "image": "public/images/projects/memory.svg",
+      "description": "Jeu de memory imaginé pour accompagner l'apprentissage de l'anglais en maternelle. Des illustrations claires et lisibles, pensées pour que la reconnaissance des mots passe par le plaisir du jeu.",
       "year": "2026"
-    },
-    {
-      "titleEn": "Bzopse Background",
-      "cropZoom": 1.1,
-      "descriptionEn": "Stage set for a children's clown show themed around ecology. The challenge: create an immersive environment that interacts with the performer's act and carries the message without ever weighing it down. The illustrations, printed on roll-ups, are unfurled as the show progresses.",
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Illustration",
-      "title": "Décor pour Bzopsé",
-      "images": [
-        {
-          "media": "public/images/projects/filleforet1.webp"
-        }
-      ],
-      "image": "public/images/projects/filleforet2.webp",
-      "description": "Décor de scène pour un spectacle de clown jeune public sur le thème de l'écologie. Le défi : créer un environnement immersif qui dialogue avec le jeu de l'artiste et porte le message sans jamais l'alourdir. Les illustrations, imprimées sur des roll-ups, sont déroulées au fur et à mesure du spectacle.",
-      "year": "2025"
     },
     {
       "titleEn": "La Sargane Identity",
@@ -220,22 +292,22 @@
       "year": "2025"
     },
     {
-      "titleEn": "Lunawave Retreats Logo",
-      "cropZoom": 1.4,
-      "descriptionEn": "Visual identity for Lunawave Retreats, a project offering wellness retreats by the water or in the mountains. The logo combines the moon and the wave to evoke natural cycles and serenity.",
-      "cropX": 50,
-      "cropY": 27,
+      "titleEn": "Forest Retreat",
+      "cropZoom": 1.9,
+      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A forest retreat where silence and filtered light say everything that needs to be said.",
+      "cropX": 52,
+      "cropY": 70,
       "href": "#",
-      "cat": "Identity",
-      "title": "Logo pour Lunawave Retreats",
+      "cat": "Illustration",
+      "title": "Retraite en Forêt",
       "images": [
         {
-          "media": "public/images/projects/lunawave.svg"
+          "media": "public/images/projects/forestretreat.webp"
         }
       ],
-      "image": "public/images/projects/lunawave.svg",
-      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau ou à la montagne. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.",
-      "year": "2026"
+      "image": "public/images/projects/forestretreat.webp",
+      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une retraite en forêt, où le silence et la lumière filtrée se chargent de tout dire.",
+      "year": "2025"
     },
     {
       "titleEn": "Corgi Parade Poster",
@@ -256,22 +328,22 @@
       "year": "2025"
     },
     {
-      "titleEn": "La Petite Sirène Poster",
-      "cropZoom": 1.4,
-      "descriptionEn": "Poster created for the play 'The Little Mermaid' by Les Ateliers Buissonniers. A visual designed to intrigue passersby and invite them to dive in, both literally and figuratively.",
-      "cropX": 45,
-      "cropY": 80,
+      "titleEn": "Chill Froggy",
+      "cropZoom": 1.1,
+      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A frog on a break, lost in thought — a small suspended moment.",
+      "cropX": 50,
+      "cropY": 50,
       "href": "#",
-      "cat": "Print",
-      "title": "Affiche de La Petite Sirène",
+      "cat": "Illustration",
+      "title": "La Balançoire",
       "images": [
         {
-          "media": "public/images/projects/petitesirene.webp"
+          "media": "public/images/projects/chillfroggy.webp"
         }
       ],
-      "image": "public/images/projects/petitesirene.webp",
-      "description": "Affiche réalisée pour le spectacle La Petite Sirène des Ateliers Buissonniers. Un visuel pensé pour intriguer le passant et donner envie de plonger, au sens propre comme au figuré.",
-      "year": "2026"
+      "image": "public/images/projects/chillfroggy2.webp",
+      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une grenouille en pause, perdue dans ses pensées, comme un petit moment suspendu.",
+      "year": "2025"
     },
     {
       "titleEn": "Le Petit Nicolas Poster",
@@ -292,60 +364,6 @@
       "year": "2025"
     },
     {
-      "titleEn": "English Learning Memory",
-      "cropZoom": 1,
-      "descriptionEn": "Memory game designed to assist with English language learning in kindergarten. Clear and readable illustrations, designed so that word recognition is achieved through the fun of play.",
-      "cropX": 83,
-      "cropY": 23,
-      "href": "#",
-      "cat": "Illustration",
-      "title": "Memory apprentissage anglais",
-      "images": [
-        {
-          "media": "public/images/projects/memory.svg"
-        }
-      ],
-      "image": "public/images/projects/memory.svg",
-      "description": "Jeu de memory imaginé pour accompagner l'apprentissage de l'anglais en maternelle. Des illustrations claires et lisibles, pensées pour que la reconnaissance des mots passe par le plaisir du jeu.",
-      "year": "2026"
-    },
-    {
-      "titleEn": "Jolan Chappaz Website",
-      "cropZoom": 1.5,
-      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.",
-      "cropX": 50,
-      "cropY": 65,
-      "href": "#",
-      "cat": "Web",
-      "title": "Site web de Jolan Chappaz",
-      "images": [
-        {
-          "media": "public/video/jolan.webm"
-        }
-      ],
-      "image": "public/images/projects/jolan1.webp",
-      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.",
-      "year": "2026"
-    },
-    {
-      "titleEn": "Chill Froggy",
-      "cropZoom": 1.1,
-      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A frog on a break, lost in thought — a small suspended moment.",
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Illustration",
-      "title": "La Balançoire",
-      "images": [
-        {
-          "media": "public/images/projects/chillfroggy.webp"
-        }
-      ],
-      "image": "public/images/projects/chillfroggy2.webp",
-      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une grenouille en pause, perdue dans ses pensées, comme un petit moment suspendu.",
-      "year": "2025"
-    },
-    {
       "titleEn": "Lake Girl",
       "cropZoom": 1.1,
       "descriptionEn": "Acrylic painting exploring themes of nature and isolation. A silhouette facing the lake, in that peaceful moment where the landscape takes center stage.",
@@ -361,24 +379,6 @@
       ],
       "image": "public/images/projects/filledulac2.webp",
       "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant paisible où le paysage prend toute la place.",
-      "year": "2025"
-    },
-    {
-      "titleEn": "Forest Retreat",
-      "cropZoom": 1.9,
-      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A forest retreat where silence and filtered light say everything that needs to be said.",
-      "cropX": 52,
-      "cropY": 70,
-      "href": "#",
-      "cat": "Illustration",
-      "title": "Retraite en Forêt",
-      "images": [
-        {
-          "media": "public/images/projects/forestretreat.webp"
-        }
-      ],
-      "image": "public/images/projects/forestretreat.webp",
-      "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une retraite en forêt, où le silence et la lumière filtrée se chargent de tout dire.",
       "year": "2025"
     }
   ]
