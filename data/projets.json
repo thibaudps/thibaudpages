@@ -134,7 +134,7 @@
       "title": "Semainier pour enfants",
       "images": [
         {
-          "media": "public/images/projects/semainier2.webp"
+          "media": "/public/images/projects/semainier2.webp"
         }
       ],
       "image": "public/images/projects/semainier.webp",
