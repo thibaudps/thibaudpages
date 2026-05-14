@@ -1229,14 +1229,30 @@ footer {
 
 /* Mobile (≤ 700px) : ajustements généraux */
 @media (max-width: 700px) {
-  nav { padding: 1rem 1.2rem; }
+  /* Padding-right un peu plus généreux pour éviter le crop du bouton FR */
+  nav { padding: 1rem 1.4rem 1rem 1.2rem; }
   .nav-brand { font-size: 13px; gap: 6px; }
   .brand-icon { width: 20px; height: 20px; }
+
+  /* nav-right = bloc liens + bloc icônes. On garde un gap correct
+     ENTRE ce bloc et le brand (géré par justify-content space-between).
+     Le gap ici est entre nav-links et la zone des icônes. */
   .nav-right { gap: 1.2rem; }
   .nav-links { gap: 1rem; font-size: 10px; letter-spacing: 1.5px; }
-  .hero-name { font-size: clamp(38px, 12vw, 80px); padding: 1rem 1.2rem 0.8rem; }
-  .hero-sub { flex-direction: column; padding: 1.2rem; }
-  .hero-desc { text-align: left; max-width: 100%; }
+
+  /* Icônes rondes : taille réduite + gap interne resserré pour gagner
+     de l'espace EN GROUPE (et donc respirer entre brand et nav-right) */
+  .music-btn,
+  .paint-btn,
+  .lang-btn {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .lang-btn { font-size: 9px; }
+  .paint-btn svg,
+  .music-btn svg { width: 13px; height: 13px; }
+
   .filter {
     /* Typo adaptative pour qu'on tienne sur une seule ligne quel que soit
        le viewport mobile. Entre 11px (sur ~320px de large) et 14px (sur
@@ -1250,6 +1266,12 @@ footer {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+
+    /* CENTRAGE mobile : équilibre visuel quand les filtres ne remplissent
+       pas toute la largeur. justify-content fonctionne sur les flex enfants
+       qui ne débordent pas ; si jamais ça déborde, le scroll horizontal
+       prend le relais sans problème. */
+    justify-content: center;
   }
   .filter::-webkit-scrollbar {
     display: none;
@@ -1268,12 +1290,40 @@ footer {
 
 /* Très petit mobile (≤ 480px) : on resserre encore pour que tout tienne */
 @media (max-width: 480px) {
-  nav { padding: 0.9rem 0.8rem; }
+  nav { padding: 0.9rem 1rem 0.9rem 0.8rem; }
   .nav-brand { font-size: 11px; letter-spacing: 0.3px; }
   .brand-icon { width: 18px; height: 18px; }
-  .nav-right { gap: 0.7rem; }
+
+  /* On laisse de l'espace entre nav-links et les icônes (le bloc droit) */
+  .nav-right { gap: 0.9rem; }
   .nav-links { gap: 0.7rem; font-size: 9px; letter-spacing: 1px; }
-  .music-btn, .paint-btn { transform: scale(0.85); }
+
+  /* Icônes : encore plus petites + très resserrées ENTRE ELLES.
+     On utilise width/height plutôt que transform: scale() — ça libère
+     vraiment de la place dans le flex au lieu de seulement réduire la
+     taille visuelle (scale n'affecte pas le layout). */
+  .music-btn,
+  .paint-btn,
+  .lang-btn {
+    width: 24px;
+    height: 24px;
+    transform: none;
+  }
+  .lang-btn { font-size: 8.5px; }
+  .paint-btn svg,
+  .music-btn svg { width: 12px; height: 12px; }
+
+  /* Resserre le groupe d'icônes — les 3 boutons ronds entre eux.
+     Les enfants directs de .nav-right après .nav-links. */
+  .nav-right > .music-btn,
+  .nav-right > .paint-wrap,
+  .nav-right > .lang-btn {
+    margin-left: -0.2rem;  /* rapproche subtilement les icônes entre elles */
+  }
+  .nav-right > .music-btn:first-of-type {
+    margin-left: 0;  /* le premier garde sa distance avec nav-links */
+  }
+
   .filter { top: 59px; }
   /* Séparateur "—" encore plus serré pour les plus petits écrans */
   .filter-item::after {
@@ -1283,10 +1333,17 @@ footer {
 
 /* Petit écran (≤ 360px) : dernière compression */
 @media (max-width: 360px) {
-  nav { padding: 0.8rem 0.6rem; }
+  nav { padding: 0.8rem 0.8rem 0.8rem 0.6rem; }
   .nav-brand { font-size: 10px; }
   .nav-links { gap: 0.5rem; font-size: 8px; letter-spacing: 0.8px; }
-  .nav-right { gap: 0.5rem; }
+  .nav-right { gap: 0.7rem; }
+  .music-btn,
+  .paint-btn,
+  .lang-btn {
+    width: 22px;
+    height: 22px;
+  }
+  .lang-btn { font-size: 8px; }
 }
 
 /* Écrans tactiles (téléphone, tablette) : masque le curseur custom
@@ -1303,16 +1360,19 @@ footer {
   .paint-btn, .music-btn, .paint-tray > *, .about-lang-toggle {
     cursor: pointer !important;
   }
-  /* Sur tactile : pas de :hover → les transform:scale du hover resteraient
-     "collés" après tap. On neutralise donc le scale du hover sur les boutons
-     circulaires de la nav et le bouton lang de la page about, pour qu'ils
-     restent à leur taille de repos. */
-  .paint-btn:hover,
+  /* Sur tactile + petit écran, on s'assure que les icônes ne sont PAS scalées
+   (on utilise désormais width/height pour le redimensionnement). Si l'ancien
+   transform: scale était encore là, il créerait un offset visuel. */
+@media (hover: none) and (pointer: coarse) and (max-width: 480px) {
+  .music-btn,
+  .paint-btn,
+  .lang-btn,
   .music-btn:hover,
-  .lang-btn:hover,
-  .about-lang-toggle:hover {
+  .paint-btn:hover,
+  .lang-btn:hover {
     transform: none;
   }
+}
 }
 
 /* Préserve le scale(0.85) des boutons music/paint sur très petit mobile
