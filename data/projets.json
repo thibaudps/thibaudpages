@@ -39,7 +39,7 @@
     {
       "titleEn": "Jolan Chappaz Website",
       "cropZoom": 1.5,
-      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.",
+      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.\n\nCheck out the website →[ jolanchappaz.ch](<>)",
       "cropX": 50,
       "cropY": 65,
       "href": "#",
@@ -51,7 +51,7 @@
         }
       ],
       "image": "public/images/projects/jolan1.webp",
-      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.",
+      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.\\\nVoir le site →[ jolanchappaz.ch](https://jolanchappaz.ch/)",
       "year": "2026"
     },
     {
