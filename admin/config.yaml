@@ -92,10 +92,18 @@ collections:
                 hint: "Laisser '#' pour ouvrir le modal du site. Sinon, URL externe."
               - label: "Description (FR)"
                 name: "description"
-                widget: "text"
+                widget: "markdown"
+                buttons: ["bold", "italic", "link", "bulleted-list"]
+                editor_components: []
+                modes: ["rich_text"]
+                hint: "Tu peux utiliser **gras**, *italique*, [liens](https://exemple.com), et des listes."
               - label: "Description (EN)"
                 name: "descriptionEn"
-                widget: "text"
+                widget: "markdown"
+                buttons: ["bold", "italic", "link", "bulleted-list"]
+                editor_components: []
+                modes: ["rich_text"]
+                hint: "Use **bold**, *italic*, [links](https://example.com), and lists."
               - label: "Images / vidéos de la galerie"
                 name: "images"
                 widget: "list"
