@@ -184,11 +184,16 @@
       }
       .preview-modal-stage .carousel-slide img,
       .preview-modal-stage .carousel-slide video {
-        width: 100%;
-        height: auto;
-        display: block;
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        display: block !important;
         border-radius: 4px;
         background: var(--card);
+        object-fit: contain;
+      }
+      .preview-modal-stage .carousel-slide {
+        min-height: 200px;
       }
       .preview-modal-stage .project-modal-reader {
         width: 100%;
