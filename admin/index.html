@@ -180,22 +180,25 @@
         width: 100% !important;
       }
       .preview-modal-stage .carousel-track {
-        display: flex !important;
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
         gap: 1rem !important;
-        flex-wrap: wrap !important;
         height: auto !important;
-        min-height: 200px !important;
         overflow: visible !important;
-        align-items: flex-start !important;
         width: 100% !important;
+        transform: none !important;
+        flex-wrap: unset !important;
       }
       .preview-modal-stage .carousel-slide {
-        flex: 1 1 280px !important;
         max-width: 100% !important;
-        min-width: 200px !important;
         height: auto !important;
         overflow: visible !important;
         display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        position: static !important;
+        flex: unset !important;
       }
       .preview-modal-stage .carousel-slide img,
       .preview-modal-stage .carousel-slide video {
