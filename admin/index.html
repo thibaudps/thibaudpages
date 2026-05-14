@@ -270,22 +270,17 @@
       resolveImage: function(path) {
         if (!path || typeof path !== 'string' || path.trim() === '') return null;
         var clean = path.trim();
-        // URL absolue : on garde tel quel
         if (/^https?:\/\//.test(clean)) return clean;
-        // Normalise : si le chemin ne commence pas par /, on l'ajoute
-        // (le JSON stocke "public/images/..." sans slash initial, mais
-        //  pour résoudre depuis la racine du site il faut "/public/images/...")
         if (!clean.startsWith('/')) clean = '/' + clean;
-        // Essaie de récupérer un blob URL si c'est un upload récent non committé
         var asset = this.props.getAsset(clean);
         var assetUrl = asset ? asset.toString() : null;
-        // Si getAsset retourne quelque chose d'utilisable (blob: ou data:), on l'utilise
         if (assetUrl && (assetUrl.startsWith('blob:') || assetUrl.startsWith('data:'))) {
+          console.log('[preview] resolved (upload):', path, '→', assetUrl.substring(0, 50) + '...');
           return assetUrl;
         }
-        // Sinon, on utilise le chemin absolu depuis la racine du site
-        // En préfixant par l'origin du site (thibaudpages.com) pour bypass l'iframe Decap
-        return window.parent.location.origin + clean;
+        var final = window.parent.location.origin + clean;
+        console.log('[preview] resolved (site):', path, '→', final);
+        return final;
       },
 
       renderMedia: function(src, alt, options) {
