@@ -365,7 +365,18 @@ function Book({ book }) {
 
   const onFlipDone = useCallback(() => {
     const f = flippingRef.current;
-    if (f) { setIdx(f.toIdx); setFlipping(null); }
+    if (f) {
+      setIdx(f.toIdx);
+      setFlipping(null);
+      // Notifie le parent (portfolio) pour qu'il déclenche le préchargement
+      // des spreads voisins. f.toIdx est l'index du NOUVEAU spread courant.
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'hopi:page-changed',
+          currentPage: f.toIdx
+        }, '*');
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -373,6 +384,50 @@ function Book({ book }) {
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [goForward, goBack]);
+
+  // ─── Communication parent (portfolio) : préchargement des pages voisines ─
+  useEffect(() => {
+    // 1. Annonce qu'on est prêt → le parent va répondre avec les pages
+    //    à précharger en priorité (typiquement les 3 premiers spreads).
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'hopi:ready' }, '*');
+    }
+
+    // 2. Écoute les demandes de préchargement venues du parent.
+    //    Le parent envoie { type: 'hopi:preload-neighbors', pages: [...] }
+    //    où chaque "page" est un index de spread à précharger.
+    const onMessage = (event) => {
+      const data = event.data;
+      if (!data || data.type !== 'hopi:preload-neighbors') return;
+      if (!Array.isArray(data.pages)) return;
+
+      data.pages.forEach(spreadIdx => {
+        // Garde-fou : index valide ?
+        if (spreadIdx < 0 || spreadIdx >= spreads.length) return;
+        const s = spreads[spreadIdx];
+        if (!s) return;
+
+        // Selon le type de spread, on précharge 1 ou 2 images
+        const sources = [];
+        if (s.kind === 'cover' || s.kind === 'back') {
+          if (s.page && s.page.src) sources.push(s.page.src);
+        } else if (s.kind === 'spread') {
+          if (s.left  && s.left.src)  sources.push(s.left.src);
+          if (s.right && s.right.src) sources.push(s.right.src);
+        }
+
+        // Précharge via new Image() — les images iront dans le cache navigateur
+        sources.forEach(src => {
+          const img = new Image();
+          img.decoding = 'async';
+          img.src = src;
+        });
+      });
+    };
+
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [spreads]);
 
   const displaySpread = flipping ? spreads[flipping.fromIdx] : cur;
   const toSpread = flipping ? spreads[flipping.toIdx] : null;
