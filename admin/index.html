@@ -481,7 +481,59 @@
               )
         );
       }
+      
     });
+
+// ════════════════════════════════════════════════════════════
+    //  VALIDATION DE LA TAILLE DES MÉDIAS UPLOADÉS
+    //  Images : 2 Mo max | Vidéos : 5 Mo max
+    // ════════════════════════════════════════════════════════════
+    var MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 Mo
+    var MAX_VIDEO_SIZE = 5 * 1024 * 1024; // 5 Mo
+
+    CMS.registerEventListener({
+      name: 'preSave',
+      handler: function(props) {
+        // Ce handler ne fait rien de spécial sur preSave, c'est un placeholder.
+        // La vraie validation se fait via un listener sur l'input file.
+      }
+    });
+
+    // Intercepte tous les inputs de type file dans Decap pour valider la taille
+    function attachSizeValidation() {
+      document.addEventListener('change', function(e) {
+        var input = e.target;
+        if (input.tagName !== 'INPUT' || input.type !== 'file') return;
+        if (!input.files || input.files.length === 0) return;
+
+        var rejected = [];
+        for (var i = 0; i < input.files.length; i++) {
+          var file = input.files[i];
+          var isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(file.name);
+          var maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
+          var maxLabel = isVideo ? '5 Mo' : '2 Mo';
+          if (file.size > maxSize) {
+            var actualSize = (file.size / 1024 / 1024).toFixed(2);
+            rejected.push(file.name + ' (' + actualSize + ' Mo > ' + maxLabel + ')');
+          }
+        }
+
+        if (rejected.length > 0) {
+          alert(
+            '❌ Fichier(s) trop volumineux, upload annulé :\n\n' +
+            rejected.join('\n') +
+            '\n\nLimites : 2 Mo pour les images, 5 Mo pour les vidéos.\n' +
+            'Astuce : compresse avec squoosh.app (images) ou handbrake (vidéos).'
+          );
+          // Reset l'input pour empêcher l'upload
+          input.value = '';
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, true);
+    }
+
+    attachSizeValidation();
 
     CMS.registerPreviewTemplate('projets-list', ProjectPreview);
 
