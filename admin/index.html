@@ -16,29 +16,32 @@
 
   <script>
   /* ════════════════════════════════════════════════════════════
-     PREVIEW PERSONNALISÉ POUR LA COLLECTION "PROJETS" — v3
-     - Wrappé dans window.onload pour s'assurer que CMS est chargé
-     - Sélection du projet via dropdown
-     - Curseur natif visible dans la preview
-     - Modal correctement isolée du contenu du site
+     PREVIEW PERSONNALISÉ — v4 (fix CSS inline avec raw: true)
      ════════════════════════════════════════════════════════════ */
 
-  // Attend que decap-cms.js soit complètement chargé avant d'exécuter
   window.addEventListener('load', function() {
 
     if (typeof CMS === 'undefined') {
-      console.error('CMS not loaded after window.load — preview template not registered');
+      console.error('CMS not loaded — preview template not registered');
       return;
     }
 
-    // Charge le style du site dans l'iframe de preview pour rendu fidèle
+    // Charge le style du site dans l'iframe de preview (URL → pas de raw)
     CMS.registerPreviewStyle('/style.css');
 
-    // Style additionnel spécifique à la preview
+    // Style additionnel spécifique à la preview — IMPORTANT : { raw: true } pour CSS inline
     CMS.registerPreviewStyle(`
-      html, body, * { cursor: auto !important; }
-      a, button, [role="button"], select { cursor: pointer !important; }
-      #cursor { display: none !important; }
+      html, body { cursor: default !important; }
+      html *, body * { cursor: inherit !important; }
+      a, button, [role="button"], select,
+      .preview-view-toggle button,
+      .preview-theme-toggle button {
+        cursor: pointer !important;
+      }
+      #cursor, [id="cursor"] {
+        display: none !important;
+        visibility: hidden !important;
+      }
 
       .preview-controls {
         display: flex;
@@ -87,7 +90,6 @@
         text-transform: uppercase;
         padding: 6px 14px;
         border-radius: 999px;
-        cursor: pointer;
         transition: background 0.2s, color 0.2s;
       }
       .preview-view-toggle button.active {
@@ -103,7 +105,6 @@
         height: 22px;
         border-radius: 50%;
         border: 1.5px solid var(--border);
-        cursor: pointer;
         padding: 0;
         transition: transform 0.2s, border-color 0.2s;
       }
@@ -219,9 +220,8 @@
         font-family: 'Outfit', sans-serif;
         font-size: 13px;
       }
-    `);
+    `, { raw: true });
 
-    // ── Palettes ─────────────────────────────────────────────
     var PREVIEW_THEMES = {
       'Crème':  { swatch: '#FFFDF2', bg: '#FFFDF2', fg: '#2A2A24', border: '#D8D0C0', mid: '#8A8678', card: '#EDE8DC' },
       'Encre':  { swatch: '#2A2A24', bg: '#2A2A24', fg: '#F5F0E8', border: '#444438', mid: '#9A9A88', card: '#3A3A30' },
@@ -443,7 +443,7 @@
 
     CMS.registerPreviewTemplate('projets-list', ProjectPreview);
 
-  }); // fin de window.addEventListener('load', ...)
+  });
   </script>
 </body>
 </html>
