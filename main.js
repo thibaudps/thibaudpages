@@ -212,6 +212,57 @@ function initLangButton() {
   });
 }
 
+// ──────────────────────────────────────────────────────────────
+//  Mini converter Markdown → HTML
+//  Gère : **gras**, *italique*, [texte](url), - listes, \n\n paragraphes
+//  Échappe les autres caractères pour éviter les injections HTML
+// ──────────────────────────────────────────────────────────────
+function escapeHTML(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function mdToHTML(md) {
+  if (!md || typeof md !== 'string') return '';
+  var html = escapeHTML(md);
+
+  // Liens : [texte](url) — on doit ré-déséchapper les URLs
+  html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(_, txt, url) {
+    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + txt + '</a>';
+  });
+
+  // Gras : **texte**
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Italique : *texte* (mais pas s'il y a déjà été matché par gras — regex sûre)
+  html = html.replace(/(?:^|[^*])\*([^*\n]+)\*(?!\*)/g, function(match, content) {
+    var prefix = match.startsWith('*') ? '' : match[0];
+    return prefix + '<em>' + content + '</em>';
+  });
+
+  // Listes : lignes qui commencent par "- "
+  html = html.replace(/(?:^|\n)(- .+(?:\n- .+)*)/g, function(_, block) {
+    var items = block.trim().split('\n').map(function(line) {
+      return '<li>' + line.replace(/^- /, '') + '</li>';
+    }).join('');
+    return '\n<ul>' + items + '</ul>';
+  });
+
+  // Paragraphes : doubles sauts de ligne
+  html = html.split(/\n\n+/).map(function(para) {
+    para = para.trim();
+    if (!para) return '';
+    if (para.startsWith('<ul>') || para.startsWith('<ol>')) return para;
+    // Single line breaks → <br>
+    return '<p>' + para.replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+
+  return html;
+}
 
 // ════════════════════════════════════════════════════════════
 // CHARGEMENT DES PROJETS DEPUIS LE CMS (data/projets.json)
@@ -909,7 +960,7 @@ function openProjectModal(projectIndex, sourceCard) {
   const cat = t('filter.' + project.cat);
   const desc = localized(details, 'description');
 
-  const descBlock = desc ? `<p class="project-modal-description">${desc}</p>` : '';
+  const descBlock = desc ? `<div class="project-modal-description">${mdToHTML(desc)}</div>` : '';
 
   // Si le projet a un "reader" (lecteur de livre interactif), on l'affiche
   // dans une iframe à la place de la galerie d'images classique.

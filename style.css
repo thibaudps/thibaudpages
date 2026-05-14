@@ -1434,3 +1434,37 @@ footer {
 /* Côté droit du A — rapproche la lettre suivante du A */
 .kern-au { margin-right: -0.04em; }  /* A → U */
 .kern-ag { margin-right: -0.04em; }  /* A → G */
+
+/* ════════════════════════════════════════════════════════════
+   Markdown formatting dans les descriptions de projets
+   (liens, gras, italique, listes, paragraphes)
+   ════════════════════════════════════════════════════════════ */
+.project-modal-description a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+.project-modal-description a:hover {
+  opacity: 0.6;
+}
+.project-modal-description strong {
+  font-weight: 600;
+}
+.project-modal-description em {
+  font-style: italic;
+}
+.project-modal-description ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+  padding: 0;
+}
+.project-modal-description ul li {
+  margin-bottom: 0.3rem;
+}
+.project-modal-description p {
+  margin: 0 0 1rem 0;
+}
+.project-modal-description p:last-child {
+  margin-bottom: 0;
+}
