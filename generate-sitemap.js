@@ -15,10 +15,12 @@ const today = new Date().toISOString().split('T')[0];
 
 // Pages fixes
 const pages = [
-  { loc: '/',              priority: '1.0' },
-  { loc: '/projets.html',  priority: '0.9', withImages: true },
-  { loc: '/about.html',    priority: '0.7' },
-  { loc: '/contact.html',  priority: '0.5' },
+  { loc: '/',                       priority: '1.0' },
+  { loc: '/projets.html',           priority: '0.9', withImages: true },
+  { loc: '/about.html',             priority: '0.7' },
+  { loc: '/contact.html',           priority: '0.5' },
+  { loc: '/mentions-legales.html',  priority: '0.3' },
+  { loc: '/confidentialite.html',   priority: '0.3' },
 ];
 
 // Lit les projets pour le sitemap-image

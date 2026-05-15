@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO de base ─────────────────────────────────────── -->
+  <title>Mentions légales — Thibaud Pagès</title>
+  <meta name="description" content="Mentions légales du site thibaudpages.com — Thibaud Pagès, graphiste et illustrateur indépendant.">
+  <meta name="author" content="Thibaud Pagès">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://thibaudpages.com/mentions-legales.html">
+
+  <!-- ── Favicon ──────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" href="/public/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/public/images/favicon.svg">
+
+  <!-- ── Fonts ────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-legal.css">
+</head>
+<body class="page-legal">
+
+  <div id="cursor">
+    <div id="cursor-eye">
+      <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+        <path d="M500,195.054c255.894,0 463.648,272.903 463.648,304.946c0,32.043 -207.754,304.946 -463.648,304.946c-255.894,0 -463.648,-267.978 -463.648,-304.946c-0,-36.968 207.754,-304.946 463.648,-304.946Zm-0,69.032c-130.204,0 -235.914,105.71 -235.914,235.914c0,130.204 105.71,235.914 235.914,235.914c130.204,0 235.914,-105.71 235.914,-235.914c0,-130.204 -105.71,-235.914 -235.914,-235.914Z"/>
+        <path transform="translate(-75 -75) scale(1.15)" d="M500,372.043c70.621,0 127.957,57.336 127.957,127.957c0,70.621 -57.336,127.957 -127.957,127.957c-70.621,0 -127.957,-57.336 -127.957,-127.957c0,-70.621 57.336,-127.957 127.957,-127.957Zm43.656,40.645c-24.094,0 -43.656,19.562 -43.656,43.656c0,24.094 19.562,43.656 43.656,43.656c24.094,0 43.656,-19.562 43.656,-43.656c0,-24.094 -19.562,-43.656 -43.656,-43.656Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-brand">
+      <a href="index.html">
+        <span class="brand-full"></span>
+        <span class="brand-suffix" id="brand-suffix"></span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links" id="nav-links"></div>
+      <button class="music-btn" id="music-btn" type="button" title="Lancer la musique" aria-label="Lecture musique">
+        <svg class="music-icon-play" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0v13l11-6.5L0 0z"/>
+        </svg>
+        <svg class="music-icon-pause" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="3.5" height="13"/>
+          <rect x="7.5" y="0" width="3.5" height="13"/>
+        </svg>
+      </button>
+      <audio id="music-audio" preload="metadata"></audio>
+      <div class="paint-wrap" id="paint-wrap">
+        <div class="paint-btn" id="paint-btn" title="Changer la palette">
+          <svg width="15" height="15" viewBox="0 0 500 500" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M396.507,176.54c0.509,0.284 1.019,0.569 1.528,0.853c14.492,-11.26 14.63,-10.693 34.869,-24.479c29.775,-20.283 33.645,-9.199 58.465,16.505c16.843,17.442 -11.639,37.6 -14.438,40.405c-115.352,115.621 -116.97,115.778 -118.924,114.079c-3.779,-3.285 -181.087,-180.854 -181.336,-181.108c-3.478,-3.531 -2.037,-5.833 89.755,-97.393c35.868,-35.777 44.013,-60.226 78.303,-22.607c14.512,15.921 -6.458,33.301 4.835,27.76c18.315,-8.985 20.585,-3.128 74.841,51.859c23.565,23.882 -26.55,58.513 -27.899,74.126Z"/>
+            <path d="M3.336,436.712c-6.534,-41.746 37.338,-56.766 136.628,-124.186c43.813,-29.75 -19.471,-76.417 -30.458,-87.821c-14.687,-15.243 21.624,-44.32 35.419,-57.804c4.297,-4.2 8.571,1.729 9.337,2.475c14.417,14.062 132.367,129.108 177.963,178.047c3.011,3.232 4.299,6.605 -35.502,42.294c-18.154,16.279 -50.805,-30.685 -60.72,-38.02c-45.26,-33.483 -65.499,43.758 -125.805,121.998c-18.063,23.434 -95.931,32.851 -106.861,-36.984Zm75.736,-20.256c34.74,43.248 -39.857,56.317 -37.904,18.138c1.88,-36.735 30.923,-26.829 37.904,-18.138Z"/>
+          </svg>
+        </div>
+        <div class="paint-tray" id="paint-tray"></div>
+      </div>
+      <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language">EN</button>
+    </div>
+  </nav>
+  <div class="music-label" id="music-label" aria-live="polite"></div>
+
+  <main id="page-content" class="legal-main">
+    <article class="legal-content">
+      <header class="legal-header">
+        <h1 class="legal-title">Mentions légales</h1>
+        <p class="legal-updated">Dernière mise à jour&nbsp;: 15 mai 2026</p>
+      </header>
+
+      <section class="legal-section">
+        <h2>Éditeur du site</h2>
+        <p>Le présent site <a href="https://thibaudpages.com">thibaudpages.com</a> est édité par&nbsp;:</p>
+        <ul class="legal-list">
+          <li><strong>Thibaud Pagès</strong>, entrepreneur individuel exerçant sous la dénomination <em>Thibaud Pagès Designs</em></li>
+          <li>Adresse&nbsp;: 127 Impasse des Capucines, 01280 Prévessin-Moëns, France</li>
+          <li>Email&nbsp;: <a href="mailto:thibaudpages@yahoo.fr">thibaudpages@yahoo.fr</a></li>
+          <li>SIRET&nbsp;: 534 798 897 00029</li>
+          <li>Activité&nbsp;: design graphique et illustration</li>
+          <li>Date de création de l'activité&nbsp;: début 2025</li>
+          <li>TVA non applicable, article 293 B du Code général des impôts (franchise en base de TVA)</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>Directeur de la publication</h2>
+        <p>Thibaud Pagès, en qualité d'éditeur du site.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Hébergement</h2>
+        <p>Le site est hébergé par&nbsp;:</p>
+        <ul class="legal-list">
+          <li><strong>Netlify, Inc.</strong></li>
+          <li>512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis</li>
+          <li>Site&nbsp;: <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">www.netlify.com</a></li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>Propriété intellectuelle</h2>
+        <p>L'ensemble des contenus du site (textes, illustrations, photographies, vidéos, identités visuelles, graphismes, logos, code source et structure) est la propriété exclusive de Thibaud Pagès, sauf mention contraire explicite, et est protégé par le droit d'auteur français et international.</p>
+        <p>Toute reproduction, représentation, modification, publication, adaptation ou exploitation, totale ou partielle, des éléments du site, par quelque procédé que ce soit et sur quelque support que ce soit, est interdite sans autorisation écrite préalable de Thibaud Pagès, sauf exceptions prévues par l'article L.122-5 du Code de la propriété intellectuelle.</p>
+        <p>Les projets présentés dans le portfolio sont la propriété de leurs commanditaires respectifs et sont diffusés ici à titre de référence avec leur accord, sauf indication contraire.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Liens hypertextes</h2>
+        <p>Le site peut contenir des liens vers des sites tiers. Thibaud Pagès n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu, leurs politiques de confidentialité ou leurs pratiques.</p>
+        <p>La création de liens hypertextes vers le site thibaudpages.com est libre, sous réserve de ne pas porter atteinte aux intérêts de Thibaud Pagès et de mentionner clairement la source.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Responsabilité</h2>
+        <p>Thibaud Pagès s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site, mais ne peut garantir l'absence d'erreurs ou d'omissions. L'utilisateur reconnaît utiliser ces informations sous sa seule responsabilité.</p>
+        <p>Thibaud Pagès ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès au site ou de son utilisation, y compris en cas d'indisponibilité temporaire.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Droit applicable</h2>
+        <p>Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Données personnelles</h2>
+        <p>Pour toute information relative à la collecte et au traitement de vos données personnelles, veuillez consulter notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+      </section>
+    </article>
+
+    <footer>
+      <span id="footer-location"></span>
+      <a id="footer-url" target="_blank" rel="noopener"></a>
+    </footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+  <script src="home.js"></script>
+  <script src="pjax.js"></script>
+</body>
+</html>

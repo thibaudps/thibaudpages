@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO de base ─────────────────────────────────────── -->
+  <title>Politique de confidentialité — Thibaud Pagès</title>
+  <meta name="description" content="Politique de confidentialité du site thibaudpages.com — Comment Thibaud Pagès traite vos données personnelles, conformément au RGPD.">
+  <meta name="author" content="Thibaud Pagès">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://thibaudpages.com/confidentialite.html">
+
+  <!-- ── Favicon ──────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" href="/public/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/public/images/favicon.svg">
+
+  <!-- ── Fonts ────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-legal.css">
+</head>
+<body class="page-legal">
+
+  <div id="cursor">
+    <div id="cursor-eye">
+      <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+        <path d="M500,195.054c255.894,0 463.648,272.903 463.648,304.946c0,32.043 -207.754,304.946 -463.648,304.946c-255.894,0 -463.648,-267.978 -463.648,-304.946c-0,-36.968 207.754,-304.946 463.648,-304.946Zm-0,69.032c-130.204,0 -235.914,105.71 -235.914,235.914c0,130.204 105.71,235.914 235.914,235.914c130.204,0 235.914,-105.71 235.914,-235.914c0,-130.204 -105.71,-235.914 -235.914,-235.914Z"/>
+        <path transform="translate(-75 -75) scale(1.15)" d="M500,372.043c70.621,0 127.957,57.336 127.957,127.957c0,70.621 -57.336,127.957 -127.957,127.957c-70.621,0 -127.957,-57.336 -127.957,-127.957c0,-70.621 57.336,-127.957 127.957,-127.957Zm43.656,40.645c-24.094,0 -43.656,19.562 -43.656,43.656c0,24.094 19.562,43.656 43.656,43.656c24.094,0 43.656,-19.562 43.656,-43.656c0,-24.094 -19.562,-43.656 -43.656,-43.656Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-brand">
+      <a href="index.html">
+        <span class="brand-full"></span>
+        <span class="brand-suffix" id="brand-suffix"></span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links" id="nav-links"></div>
+      <button class="music-btn" id="music-btn" type="button" title="Lancer la musique" aria-label="Lecture musique">
+        <svg class="music-icon-play" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0v13l11-6.5L0 0z"/>
+        </svg>
+        <svg class="music-icon-pause" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="3.5" height="13"/>
+          <rect x="7.5" y="0" width="3.5" height="13"/>
+        </svg>
+      </button>
+      <audio id="music-audio" preload="metadata"></audio>
+      <div class="paint-wrap" id="paint-wrap">
+        <div class="paint-btn" id="paint-btn" title="Changer la palette">
+          <svg width="15" height="15" viewBox="0 0 500 500" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M396.507,176.54c0.509,0.284 1.019,0.569 1.528,0.853c14.492,-11.26 14.63,-10.693 34.869,-24.479c29.775,-20.283 33.645,-9.199 58.465,16.505c16.843,17.442 -11.639,37.6 -14.438,40.405c-115.352,115.621 -116.97,115.778 -118.924,114.079c-3.779,-3.285 -181.087,-180.854 -181.336,-181.108c-3.478,-3.531 -2.037,-5.833 89.755,-97.393c35.868,-35.777 44.013,-60.226 78.303,-22.607c14.512,15.921 -6.458,33.301 4.835,27.76c18.315,-8.985 20.585,-3.128 74.841,51.859c23.565,23.882 -26.55,58.513 -27.899,74.126Z"/>
+            <path d="M3.336,436.712c-6.534,-41.746 37.338,-56.766 136.628,-124.186c43.813,-29.75 -19.471,-76.417 -30.458,-87.821c-14.687,-15.243 21.624,-44.32 35.419,-57.804c4.297,-4.2 8.571,1.729 9.337,2.475c14.417,14.062 132.367,129.108 177.963,178.047c3.011,3.232 4.299,6.605 -35.502,42.294c-18.154,16.279 -50.805,-30.685 -60.72,-38.02c-45.26,-33.483 -65.499,43.758 -125.805,121.998c-18.063,23.434 -95.931,32.851 -106.861,-36.984Zm75.736,-20.256c34.74,43.248 -39.857,56.317 -37.904,18.138c1.88,-36.735 30.923,-26.829 37.904,-18.138Z"/>
+          </svg>
+        </div>
+        <div class="paint-tray" id="paint-tray"></div>
+      </div>
+      <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language">EN</button>
+    </div>
+  </nav>
+  <div class="music-label" id="music-label" aria-live="polite"></div>
+
+  <main id="page-content" class="legal-main">
+    <article class="legal-content">
+      <header class="legal-header">
+        <h1 class="legal-title">Politique de confidentialité</h1>
+        <p class="legal-updated">Dernière mise à jour&nbsp;: 15 mai 2026</p>
+      </header>
+
+      <section class="legal-section">
+        <h2>Préambule</h2>
+        <p>La présente politique de confidentialité décrit la manière dont Thibaud Pagès (ci-après «&nbsp;le responsable de traitement&nbsp;») collecte, utilise et protège les données personnelles des visiteurs et utilisateurs du site <a href="https://thibaudpages.com">thibaudpages.com</a>, conformément au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679) et à la loi française «&nbsp;Informatique et Libertés&nbsp;» modifiée.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Responsable de traitement</h2>
+        <p>Thibaud Pagès, entrepreneur individuel<br>
+        127 Impasse des Capucines, 01280 Prévessin-Moëns, France<br>
+        Email&nbsp;: <a href="mailto:thibaudpages@yahoo.fr">thibaudpages@yahoo.fr</a><br>
+        SIRET&nbsp;: 534 798 897 00029</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Données collectées</h2>
+        <p>Le site thibaudpages.com ne collecte aucune donnée personnelle de manière automatique. Aucun outil d'analyse d'audience, aucun traceur publicitaire et aucun cookie tiers ne sont utilisés.</p>
+        <p>Des données personnelles peuvent toutefois être collectées dans le cadre suivant&nbsp;:</p>
+        <ul class="legal-list">
+          <li><strong>Contact par email</strong>&nbsp;: lorsque vous écrivez à l'adresse <a href="mailto:thibaudpages@yahoo.fr">thibaudpages@yahoo.fr</a>, vous transmettez votre nom, votre adresse email et le contenu de votre message. Ces données sont utilisées exclusivement pour répondre à votre demande.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>Finalités et base légale du traitement</h2>
+        <p>Les données collectées sont traitées pour les finalités suivantes&nbsp;:</p>
+        <ul class="legal-list">
+          <li>Répondre aux demandes de contact, de devis ou de collaboration (base légale&nbsp;: exécution de mesures précontractuelles à la demande de la personne concernée, article 6.1.b du RGPD)</li>
+          <li>Assurer le suivi de la relation commerciale avec les clients (base légale&nbsp;: exécution du contrat)</li>
+          <li>Respecter les obligations légales et comptables (base légale&nbsp;: obligation légale)</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>Destinataires des données</h2>
+        <p>Les données personnelles collectées sont destinées exclusivement à Thibaud Pagès. Elles ne sont ni vendues, ni louées, ni cédées à des tiers.</p>
+        <p>Le site est hébergé par Netlify, Inc. (États-Unis). Aucune donnée personnelle n'est traitée activement par l'hébergeur, mais des journaux techniques (logs serveur) peuvent contenir temporairement des adresses IP à des fins de sécurité. Ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne.</p>
+        <p>Le service de messagerie email Yahoo Mail (Yahoo Inc.) intervient en qualité de prestataire technique pour la réception et le stockage des emails échangés.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Durée de conservation</h2>
+        <p>Les données collectées sont conservées pour les durées suivantes&nbsp;:</p>
+        <ul class="legal-list">
+          <li><strong>Demandes de contact n'ayant pas abouti à une collaboration</strong>&nbsp;: 3 ans à compter du dernier échange</li>
+          <li><strong>Données liées à une relation commerciale</strong>&nbsp;: durée de la relation commerciale, puis archivage selon les obligations légales (notamment 10 ans pour les pièces comptables)</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>Cookies et traceurs</h2>
+        <p>Le site thibaudpages.com n'utilise <strong>aucun cookie</strong> de mesure d'audience, de publicité ou de profilage. Aucun bandeau de consentement n'est donc requis.</p>
+        <p>Seul le navigateur peut utiliser un stockage technique local (localStorage) pour mémoriser certaines préférences d'affichage choisies par le visiteur (palette de couleurs, langue). Ces informations restent strictement sur l'appareil du visiteur et ne sont jamais transmises à Thibaud Pagès ni à un tiers.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Vos droits</h2>
+        <p>Conformément au RGPD et à la loi «&nbsp;Informatique et Libertés&nbsp;», vous disposez des droits suivants sur vos données personnelles&nbsp;:</p>
+        <ul class="legal-list">
+          <li><strong>Droit d'accès</strong>&nbsp;: obtenir la confirmation que vos données sont traitées et en recevoir une copie</li>
+          <li><strong>Droit de rectification</strong>&nbsp;: demander la correction de données inexactes ou incomplètes</li>
+          <li><strong>Droit à l'effacement</strong>&nbsp;: demander la suppression de vos données (sous réserve des obligations légales de conservation)</li>
+          <li><strong>Droit à la limitation</strong>&nbsp;: demander la suspension temporaire du traitement</li>
+          <li><strong>Droit à la portabilité</strong>&nbsp;: récupérer vos données dans un format structuré et lisible par machine</li>
+          <li><strong>Droit d'opposition</strong>&nbsp;: vous opposer au traitement pour des raisons tenant à votre situation particulière</li>
+        </ul>
+        <p>Pour exercer ces droits, vous pouvez envoyer un email à <a href="mailto:thibaudpages@yahoo.fr">thibaudpages@yahoo.fr</a> en précisant l'objet de votre demande et en joignant un justificatif d'identité si nécessaire. Une réponse vous sera apportée dans un délai maximum d'un mois.</p>
+        <p>Vous disposez également du droit d'introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL), 3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, ou via le site <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Sécurité</h2>
+        <p>Thibaud Pagès met en œuvre des mesures techniques et organisationnelles adaptées pour protéger vos données personnelles contre la perte, l'accès non autorisé, la divulgation ou l'altération. Le site est servi en HTTPS (chiffrement TLS).</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>Modifications</h2>
+        <p>La présente politique de confidentialité peut être amenée à évoluer. La date de dernière mise à jour figurant en tête du document permet d'identifier la version en vigueur. Toute modification substantielle sera signalée de manière visible sur le site.</p>
+      </section>
+    </article>
+
+    <footer>
+      <span id="footer-location"></span>
+      <a id="footer-url" target="_blank" rel="noopener"></a>
+    </footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+  <script src="home.js"></script>
+  <script src="pjax.js"></script>
+</body>
+</html>
