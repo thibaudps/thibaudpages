@@ -62,9 +62,12 @@ function initHomeTitle(skipEntryAnimation = false) {
   const kernedName = (typeof window.applyManualKerning === 'function')
     ? window.applyManualKerning('Thibaud Pagès')
     : 'Thibaud Pagès';
+  const subtitle = (typeof window.t === 'function')
+    ? window.t('home.sub')
+    : 'Design & Illustration';
   homeName.innerHTML = `
     <div class="main-name">${kernedName}</div>
-    <div class="sub-name">Design & Illustration</div>
+    <div class="sub-name">${subtitle}</div>
   `;
 
   // Reset des styles inline qui pourraient rester d'une animation précédente

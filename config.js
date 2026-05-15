@@ -8,7 +8,8 @@ const CONFIG = {
   // ── Identité ──────────────────────────────────────────────
   name: 'THIBAUD PAGÈS',
   nameShort: "TPD",
-  tagline: "Design graphique & Illustration",
+  tagline: "Graphisme & Illustration",
+taglineEn: "Design & Illustration",
   description: "Je travaille avec des structures culturelles et associatives en France et en Suisse romande.",
   ctaLabel: "Voir les projets",
   url: "thibaudpages.com",

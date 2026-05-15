@@ -69,7 +69,7 @@ const I18N = {
     'lang.toggle': 'FR',
     'lang.htmlAttr': 'en',
     // Meta SEO par page
-    'meta.index.title': 'Thibaud Pagès — Designer & illustrator',
+    'meta.index.title': 'Thibaud Pagès — Design & illustration',
     'meta.index.description': 'Portfolio of Thibaud Pagès, graphic designer and illustrator based in the Lake Geneva basin.',
     'meta.projets.title': 'Projects — Thibaud Pagès',
     'meta.projets.description': 'Graphic design and illustration projects by Thibaud Pagès.',
