@@ -1046,9 +1046,12 @@ function openProjectModal(projectIndex, sourceCard) {
   // dans une iframe à la place de la galerie d'images classique.
   if (details.reader) {
     inner.innerHTML = `
-      <div class="project-modal-cat">${cat}</div>
+      <div class="project-modal-meta">
+        <span class="project-modal-cat">${cat}</span>
+        <span class="project-modal-meta-sep">—</span>
+        <span class="project-modal-year">${project.year}</span>
+      </div>
       <h2 class="project-modal-title">${title}</h2>
-      <div class="project-modal-year">${project.year}</div>
       ${descBlock}
       <div class="project-modal-reader">
         <iframe src="${details.reader}" title="${title}" allowfullscreen></iframe>
@@ -1056,9 +1059,12 @@ function openProjectModal(projectIndex, sourceCard) {
     `;
   } else {
     inner.innerHTML = `
-      <div class="project-modal-cat">${cat}</div>
+      <div class="project-modal-meta">
+        <span class="project-modal-cat">${cat}</span>
+        <span class="project-modal-meta-sep">—</span>
+        <span class="project-modal-year">${project.year}</span>
+      </div>
       <h2 class="project-modal-title">${title}</h2>
-      <div class="project-modal-year">${project.year}</div>
       ${descBlock}
       <div class="project-modal-images">
         <div class="carousel-track">

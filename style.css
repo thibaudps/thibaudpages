@@ -692,17 +692,17 @@ body.page-projects #page-content > footer {
 }
 
 /* Contenu : tient dans l'écran sans scroll */
+/* Contenu : scrollable verticalement si débordement */
 .project-modal-content {
   position: relative;
   background: var(--bg);
   width: min(90vw, 1100px);
-  height: calc(100vh - 6rem);   /* hauteur fixe pour que flex:1 enfants fonctionnent */
   max-height: calc(100vh - 6rem);
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: hidden; /* le scroll se fait sur l'inner */
   transform: scale(0);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -732,51 +732,63 @@ body.page-projects #page-content > footer {
   transform: scale(1.1);
 }
 
-/* Contenu intérieur */
+/* Contenu intérieur — devient le scroller */
 .project-modal-inner {
   padding: 2.5rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  overflow: hidden;
+  gap: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
   min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
-.project-modal-cat {
+/* Meta : catégorie + année sur une ligne */
+.project-modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--mid);
 }
+.project-modal-cat,
+.project-modal-year {
+  display: inline-block;
+}
+.project-modal-meta-sep {
+  opacity: 0.5;
+}
+
+/* Titre plus compact */
 .project-modal-title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(24px, 3vw, 36px);
+  font-size: clamp(20px, 2.2vw, 28px);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.5px;
   color: var(--fg);
+  margin: 0;
 }
-.project-modal-year {
-  font-size: 13px;
-  color: var(--mid);
-}
+
+/* Description un cran plus petite */
 .project-modal-description {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--fg);
   max-width: 700px;
   transition: opacity 0.2s ease;
 }
 
-/* Wrapper de la description avec toggle FR/EN à droite */
 .project-modal-desc-wrapper {
   position: relative;
-  padding-right: 3.5rem;  /* place pour le bouton FR/EN */
+  padding-right: 3.5rem;
 }
 
-/* Bouton FR/EN dans la modal projet */
 .project-modal-lang {
   position: absolute;
   top: 0;
@@ -802,26 +814,23 @@ body.page-projects #page-content > footer {
   transform: scale(1.05);
 }
 
-/* Pendant le fade out → swap → fade in */
 .project-modal-description.fading {
   opacity: 0;
 }
 
-/* Conteneur d'images : prend l'espace restant et les images s'adaptent */
-
+/* Conteneur d'images : hauteur fixée et uniforme */
 .project-modal-images {
-  flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  flex-shrink: 0; /* ne se compresse jamais */
 }
 
-/* ── Carrousel : slides ────────────────────────────────── */
+/* ── Carrousel : hauteur uniforme ───────────────────────── */
 .carousel-track {
   width: 100%;
-  flex: 1;
-  min-height: 0;
+  height: 55vh;          /* hauteur uniforme, peu importe le format de l'image */
+  max-height: 600px;
+  min-height: 320px;
   position: relative;
   overflow: hidden;
 }
@@ -848,7 +857,7 @@ body.page-projects #page-content > footer {
   border-radius: 4px;
 }
 
-/* ── Carrousel : barre de contrôle (flèches + dots) ───── */
+/* Contrôles carrousel */
 .carousel-controls {
   display: flex;
   align-items: center;
@@ -858,7 +867,6 @@ body.page-projects #page-content > footer {
   flex-shrink: 0;
 }
 
-/* ── Carrousel : flèches ───────────────────────────────── */
 .carousel-arrow {
   width: 36px;
   height: 36px;
@@ -878,7 +886,6 @@ body.page-projects #page-content > footer {
   transform: scale(1.08);
 }
 
-/* ── Carrousel : dots indicateurs ──────────────────────── */
 .carousel-dots {
   display: flex;
   justify-content: center;
@@ -902,12 +909,16 @@ body.page-projects #page-content > footer {
   opacity: 0.8;
 }
 
+/* Reader (livre interactif) */
 .project-modal-reader {
   width: 100%;
   border-radius: 4px;
   overflow: hidden;
   background: transparent;
-  height: calc(100vh - 6rem - 12rem);
+  height: 55vh;
+  max-height: 600px;
+  min-height: 320px;
+  flex-shrink: 0;
 }
 .project-modal-reader iframe {
   width: 100%;
@@ -916,21 +927,45 @@ body.page-projects #page-content > footer {
   display: block;
 }
 
-/* Bloque le scroll de la page derrière */
 body.modal-open {
   overflow: hidden;
 }
 
-/* Responsive */
+/* Responsive : tablette */
+@media (max-width: 900px) {
+  .project-modal-inner {
+    padding: 2rem 2rem;
+  }
+  .carousel-track,
+  .project-modal-reader {
+    height: 45vh;
+    min-height: 260px;
+  }
+}
+
+/* Responsive : mobile */
 @media (max-width: 700px) {
   .project-modal {
     padding: 1rem;
   }
-  .project-modal-inner {
-    padding: 1.5rem 1.2rem;
-  }
   .project-modal-content {
     max-height: calc(100vh - 2rem);
+  }
+  .project-modal-inner {
+    padding: 3rem 1.2rem 1.5rem; /* haut + grand pour ne pas passer sous le bouton fermer */
+    gap: 0.8rem;
+  }
+  .project-modal-title {
+    font-size: 20px;
+  }
+  .project-modal-description {
+    font-size: 13.5px;
+  }
+  .carousel-track,
+  .project-modal-reader {
+    height: 38vh;
+    min-height: 220px;
+    max-height: 360px;
   }
 }
 
