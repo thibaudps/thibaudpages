@@ -307,8 +307,23 @@ async function loadProjectsFromCMS() {
       }
 
       // Reader interactif (livre feuilletable). Optionnel.
+      // Decap peut stocker le chemin sous différentes formes selon que tu
+      // l'as tapé à la main ou sélectionné via la media library :
+      //   - "public/images/projects/hopi/HopiReader.html"  (relatif)
+      //   - "/public/images/projects/hopi/HopiReader.html" (absolu site)
+      //   - "https://..."                                  (URL externe)
+      // On normalise en chemin relatif (sans slash initial) pour que ça
+      // marche peu importe la page d'origine (avec pjax, l'URL courante
+      // peut être /projets.html, donc un slash initial est plus sûr).
       if (p.reader && p.reader.url) {
-        normalized.details.reader = p.reader.url;
+        let readerUrl = String(p.reader.url).trim();
+        // URL externe → on laisse tel quel
+        if (!/^https?:\/\//i.test(readerUrl)) {
+          // Force un slash initial pour que ça résolve depuis la racine
+          // du site, indépendamment de l'URL courante.
+          if (!readerUrl.startsWith('/')) readerUrl = '/' + readerUrl;
+        }
+        normalized.details.reader = readerUrl;
         if (typeof p.reader.ratio === 'number' && p.reader.ratio > 0) {
           normalized.details.readerRatio = p.reader.ratio;
         }
@@ -514,6 +529,11 @@ document.addEventListener('pjax:loaded', e => {
   initLangButton();
   initContactSinge();
 
+  // Re-bind le curseur custom pour les éléments fraîchement injectés
+  // (about-text, contact-sections, etc.) et reset l'état .hov au cas où
+  // un élément hoverable aurait été détruit pendant l'animation pjax.
+  bindCursorHover();
+
   // Si on arrive sur la page d'accueil, on relance la logique du titre.
   // Si pjax demande de skip l'animation d'entrée (cas de l'animation
   // inverse nav → titre central), on prépare juste le titre sans le
@@ -545,7 +565,19 @@ function initCursor() {
 function bindCursorHover() {
   const cursor = document.getElementById('cursor');
   if (!cursor) return;
-  document.querySelectorAll('.project-card, .nav-links a, .about-lang-toggle, .nav-brand a, .filter-item, .paint-btn, .swatch, .music-btn, .contact-email, .project-modal-close').forEach(el => {
+
+  // Reset l'état hover au démarrage : si on a swap des éléments hoverables
+  // via pjax pendant que la souris était dessus, leur mouseleave n'a jamais
+  // été déclenché et le curseur reste bloqué en mode hov.
+  cursor.classList.remove('hov');
+
+  const SELECTOR = '.project-card, .nav-links a, .about-lang-toggle, .nav-brand a, .filter-item, .paint-btn, .swatch, .music-btn, .lang-btn, .contact-email, .project-modal-close';
+
+  document.querySelectorAll(SELECTOR).forEach(el => {
+    // Évite d'attacher deux fois les mêmes listeners (au cas où l'élément
+    // persiste à travers pjax — nav, music-btn, paint-btn, etc.)
+    if (el.dataset.cursorBound === '1') return;
+    el.dataset.cursorBound = '1';
     el.addEventListener('mouseenter', () => cursor.classList.add('hov'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hov'));
   });

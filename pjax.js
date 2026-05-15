@@ -62,6 +62,12 @@
       return;
     }
 
+    // Retire l'état hover du curseur custom dès le début : si la souris
+    // était sur un élément qui va être détruit par le swap, son mouseleave
+    // ne se déclenchera jamais et le curseur resterait bloqué.
+    const cursorEl = document.getElementById('cursor');
+    if (cursorEl) cursorEl.classList.remove('hov');
+
     try {
       // Précharge la nouvelle page en parallèle
       const fetchPromise = fetchPage(url);
