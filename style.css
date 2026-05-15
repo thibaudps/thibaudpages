@@ -991,6 +991,23 @@ body.page-contact #page-content > footer {
   z-index: 1;
 }
 
+/* Taille et rythme du texte de la page about (uniquement le texte, pas le
+   layout). Les positions absolues et l'animation FR/EN ne sont pas affectées. */
+.about-text p {
+  font-size: 20px;
+  line-height: 1.7;
+  margin: 0 0 1.1em;
+}
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Paragraphes marqués comme "spacer" dans config.js : gros saut de ligne
+   AVANT, pour séparer franchement deux sections (intro / conclusion, etc.) */
+.about-text p.is-spacer {
+  margin-top: 2em;
+}
+
 #about-text-fr {
   right: 2rem;
   opacity: 1;
