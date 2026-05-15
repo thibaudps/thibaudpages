@@ -254,10 +254,17 @@ nav {
 .lang-btn:focus { outline: none; }
 .lang-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
-/* Fade pendant le switch de langue */
+/* Fade pendant le switch de langue.
+   La classe est togglée par main.js : ajoutée pour cacher (opacity 0),
+   retirée pour révéler. La transition doit jouer dans les DEUX sens.
+   On la pose donc via un sélecteur qui inclut l'état "à révéler" (la classe
+   .lang-anim posée en même temps que .lang-switching et qui survit le temps
+   du retour à opacity 1). */
+.lang-anim {
+  transition: opacity 0.28s ease;
+}
 .lang-switching {
   opacity: 0;
-  transition: opacity 0.2s ease;
 }
 
 .paint-tray {

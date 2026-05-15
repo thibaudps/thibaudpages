@@ -142,14 +142,24 @@ function setLang(lang) {
   // Met à jour les meta SEO selon la page courante
   updatePageMeta();
 
-  // Fade out de tout le contenu, swap, fade in
+  // Fade out → swap contenu → fade in. La classe .lang-anim active la
+  // transition sur opacity ; .lang-switching impose opacity: 0. En les
+  // togglant à des moments différents, on obtient un fade symétrique.
   const main = document.getElementById('page-content');
   const targets = [main, document.querySelector('nav')];
 
-  targets.forEach(el => { if (el) el.classList.add('lang-switching'); });
+  const FADE_DURATION = 280; // doit matcher .lang-anim dans style.css
+
+  // 1. Active la transition, puis déclenche le fade-out (rAF pour que le
+  //    navigateur commit l'état "transition active, opacity 1" avant de
+  //    passer à opacity 0 — sinon le fade-out joue pas).
+  targets.forEach(el => { if (el) el.classList.add('lang-anim'); });
+  requestAnimationFrame(() => {
+    targets.forEach(el => { if (el) el.classList.add('lang-switching'); });
+  });
 
   setTimeout(() => {
-    // Re-render tout
+    // Re-render tout (pendant que c'est invisible)
     renderNav();
     renderProjects(CONFIG.projects);
     renderFilters();
@@ -171,9 +181,17 @@ function setLang(lang) {
     const langBtn = document.getElementById('lang-btn');
     if (langBtn) langBtn.textContent = t('lang.toggle');
 
-    // Fade in
+    // 2. Déclenche le fade-in en retirant .lang-switching (la transition
+    //    .lang-anim est toujours active, donc opacity passe de 0 à 1 en douceur).
     targets.forEach(el => { if (el) el.classList.remove('lang-switching'); });
-  }, 220);
+
+    // 3. Une fois le fade-in terminé, retire .lang-anim pour libérer la
+    //    transition (évite tout effet de bord sur d'autres changements
+    //    d'opacity ultérieurs, ex : pjax).
+    setTimeout(() => {
+      targets.forEach(el => { if (el) el.classList.remove('lang-anim'); });
+    }, FADE_DURATION + 20);
+  }, FADE_DURATION);
 }
 
 // Met à jour le <title> et meta description selon la page courante
@@ -741,9 +759,23 @@ function renderAbout() {
     imageEl.innerHTML = '';
   }
 
-  textElFr.innerHTML = CONFIG.about.paragraphs.map(p => `<p>${p}</p>`).join('');
+  // Helper : transforme un item (string OU objet {text, spacer}) en <p>.
+  // Si l'item est un objet avec spacer: true, on ajoute la classe is-spacer
+  // qui ajoute un gros saut de ligne AVANT le paragraphe (géré en CSS).
+  function paragraphToHTML(item) {
+    if (typeof item === 'string') {
+      return `<p>${item}</p>`;
+    }
+    if (item && typeof item === 'object' && typeof item.text === 'string') {
+      const cls = item.spacer ? ' class="is-spacer"' : '';
+      return `<p${cls}>${item.text}</p>`;
+    }
+    return '';
+  }
+
+  textElFr.innerHTML = CONFIG.about.paragraphs.map(paragraphToHTML).join('');
   if (textElEn && CONFIG.about.paragraphsEn) {
-    textElEn.innerHTML = CONFIG.about.paragraphsEn.map(p => `<p>${p}</p>`).join('');
+    textElEn.innerHTML = CONFIG.about.paragraphsEn.map(paragraphToHTML).join('');
   }
 
   // La langue est pilotée par le toggle global de la nav : on applique
