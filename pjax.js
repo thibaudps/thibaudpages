@@ -3,6 +3,8 @@
    - Intercepte les clics sur les liens internes
    - Fetch la nouvelle page en arrière-plan
    - Remplace uniquement le contenu de #page-content
+   - Synchronise les <link rel="stylesheet"> du <head>
+   - Synchronise <title>, meta description, canonical
    - La nav, le curseur et le footer restent intacts
    - Gère le fade-in/out global du contenu
    ============================================================ */
@@ -42,15 +44,87 @@
     const doc = parser.parseFromString(html, 'text/html');
 
     const contentEl = doc.getElementById(CONTENT_ID);
+
+    // Récupère les stylesheets de la page cible (uniquement les locales,
+    // on ignore les fonts Google et autres CDN qui sont identiques partout
+    // et qu'on veut pas re-toggler à chaque navigation).
+    const stylesheets = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
+      .map(l => l.getAttribute('href'))
+      .filter(href => href && !/^https?:\/\//i.test(href));
+
+    // Récupère meta description et canonical pour synchro SEO
+    const metaDesc = doc.querySelector('meta[name="description"]');
+    const canonical = doc.querySelector('link[rel="canonical"]');
+
     const data = {
       title: doc.title,
       content: contentEl,
       bodyClass: doc.body.className,
       contentClass: contentEl ? contentEl.className : '',
+      stylesheets: stylesheets,
+      metaDescription: metaDesc ? metaDesc.getAttribute('content') : '',
+      canonical: canonical ? canonical.getAttribute('href') : '',
     };
 
     pageCache.set(url, data);
     return data;
+  }
+
+
+  // ── Synchronise les <link rel="stylesheet"> du <head> ────
+  // Compare les feuilles déjà présentes à celles attendues par la nouvelle
+  // page. Ajoute celles qui manquent, retire celles qui ne sont plus utiles.
+  // On ne touche qu'aux stylesheets locales (chemins relatifs), pas aux CDN.
+  function syncStylesheets(targetHrefs) {
+    const head = document.head;
+    const currentLinks = Array.from(head.querySelectorAll('link[rel="stylesheet"]'))
+      .filter(l => {
+        const href = l.getAttribute('href');
+        return href && !/^https?:\/\//i.test(href);
+      });
+    const currentHrefs = currentLinks.map(l => l.getAttribute('href'));
+
+    // 1. Retire les stylesheets qui ne sont plus dans la nouvelle page
+    currentLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!targetHrefs.includes(href)) {
+        link.remove();
+      }
+    });
+
+    // 2. Ajoute les stylesheets manquantes
+    targetHrefs.forEach(href => {
+      if (!currentHrefs.includes(href)) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        head.appendChild(link);
+      }
+    });
+  }
+
+
+  // ── Synchronise meta description et canonical ────────────
+  function syncMeta(description, canonicalHref) {
+    if (description) {
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute('content', description);
+    }
+
+    if (canonicalHref) {
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonical);
+      }
+      canonical.setAttribute('href', canonicalHref);
+    }
   }
 
 
@@ -96,6 +170,14 @@
         window.location.href = url;
         return;
       }
+
+      // ⚡ Synchronise les stylesheets AVANT d'injecter le HTML, pour que
+      // les styles spécifiques (ex: style-legal.css) soient déjà chargés
+      // quand le DOM apparaît. Évite le flash de contenu non stylé (FOUC).
+      syncStylesheets(newPage.stylesheets);
+
+      // Synchronise meta description et canonical (SEO + onglet)
+      syncMeta(newPage.metaDescription, newPage.canonical);
 
       // Swap du contenu et de la classe du <main>
       currentContent.innerHTML = newPage.content.innerHTML;
