@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ── SEO de base ─────────────────────────────────────── -->
-  <title>Graphiste & illustrateur freelance — Thibaud Pagès | Pays de Gex / Genève</title>
-  <meta name="description" content="Thibaud Pagès, graphiste et illustrateur freelance basé en Pays de Gex, à 20 minutes de Genève. Identité visuelle, illustration, édition, design web pour le secteur culturel et associatif.">
+  <title>Graphiste Pays de Gex — Thibaud Pagès, illustrateur freelance</title>
+  <meta name="description" content="Graphiste illustrateur freelance en Pays de Gex (Prévessin-Moëns, Gex, Ferney-Voltaire) et région genevoise. Identité visuelle, illustration et édition pour le secteur culturel. Découvrez mon portfolio.">
   <meta name="author" content="Thibaud Pagès">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://thibaudpages.com/">
 
   <!-- ── Favicon ──────────────────────────────────────────── -->
@@ -19,22 +19,23 @@
   <!-- ── Open Graph (Facebook, LinkedIn, WhatsApp, Slack) ── -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
   <meta property="og:site_name" content="Thibaud Pagès Designs">
-  <meta property="og:title" content="Graphiste & illustrateur freelance — Thibaud Pagès">
-  <meta property="og:description" content="Identité visuelle, illustration et design pour le secteur culturel. Pays de Gex / Genève.">
+  <meta property="og:title" content="Graphiste Pays de Gex — Thibaud Pagès, illustrateur freelance">
+  <meta property="og:description" content="Identité visuelle, illustration et édition pour le secteur culturel. Pays de Gex / Genève.">
   <meta property="og:url" content="https://thibaudpages.com/">
   <meta property="og:image" content="https://thibaudpages.com/public/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Thibaud Pagès, graphiste et illustrateur freelance">
+  <meta property="og:image:alt" content="Thibaud Pagès, graphiste et illustrateur freelance en Pays de Gex">
 
   <!-- ── Twitter Card ─────────────────────────────────────── -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Graphiste & illustrateur freelance — Thibaud Pagès">
-  <meta name="twitter:description" content="Identité visuelle, illustration et design pour le secteur culturel. Pays de Gex / Genève.">
+  <meta name="twitter:title" content="Graphiste Pays de Gex — Thibaud Pagès, illustrateur freelance">
+  <meta name="twitter:description" content="Identité visuelle, illustration et édition pour le secteur culturel. Pays de Gex / Genève.">
   <meta name="twitter:image" content="https://thibaudpages.com/public/og-image.png">
 
-  <!-- ── JSON-LD : Person + LocalBusiness (référencement local) -->
+  <!-- ── JSON-LD : Person + LocalBusiness + WebSite (référencement local) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,6 +47,7 @@
         "url": "https://thibaudpages.com/",
         "jobTitle": "Graphiste & illustrateur freelance",
         "image": "https://thibaudpages.com/public/og-image.png",
+        "worksFor": { "@id": "https://thibaudpages.com/#business" },
         "sameAs": [
           "https://www.instagram.com/thibaudpagesdesigns",
           "https://www.linkedin.com/in/thibaudpages/"
@@ -62,16 +64,25 @@
         "image": "https://thibaudpages.com/public/og-image.png",
         "url": "https://thibaudpages.com/",
         "founder": { "@id": "https://thibaudpages.com/#person" },
-        "description": "Studio de design graphique et d'illustration indépendant. Identité visuelle, illustration, édition, design web pour le secteur culturel et associatif.",
+        "description": "Studio de design graphique et d'illustration indépendant en Pays de Gex. Identité visuelle, illustration, édition et design web pour le secteur culturel et associatif, en France et en Suisse.",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Prévessin-Moëns",
-          "addressRegion": "Pays de Gex",
+          "addressRegion": "Ain",
           "postalCode": "01280",
           "addressCountry": "FR"
         },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "46.2486",
+          "longitude": "6.0656"
+        },
         "areaServed": [
           { "@type": "Place", "name": "Pays de Gex" },
+          { "@type": "Place", "name": "Gex" },
+          { "@type": "Place", "name": "Ferney-Voltaire" },
+          { "@type": "Place", "name": "Saint-Genis-Pouilly" },
+          { "@type": "Place", "name": "Divonne-les-Bains" },
           { "@type": "Place", "name": "Genève" },
           { "@type": "Place", "name": "Haute-Savoie" },
           { "@type": "Place", "name": "France" },
@@ -81,9 +92,24 @@
           "Design graphique",
           "Illustration",
           "Identité visuelle",
+          "Logo",
+          "Charte graphique",
           "Édition",
+          "Affiche",
           "Design web",
-          "Direction artistique"
+          "Direction artistique",
+          "Livre jeunesse"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "url": "https://wa.me/33670456961",
+          "availableLanguage": ["French", "English"]
+        },
+        "sameAs": [
+          "https://www.instagram.com/thibaudpagesdesigns",
+          "https://www.linkedin.com/in/thibaudpages/",
+          "https://www.google.com/maps?cid=59913914192495480"
         ]
       },
       {
@@ -109,11 +135,19 @@
 <body class="page-home">
 
   <!-- H1 invisible (lu par les bots et lecteurs d'écran, masqué visuellement) -->
-  <h1 class="sr-only">Thibaud Pagès — Graphiste et illustrateur freelance en Pays de Gex, près de Genève</h1>
+  <h1 class="sr-only">Graphiste et illustrateur freelance en Pays de Gex — Thibaud Pagès</h1>
 
   <!-- Description SEO invisible (lue par Googlebot, masquée visuellement) -->
   <p class="sr-only">
-    Thibaud Pagès est un graphiste et illustrateur freelance installé à Prévessin-Moëns, en Pays de Gex, à vingt minutes de Genève. Formé à l'EDAA, il accompagne associations, institutions culturelles, maisons d'édition jeunesse, compagnies de spectacle vivant et musiciens dans la création d'identités visuelles, d'illustrations, de projets éditoriaux, d'affiches et de sites web. Il travaille en France comme en Suisse, sous l'enseigne Thibaud Pagès Designs.
+    Thibaud Pagès est un graphiste et illustrateur freelance installé à Prévessin-Moëns,
+    en Pays de Gex (Ain, 01), à quelques minutes de Gex, Ferney-Voltaire, Saint-Genis-Pouilly,
+    Divonne-les-Bains et de la frontière genevoise. Formé à l'EDAA, il accompagne associations,
+    institutions culturelles, maisons d'édition jeunesse, compagnies de spectacle vivant,
+    musiciens et artistes dans la création de logos, chartes graphiques, identités visuelles,
+    illustrations, affiches, projets éditoriaux, livres et sites web. Spécialisé en
+    communication culturelle et direction artistique, il travaille en micro-entreprise pour
+    des clients en France comme en Suisse romande (Genève, Versoix, Meyrin, Lausanne), sous
+    l'enseigne Thibaud Pagès Designs.
   </p>
 
  <div id="cursor">
@@ -163,8 +197,9 @@
       <div class="home-name" id="home-name"></div>
     </div>
 
-<img src="public/animations/fleur.webp" id="home-animation" alt="Illustration florale animée par Thibaud Pagès">
-
+    <img src="public/animations/fleur.webp" id="home-animation"
+         alt="Illustration florale animée par Thibaud Pagès, graphiste en Pays de Gex"
+         loading="eager" decoding="async">
 
   </main>
 
