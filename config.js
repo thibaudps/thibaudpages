@@ -89,7 +89,7 @@ taglineEn: "Design & Illustration",
   {
     title: "TRAVAILLONS ENSEMBLE",
     titleEn: "LET'S COLLABORATE",
-    email: "thibaudpages@yahoo.fr",
+    email: "contact@thibaudpages.com",
   },
   {
     title: "Dites bonjour et suivez mon actualité",
