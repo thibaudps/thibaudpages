@@ -2,10 +2,14 @@
 /* ============================================================
    GENERATE-SITEMAP.JS
    Génère sitemap.xml à partir de data/projets.json + pages fixes.
-   À lancer au build Netlify : "node generate-sitemap.js"
+   À lancer manuellement avant push (ou via GitHub Actions) :
+     node generate-sitemap.js
 
    Utilise la vraie date de modification de chaque fichier (mtime)
    pour donner des signaux honnêtes à Google.
+
+   Les URLs sont en version canonique sans extension .html
+   (Cloudflare/GitHub Pages servent /about.html via /about).
    ============================================================ */
 
 const fs = require('fs');
@@ -37,7 +41,8 @@ function getLastMod(...relativePaths) {
 }
 
 // Pages fixes
-// `sources` = fichier(s) dont la mtime détermine le lastmod de cette page
+// `loc` = URL canonique servie par Cloudflare/GitHub Pages (sans .html)
+// `sources` = fichier(s) physique(s) dont la mtime détermine le lastmod
 const pages = [
   {
     loc: '/',
@@ -46,32 +51,32 @@ const pages = [
     sources: ['index.html'],
   },
   {
-    loc: '/projets.html',
+    loc: '/projets',
     priority: '0.9',
     changefreq: 'weekly',
     sources: ['projets.html', 'data/projets.json'],
     withImages: true,
   },
   {
-    loc: '/about.html',
+    loc: '/about',
     priority: '0.7',
     changefreq: 'monthly',
     sources: ['about.html'],
   },
   {
-    loc: '/contact.html',
+    loc: '/contact',
     priority: '0.5',
     changefreq: 'monthly',
     sources: ['contact.html'],
   },
   {
-    loc: '/mentions-legales.html',
+    loc: '/mentions-legales',
     priority: '0.3',
     changefreq: 'yearly',
     sources: ['mentions-legales.html'],
   },
   {
-    loc: '/confidentialite.html',
+    loc: '/confidentialite',
     priority: '0.3',
     changefreq: 'yearly',
     sources: ['confidentialite.html'],

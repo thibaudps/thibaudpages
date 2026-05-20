@@ -16,9 +16,9 @@ Thibaud Pagès est graphiste et illustrateur indépendant, formé à l'EDAA (Éc
 ## Pages principales
 
 - [Accueil](https://thibaudpages.com/) : présentation et portfolio
-- [Projets](https://thibaudpages.com/projets.html) : sélection de réalisations en identité visuelle, illustration, édition et web
-- [À propos](https://thibaudpages.com/about.html) : parcours, démarche et formation
-- [Contact](https://thibaudpages.com/contact.html) : devis et collaboration
+- [Projets](https://thibaudpages.com/projets) : sélection de réalisations en identité visuelle, illustration, édition et web
+- [À propos](https://thibaudpages.com/about) : parcours, démarche et formation
+- [Contact](https://thibaudpages.com/contact) : devis et collaboration
 
 ## Zone d'intervention
 
@@ -36,5 +36,5 @@ Suisse : Genève, Versoix, Meyrin, Carouge, Nyon, canton de Vaud, Lausanne, Suis
 
 ## Informations légales
 
-- [Mentions légales](https://thibaudpages.com/mentions-legales.html)
-- [Politique de confidentialité](https://thibaudpages.com/confidentialite.html)
+- [Mentions légales](https://thibaudpages.com/mentions-legales)
+- [Politique de confidentialité](https://thibaudpages.com/confidentialite)
