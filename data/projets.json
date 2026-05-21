@@ -55,14 +55,14 @@
         "url": "public/images/projects/petitpoucet/PoucetReader.html"
       },
       "cropZoom": 1.3,
-      "descriptionEn": "A children's edition of Charles Perrault's tale, built around Gustave Doré's engravings. The dense black-and-white of 19th-century woodcuts meets a tight palette — violet, burnt orange, cream — that pulls characters out of the linework and reshapes the reading rhythm. Botanical ornaments and drop-cap typography thread through the spreads like the pebbles of the story itself. A balancing act between Doré's intricate hatching and the breathing room a young reader needs.",
+      "descriptionEn": "Layout of Charles Perrault's tale for children, built around Gustave Doré's engravings. A palette of violet, orange and cream brings the 19th-century woodcuts back to life, reworked with flat colour fills on the characters.",
       "cropX": 50,
       "cropY": 34,
       "href": "#",
       "cat": "Edition",
       "title": "Le Petit Poucet - mise en page illustrée",
       "image": "/public/images/projects/petit-poucet_1.webp",
-      "description": "Une réédition jeunesse du conte de Charles Perrault, mise en page autour des gravures de Gustave Doré. Le noir et blanc des bois gravés du XIXᵉ rencontre une palette resserrée — violet, orange brûlé, crème — qui isole les personnages et redessine la lecture. Les ornements végétaux et la typographie chapitrée jouent un rôle de fil rouge entre les pages, comme les cailloux du conte. Un travail d'équilibre entre la densité du trait de Doré et la respiration nécessaire pour une lecture enfant.",
+      "description": "Mise en page du conte de Charles Perrault pour les enfants, autour des gravures de Gustave Doré. Une palette de violet, orange et crème vient réveiller les bois gravés du XIXᵉ, retravaillés par l'intégration d'aplats de couleur sur les personnages.",
       "year": "2026"
     },
     {
