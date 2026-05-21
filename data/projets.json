@@ -49,6 +49,23 @@
       "year": "2026"
     },
     {
+      "titleEn": "Le Petit Poucet - Illustrated Layout",
+      "reader": {
+        "ratio": 0.7,
+        "url": "public/images/projects/petitpoucet/PoucetReader.html"
+      },
+      "cropZoom": 1.2,
+      "descriptionEn": "A children's edition of Charles Perrault's tale, built around Gustave Doré's engravings. The dense black-and-white of 19th-century woodcuts meets a tight palette — violet, burnt orange, cream — that pulls characters out of the linework and reshapes the reading rhythm. Botanical ornaments and drop-cap typography thread through the spreads like the pebbles of the story itself. A balancing act between Doré's intricate hatching and the breathing room a young reader needs.",
+      "cropX": 50,
+      "cropY": 36,
+      "href": "#",
+      "cat": "Edition",
+      "title": "Le Petit Poucet - mise en page illustrée",
+      "image": "/public/images/projects/petit-poucet_1.webp",
+      "description": "Une réédition jeunesse du conte de Charles Perrault, mise en page autour des gravures de Gustave Doré. Le noir et blanc des bois gravés du XIXᵉ rencontre une palette resserrée — violet, orange brûlé, crème — qui isole les personnages et redessine la lecture. Les ornements végétaux et la typographie chapitrée jouent un rôle de fil rouge entre les pages, comme les cailloux du conte. Un travail d'équilibre entre la densité du trait de Doré et la respiration nécessaire pour une lecture enfant.",
+      "year": "2026"
+    },
+    {
       "titleEn": "La Petite Sirène Poster",
       "cropZoom": 1.4,
       "descriptionEn": "Poster created for the play 'The Little Mermaid' by Les Ateliers Buissonniers. A visual designed to intrigue passersby and invite them to dive in, both literally and figuratively.",
@@ -431,23 +448,6 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant paisible où le paysage prend toute la place.",
       "year": "2025"
-    },
-    {
-      "titleEn": "Le Petit Poucet - Illustrated Layout",
-      "reader": {
-        "ratio": 0.7,
-        "url": "public/images/projects/petitpoucet/PoucetReader.html"
-      },
-      "cropZoom": 1.1,
-      "descriptionEn": "A children's edition of Charles Perrault's tale, built around Gustave Doré's engravings. The dense black-and-white of 19th-century woodcuts meets a tight palette — violet, burnt orange, cream — that pulls characters out of the linework and reshapes the reading rhythm. Botanical ornaments and drop-cap typography thread through the spreads like the pebbles of the story itself. A balancing act between Doré's intricate hatching and the breathing room a young reader needs.",
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Edition",
-      "title": "Le Petit Poucet - mise en page illustrée",
-      "image": "/public/images/projects/petit-poucet_1.webp",
-      "description": "Une réédition jeunesse du conte de Charles Perrault, mise en page autour des gravures de Gustave Doré. Le noir et blanc des bois gravés du XIXᵉ rencontre une palette resserrée — violet, orange brûlé, crème — qui isole les personnages et redessine la lecture. Les ornements végétaux et la typographie chapitrée jouent un rôle de fil rouge entre les pages, comme les cailloux du conte. Un travail d'équilibre entre la densité du trait de Doré et la respiration nécessaire pour une lecture enfant.",
-      "year": "2026"
     }
   ]
 }
