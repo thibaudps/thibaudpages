@@ -161,8 +161,8 @@
     {
       "titleEn": "Hopi dans son Jardin",
       "reader": {
-        "url": "public/images/projects/hopi/HopiReader.html",
-        "ratio": 0.71
+        "url": "public/images/projects/hopi/HopReader.html",
+        "ratio": 0.7
       },
       "cropZoom": 1.4,
       "descriptionEn": "An interactive picture book for kids exploring the garden and its little creatures. Each spread invites children to discover a new piece of Hopi's everyday world, in a gentle and welcoming universe.",
