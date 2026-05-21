@@ -161,7 +161,7 @@
     {
       "titleEn": "Hopi dans son Jardin",
       "reader": {
-        "url": "public/images/projects/hopi/HopReader.html",
+        "url": "public/images/projects/hopi/HopiReader.html",
         "ratio": 0.7
       },
       "cropZoom": 1.4,
