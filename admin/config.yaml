@@ -90,6 +90,22 @@ collections:
                 required: false
                 default: "#"
                 hint: "Laisser '#' pour ouvrir le modal du site. Sinon, URL externe."
+              - label: "🛒 Print disponible à l'achat"
+                name: "onSale"
+                widget: "boolean"
+                default: false
+                required: false
+                hint: "Cocher pour afficher la pastille 'Print disponible' sur la vignette et le bouton d'achat dans le modal."
+              - label: "Prix"
+                name: "price"
+                widget: "string"
+                required: false
+                hint: "Ex: 45€ — affiché sur le bouton d'achat. Uniquement si 'Print disponible' est coché."
+              - label: "Lien Stripe Payment Link"
+                name: "stripeUrl"
+                widget: "string"
+                required: false
+                hint: "URL Stripe (https://buy.stripe.com/...). Uniquement si 'Print disponible' est coché."
               - label: "Description (FR)"
                 name: "description"
                 widget: "markdown"
