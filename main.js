@@ -33,6 +33,9 @@ const I18N = {
     'modal.prev': 'Image précédente',
     'modal.next': 'Image suivante',
     'modal.imageN': 'Image {n}',
+    // Shop
+    'shop.badge': 'Print disponible',
+    'shop.buy': 'Acheter',
     // Bouton de langue
     'lang.toggle': 'EN',
     'lang.htmlAttr': 'fr',
@@ -73,6 +76,9 @@ const I18N = {
     'modal.prev': 'Previous image',
     'modal.next': 'Next image',
     'modal.imageN': 'Image {n}',
+    // Shop
+    'shop.badge': 'Print available',
+    'shop.buy': 'Buy',
     // Bouton de langue
     'lang.toggle': 'FR',
     'lang.htmlAttr': 'en',
@@ -326,6 +332,9 @@ async function loadProjectsFromCMS() {
           y:    p.cropY    != null ? p.cropY    : 50,
         },
         href: p.href || '#',
+        onSale: !!p.onSale,
+        price: p.price || '',
+        stripeUrl: p.stripeUrl || '',
         details: {
           description:   p.description   || '',
           descriptionEn: p.descriptionEn || '',
@@ -936,9 +945,14 @@ function renderProjects(projects) {
     const crop = p.crop || { zoom: 1, x: 50, y: 50 };
     const cardStyle = `--zoom: ${crop.zoom}; --crop-x: ${crop.x}%; --crop-y: ${crop.y}%;${p.color ? ` background:${p.color};` : ''}`;
 
+    const saleBadge = (p.onSale && p.stripeUrl)
+      ? `<div class="card-sale-badge">${t('shop.badge')}</div>`
+      : '';
+
     return `
       <a class="project-card" href="${p.href}" data-cat="${p.cat}" data-index="${i}" style="${cardStyle}">
         <div class="card-img">${imgContent}</div>
+        ${saleBadge}
         <div class="card-body">
           <div class="card-cat">${cat}</div>
           <div class="card-title">${title}</div>
@@ -1042,6 +1056,17 @@ function openProjectModal(projectIndex, sourceCard) {
 
   const descBlock = desc ? `<div class="project-modal-description">${mdToHTML(desc)}</div>` : '';
 
+  // Bloc d'achat sticky (uniquement si projet en vente avec lien Stripe valide)
+  const shopBlock = (project.onSale && project.stripeUrl) ? `
+    <a class="project-modal-shop" href="${project.stripeUrl}" target="_blank" rel="noopener">
+      <span class="shop-label">${t('shop.buy')}</span>
+      ${project.price ? `<span class="shop-price">${project.price}</span>` : ''}
+      <svg class="shop-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  ` : '';
+
   // Si le projet a un "reader" (lecteur de livre interactif), on l'affiche
   // dans une iframe à la place de la galerie d'images classique.
   if (details.reader) {
@@ -1056,6 +1081,7 @@ function openProjectModal(projectIndex, sourceCard) {
       <div class="project-modal-reader">
         <iframe src="${details.reader}" title="${title}" allowfullscreen></iframe>
       </div>
+      ${shopBlock}
     `;
   } else {
     inner.innerHTML = `
@@ -1089,6 +1115,7 @@ function openProjectModal(projectIndex, sourceCard) {
           </div>
         ` : ''}
       </div>
+      ${shopBlock}
     `;
   }
 
