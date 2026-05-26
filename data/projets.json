@@ -2,11 +2,12 @@
   "projects": [
     {
       "titleEn": "Lunawave Retreats Logo",
+      "stripeUrl": "https://buy.stripe.com/test",
       "cropZoom": 1.4,
       "descriptionEn": "Visual identity for Lunawave Retreats, a project offering wellness retreats by the water or in the mountains. The logo combines the moon and the wave to evoke natural cycles and serenity.\n\n[Follow them on Instagram](https://www.instagram.com/lunawave.retreats/)",
-      "onSale": false,
+      "onSale": true,
       "cropX": 50,
-      "price": "",
+      "price": "10",
       "cropY": 27,
       "href": "#",
       "cat": "Identity",
