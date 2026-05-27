@@ -10,7 +10,7 @@
       "price": "",
       "cropY": 27,
       "href": "#",
-      "cat": "Identity",
+      "cat": "Branding",
       "title": "Logo pour Lunawave Retreats",
       "images": [
         {
@@ -27,11 +27,11 @@
         "ratio": 0.7
       },
       "cropZoom": 1.1,
-      "descriptionEn": "An ongoing collaboration with [Nuit Noire Tattoo](https://www.instagram.com/nuitnoiretattoo/), a studio based in Vernier (Geneva), focusing on various communication assets designed to bring the studio’s identity to life across its different channels.\n\nThree main assets were produced for the studio:\n\n* Instagram templates for guest artist announcements—instantly recognizable while highlighting each artist's unique work.\n* A motion design piece presenting the resident artists, featured on the studio’s official account.\n* A two-tone 3D-printed keychain, designed as exclusive merchandise for their clientele.\n\nThe goal across all these projects remains the same: to extend the studio’s polished, and detail-oriented aesthetic.",
+      "descriptionEn": "An ongoing collaboration with [Nuit Noire Tattoo](https://www.instagram.com/nuitnoiretattoo/), a studio based in Vernier (Geneva), focusing on various communication assets designed to bring the studio's identity to life across its different channels.\n\nThree main assets were produced for the studio:\n\n* Instagram templates for guest artist announcements—instantly recognizable while highlighting each artist's unique work.\n* A motion design piece presenting the resident artists, featured on the studio's official account.\n* A two-tone 3D-printed keychain, designed as exclusive merchandise for their clientele.\n\nThe goal across all these projects remains the same: to extend the studio's polished, and detail-oriented aesthetic.",
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Identity",
+      "cat": "Branding",
       "title": "Nuit Noire Tattoo \"Une collaboration au long cours\"",
       "images": [
         {
@@ -48,7 +48,7 @@
         }
       ],
       "image": "/public/images/projects/nuitnoirevignette.webp",
-      "description": "Collaboration au long cours avec [Nuit Noire Tattoo](https://www.instagram.com/nuitnoiretattoo/), salon de tatouage basé à Vernier (Genève), autour de plusieurs supports de communication pensés pour faire vivre l'identité du studio sur ses différents canaux.\n\nTrois supports ont été produits pour le studio :\n\n* Des templates Instagram pour annoncer les artistes en guest, reconnaissables d'un coup d'œil tout en mettant en avant le travail de chaque tatoueur invité.\n* Une animation de présentation des artistes résidents, diffusée sur le compte du salon.\n* Un porte-clé en impression 3D bicolore, pensé comme produit dérivé pour la clientèle.\n\nL'ensemble traduit une même intention : prolonger l'univers du salon - soigné et attentif au détail.",
+      "description": "Collaboration au long cours avec [Nuit Noire Tattoo](https://www.instagram.com/nuitnoiretattoo/), salon de tatouage basé à Vernier (Genève), autour de plusieurs supports de communication pensés pour faire vivre l'identité du studio sur ses différents canaux.\n\nTrois supports ont été produits pour le studio :\n\n* Des templates Instagram pour annoncer les artistes en guest, reconnaissables d'un coup d'œil tout en mettant en avant le travail de chaque tatoueur invité.\n* Une animation de présentation des artistes résidents, diffusée sur le compte du salon.\n* Un porte-clé en impression 3D bicolore, pensé comme produit dérivé pour la clientèle.\n\nL'ensemble traduit une même intention : prolonger l'univers du salon, soigné et attentif au détail.",
       "year": "2026"
     },
     {
@@ -63,7 +63,7 @@
       "cropY": 34,
       "href": "#",
       "cat": "Edition",
-      "title": "Le Petit Poucet - mise en page illustrée",
+      "title": "Le Petit Poucet, mise en page illustrée",
       "image": "/public/images/projects/petit-poucet_1.webp",
       "description": "Mise en page du conte de Charles Perrault pour les enfants, autour des gravures de Gustave Doré. Une palette de violet, orange et crème vient réveiller les bois gravés du XIXᵉ, retravaillés par l'intégration d'aplats de couleur sur les personnages.",
       "year": "2026"
@@ -75,7 +75,7 @@
       "cropX": 45,
       "cropY": 80,
       "href": "#",
-      "cat": "Print",
+      "cat": "Poster",
       "title": "Affiche de La Petite Sirène",
       "images": [
         {
@@ -110,11 +110,11 @@
         "ratio": 0.7
       },
       "cropZoom": 1.7,
-      "descriptionEn": "Acrylic painting, 2026. An early visual exploration for a story in progress — three companions setting out in search of what gives a life its meaning. The sunset warms a moment that isn't really warm. The trees close the scene like a threshold, the water waits.",
+      "descriptionEn": "Acrylic painting, 2026. An early visual exploration for a story in progress, three companions setting out in search of what gives a life its meaning. The sunset warms a moment that isn't really warm. The trees close the scene like a threshold, the water waits.",
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Personal",
       "title": "Le Dernier Périple",
       "images": [
         {
@@ -122,7 +122,7 @@
         }
       ],
       "image": "/public/images/projects/dernierperiple.webp",
-      "description": "Peinture acrylique, 2026. Première recherche visuelle pour un récit en cours — l'histoire d'un périple à trois, sur les traces du sens qu'on donne à sa vie. Le coucher de soleil réchauffe un moment qui ne l'est pas vraiment. Les troncs ferment la scène comme un seuil, l'eau attend.",
+      "description": "Peinture acrylique, 2026. Première recherche visuelle pour un récit en cours, l'histoire d'un périple à trois, sur les traces du sens qu'on donne à sa vie. Le coucher de soleil réchauffe un moment qui ne l'est pas vraiment. Les troncs ferment la scène comme un seuil, l'eau attend.",
       "year": "2026"
     },
     {
@@ -132,7 +132,7 @@
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Edition",
       "title": "Podcast « La Voie de la Savane »",
       "images": [
         {
@@ -158,7 +158,7 @@
         }
       ],
       "image": "public/images/projects/savane.webp",
-      "description": "Série d'illustrations réalisée pour le podcast « La Voie de la Savane », autour des animaux et des paysages de la savane africaine. Un travail tout en aplats colorés pour habiller chaque épisode. La dimension importante du projet consistait à proposer au client une déclinaison des paysages et des expressions des animaux afin qu'il puisse adapter chaque visuel à chaque contenu en modulant les éléments indépendamment les uns des autres. ",
+      "description": "Série d'illustrations réalisée pour le podcast « La Voie de la Savane », autour des animaux et des paysages de la savane africaine. Un travail tout en aplats colorés pour habiller chaque épisode. La dimension importante du projet consistait à proposer au client une déclinaison des paysages et des expressions des animaux afin qu'il puisse adapter chaque visuel à chaque contenu en modulant les éléments indépendamment les uns des autres. ",
       "year": "2026"
     },
     {
@@ -186,7 +186,7 @@
       "cropX": 50,
       "cropY": 12,
       "href": "#",
-      "cat": "Print",
+      "cat": "Poster",
       "title": "Affiche pour la sortie d'album de Lone Assembly",
       "images": [
         {
@@ -222,7 +222,7 @@
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Edition",
       "title": "Pâques chez Deux Parts et d'Autres",
       "images": [
         {
@@ -243,7 +243,7 @@
       "cropX": 50,
       "cropY": 35,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Edition",
       "title": "Character design de jeu vidéo",
       "images": [
         {
@@ -270,7 +270,7 @@
       "cropX": 50,
       "cropY": 35,
       "href": "#",
-      "cat": "Print",
+      "cat": "Personal",
       "title": "Peintures d'extraterrestres perdus",
       "images": [
         {
@@ -294,7 +294,7 @@
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Edition",
       "title": "Décor pour Bzopsé",
       "images": [
         {
@@ -312,7 +312,7 @@
       "cropX": 50,
       "cropY": 12,
       "href": "#",
-      "cat": "Print",
+      "cat": "Edition",
       "title": "Semainier pour enfants",
       "images": [
         {
@@ -330,7 +330,7 @@
       "cropX": 83,
       "cropY": 23,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Edition",
       "title": "Memory apprentissage anglais",
       "images": [
         {
@@ -348,7 +348,7 @@
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Identity",
+      "cat": "Branding",
       "title": "Identité visuelle pour La Sargane",
       "images": [
         {
@@ -369,7 +369,7 @@
       "cropX": 52,
       "cropY": 70,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Personal",
       "title": "Retraite en Forêt",
       "images": [
         {
@@ -387,7 +387,7 @@
       "cropX": 50,
       "cropY": 2,
       "href": "#",
-      "cat": "Print",
+      "cat": "Poster",
       "title": "Affiche Parade d'Halloween des Corgis",
       "images": [
         {
@@ -401,11 +401,11 @@
     {
       "titleEn": "Chill Froggy",
       "cropZoom": 1.1,
-      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A frog on a break, lost in thought — a small suspended moment.",
+      "descriptionEn": "Acrylic painting on the theme of nature and isolation. A frog on a break, lost in thought, a small suspended moment.",
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Personal",
       "title": "La Balançoire",
       "images": [
         {
@@ -423,7 +423,7 @@
       "cropX": 50,
       "cropY": 10,
       "href": "#",
-      "cat": "Print",
+      "cat": "Poster",
       "title": "Affiche pour Le Petit Nicolas",
       "images": [
         {
@@ -441,7 +441,7 @@
       "cropX": 50,
       "cropY": 50,
       "href": "#",
-      "cat": "Illustration",
+      "cat": "Personal",
       "title": "La Fille du Lac",
       "images": [
         {
