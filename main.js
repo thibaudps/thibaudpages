@@ -19,11 +19,11 @@ const I18N = {
     'home.sub': 'Graphisme & Illustration',
     // Filtres projets
     'filter.all': 'Tous',
-    'filter.Branding': 'Identité & Branding',
-    'filter.Edition': 'Édition & Illustration',
-    'filter.Poster': 'Affiches & Campagnes',
-    'filter.Web': 'Web & Interactif',
-    'filter.Personal': 'Peintures & Recherches perso',
+    'filter.Identity': 'Identité',
+    'filter.Print': 'Print',
+    'filter.Illustration': 'Illustration',
+    'filter.Edition': 'Édition',
+    'filter.Web': 'Web',
     // Footer
     'footer.location': 'Conçu avec amour en 2026',
     'footer.legal': 'Mentions légales',
@@ -40,17 +40,17 @@ const I18N = {
     'lang.toggle': 'EN',
     'lang.htmlAttr': 'fr',
     // Meta SEO par page (head)
-    'meta.index.title': 'Thibaud Pagès, Graphiste & illustrateur',
+    'meta.index.title': 'Thibaud Pagès — Graphiste & illustrateur',
     'meta.index.description': "Portfolio de Thibaud Pagès, graphiste et illustrateur basé sur le bassin lémanique.",
-    'meta.projets.title': 'Projets, Thibaud Pagès',
+    'meta.projets.title': 'Projets — Thibaud Pagès',
     'meta.projets.description': "Projets de design graphique et d'illustration de Thibaud Pagès.",
-    'meta.about.title': 'À propos, Thibaud Pagès',
+    'meta.about.title': 'À propos — Thibaud Pagès',
     'meta.about.description': "À propos de Thibaud Pagès, graphiste et illustrateur indépendant.",
-    'meta.contact.title': 'Contact, Thibaud Pagès',
+    'meta.contact.title': 'Contact — Thibaud Pagès',
     'meta.contact.description': "Contactez Thibaud Pagès pour vos projets graphiques et d'illustration.",
-    'meta.legal.title': 'Mentions légales, Thibaud Pagès',
+    'meta.legal.title': 'Mentions légales — Thibaud Pagès',
     'meta.legal.description': "Mentions légales du site thibaudpages.com.",
-    'meta.privacy.title': 'Politique de confidentialité, Thibaud Pagès',
+    'meta.privacy.title': 'Politique de confidentialité — Thibaud Pagès',
     'meta.privacy.description': "Politique de confidentialité conforme au RGPD.",
   },
   en: {
@@ -62,11 +62,11 @@ const I18N = {
     'home.sub': 'Design & Illustration',
     // Filtres projets
     'filter.all': 'All',
-    'filter.Branding': 'Identity & Branding',
-    'filter.Edition': 'Edition & Illustration',
-    'filter.Poster': 'Posters & Campaigns',
-    'filter.Web': 'Web & Interactive',
-    'filter.Personal': 'Paintings & Personal Research',
+    'filter.Identity': 'Identity',
+    'filter.Print': 'Print',
+    'filter.Illustration': 'Illustration',
+    'filter.Edition': 'Edition',
+    'filter.Web': 'Web',
     // Footer
     'footer.location': 'Created by yours truly in 2026',
     'footer.legal': 'Legal notice',
@@ -83,17 +83,17 @@ const I18N = {
     'lang.toggle': 'FR',
     'lang.htmlAttr': 'en',
     // Meta SEO par page
-    'meta.index.title': 'Thibaud Pagès, Design & illustration',
+    'meta.index.title': 'Thibaud Pagès — Design & illustration',
     'meta.index.description': 'Portfolio of Thibaud Pagès, graphic designer and illustrator based in the Lake Geneva basin.',
-    'meta.projets.title': 'Projects, Thibaud Pagès',
+    'meta.projets.title': 'Projects — Thibaud Pagès',
     'meta.projets.description': 'Graphic design and illustration projects by Thibaud Pagès.',
-    'meta.about.title': 'About, Thibaud Pagès',
+    'meta.about.title': 'About — Thibaud Pagès',
     'meta.about.description': 'About Thibaud Pagès, independent graphic designer and illustrator.',
-    'meta.contact.title': 'Contact, Thibaud Pagès',
+    'meta.contact.title': 'Contact — Thibaud Pagès',
     'meta.contact.description': 'Contact Thibaud Pagès for your graphic design and illustration projects.',
-    'meta.legal.title': 'Legal notice, Thibaud Pagès',
+    'meta.legal.title': 'Legal notice — Thibaud Pagès',
     'meta.legal.description': "Legal notice for thibaudpages.com.",
-    'meta.privacy.title': 'Privacy policy, Thibaud Pagès',
+    'meta.privacy.title': 'Privacy policy — Thibaud Pagès',
     'meta.privacy.description': "Privacy policy compliant with GDPR.",
   }
 };
@@ -1000,7 +1000,7 @@ function bindVideoHover() {
 function renderFilters() {
   const wrap = document.getElementById('filter');
   if (!wrap) return;
-  // Les valeurs canoniques de CONFIG.filters (Branding, Edition...) sont
+  // Les valeurs canoniques de CONFIG.filters (Identity, Print...) sont
   // conservées dans data-cat, mais on affiche un label traduit.
   wrap.innerHTML = CONFIG.filters.map((f, i) => {
     const label = (f === 'All') ? t('filter.all') : t('filter.' + f);
