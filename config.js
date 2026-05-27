@@ -38,11 +38,11 @@ taglineEn: "Design & Illustration",
   // ── Filtres de la grille ──────────────────────────────────
   filters: [
     "All",
-    "Identity",
-    "Print",
-    "Illustration",
+    "Branding",
     "Edition",
+    "Poster",
     "Web",
+    "Personal",
   ],
 
 
