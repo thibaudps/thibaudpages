@@ -53,12 +53,7 @@ collections:
               - label: "Catégorie"
                 name: "cat"
                 widget: "select"
-                options:
-                  - { label: "Identité & Branding", value: "Branding" }
-                  - { label: "Édition & Illustration", value: "Edition" }
-                  - { label: "Affiches & Campagnes", value: "Poster" }
-                  - { label: "Web & Interactif", value: "Web" }
-                  - { label: "Peintures & Recherches perso", value: "Personal" }
+                options: ["Identity", "Print", "Illustration", "Edition", "Web"]
               - { label: "Année", name: "year", widget: "string", hint: "Ex: 2026" }
               - label: "Image vignette"
                 name: "image"
