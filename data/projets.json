@@ -1,6 +1,28 @@
 {
   "projects": [
     {
+      "titleEn": "Floral Linocut",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.5,
+      "descriptionEn": "Happy to share my latest linocut, it's been a while since I last did one.\n\nPeeling the paper off is always a small surprise, even when you roughly know what you'll find.\n\nMight end up as a print soon.",
+      "onSale": false,
+      "cropX": 50,
+      "cropY": 25,
+      "href": "#",
+      "cat": "Print",
+      "title": "Linogravure Fleurie",
+      "images": [
+        {
+          "media": "/public/images/projects/lino_print_2026_mockup.webp"
+        }
+      ],
+      "image": "/public/images/projects/lino_print_2026_mockup.webp",
+      "description": "Content de vous montrer ma dernière linogravure, ça faisait longtemps que je voulais m'y remettre.\n\nLe moment où on décolle le papier reste toujours une petite surprise, même quand on sait à peu près ce qu'on va trouver.\n\nPas impossible qu'elle se retrouve imprimée bientôt.",
+      "year": "2026"
+    },
+    {
       "titleEn": "Lunawave Retreats Logo",
       "stripeUrl": "",
       "cropZoom": 1.4,
@@ -451,28 +473,6 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant paisible où le paysage prend toute la place.",
       "year": "2025"
-    },
-    {
-      "titleEn": "Floral Linocut",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.5,
-      "descriptionEn": "Happy to share my latest linocut, it's been a while since I last did one.\n\nPeeling the paper off is always a small surprise, even when you roughly know what you'll find.\n\nMight end up as a print soon.",
-      "onSale": false,
-      "cropX": 50,
-      "cropY": 25,
-      "href": "#",
-      "cat": "Print",
-      "title": "Linogravure Fleurie",
-      "images": [
-        {
-          "media": "/public/images/projects/lino_print_2026_mockup.webp"
-        }
-      ],
-      "image": "/public/images/projects/lino_print_2026_mockup.webp",
-      "description": "Content de vous montrer ma dernière linogravure, ça faisait longtemps que je voulais m'y remettre.\n\nLe moment où on décolle le papier reste toujours une petite surprise, même quand on sait à peu près ce qu'on va trouver.\n\nPas impossible qu'elle se retrouve imprimée bientôt.",
-      "year": "2026"
     }
   ]
 }
