@@ -1,0 +1,62 @@
+{
+  "name": "THIBAUD PAGÈS",
+  "nameShort": "TPD",
+  "tagline": "Graphisme & Illustration",
+  "taglineEn": "Design & Illustration",
+  "description": "Je travaille avec des structures culturelles et associatives en France et en Suisse romande.",
+  "ctaLabel": "Voir les projets",
+  "url": "thibaudpages.com",
+  "location": "Made by yours truly in 2026",
+
+  "music": {
+    "file": "public/music/chill.mp3",
+    "artist": "Alex Morgan",
+    "title": "Autumn Leaves Falling"
+  },
+
+  "nav": [
+    { "label": "Projects", "href": "projets.html" },
+    { "label": "About me", "href": "about.html" },
+    { "label": "Contact", "href": "contact.html" }
+  ],
+
+  "heroTitle": "Identités, affiches<br>et illustrations pour les<br><em>acteurs culturels</em>",
+
+  "about": {
+    "suffix": "graphiste & illustrateur",
+    "suffixEn": "is a designer",
+    "image": "public/images/portrait.webp",
+    "paragraphs": [
+      "<strong>Je suis Thibaud Pagès,</strong>",
+      "Graphiste et illustrateur indépendant basé dans le bassin lémanique. J’accompagne des entreprises, des marques et des porteurs de projets de tout genre, en France, en Suisse ou ailleurs.",
+      "Nourri par une passion de toujours pour la bande dessinée et l’image sous toutes ses formes, j’envisage le graphisme comme un terrain d’échange. J’aime prendre le temps de discuter avec vous pour cerner l’essence de votre projet et concevoir l’univers visuel qui vous correspondra le mieux. Pour moi, cette démarche collaborative est essentielle : elle vous garantit un résultat unique et sur-mesure, tout en me permettant d’élargir et toujours adapter ma vision artistique.",
+      "<strong>De l’échange à l’image, créons ensemble votre univers.</strong>"
+    ],
+    "paragraphsEn": [
+      "<strong>I'm Thibaud Pagès,</strong>",
+      "A freelance graphic designer and illustrator based in the Lake Geneva area. I work with businesses, brands, and project leaders of all kinds, in France, Switzerland, and beyond.",
+      "Driven by a lifelong passion for comics and imagery in all its forms, I see graphic design as a space for exchange. I like to take the time to talk with you, to grasp the essence of your project and craft the visual world that fits you best. For me, this collaborative approach is essential: it ensures you a unique, tailor-made result, while allowing me to broaden and continually adapt my artistic vision.",
+      "<strong>From conversation to image, let's create your world together.</strong>"
+    ]
+  },
+
+  "contact": {
+    "suffix": "discutons-en",
+    "suffixEn": "is open to talk",
+    "headline": "Un projet&nbsp;? Une idée&nbsp;?<br><em>Besoin d'une nouvelle identité&nbsp;?</em>",
+    "headlineEn": "A project? An idea?<br><em>Need a new identity?</em>",
+    "sections": [
+      {
+        "title": "TRAVAILLONS ENSEMBLE",
+        "titleEn": "LET'S COLLABORATE",
+        "email": "contact@thibaudpages.com"
+      },
+      {
+        "title": "Dites bonjour et suivez mon actualité",
+        "titleEn": "Just say hi and see my latest news",
+        "link": "https://www.instagram.com/thibaudpagesdesigns/",
+        "linkLabel": "@thibaudpagesdesigns"
+      }
+    ]
+  }
+}
