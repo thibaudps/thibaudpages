@@ -473,6 +473,28 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant paisible où le paysage prend toute la place.",
       "year": "2025"
+    },
+    {
+      "titleEn": "Musée de la Magie Logo",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.7,
+      "descriptionEn": "An illusionist, a top hat, two spirals where the eyes should be.\n\nA logo project for the Musée de la Magie in Lyon, an imaginary museum, made as part of a training course.\n\nI was after an old-school feel, without the kitsch this world tends to fall into. Something that speaks to everyone, recognizable with or without the name.\n\nThe whole thing was hand-cut in linocut, then scanned and vectorized for sharpness and precision.",
+      "onSale": false,
+      "cropX": 53,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Identity",
+      "title": "Logo pour le Musée de la Magie",
+      "images": [
+        {
+          "media": "/public/images/projects/logo-musee.webp"
+        }
+      ],
+      "image": "/public/images/projects/logo-musee2.webp",
+      "description": "Un illusionniste, un chapeau, deux spirales en guise de regard.\n\nProjet de logo pour le Musée de la Magie à Lyon, un musée imaginaire, conçu dans le cadre d'une formation.\n\nJe cherchais une vibe old school, sans tomber dans le kitsch qu'on trouve souvent dans cet univers. Un visuel qui parle au plus grand nombre, reconnaissable avec ou sans le titre.\n\nTout a été gravé en linogravure, puis numérisé et vectorisé pour plus de précision et de netteté.",
+      "year": "2026"
     }
   ]
 }
