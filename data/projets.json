@@ -23,24 +23,25 @@
       "year": "2026"
     },
     {
-      "titleEn": "Lunawave Retreats Logo",
-      "stripeUrl": "",
-      "cropZoom": 1.4,
-      "descriptionEn": "Visual identity for Lunawave Retreats, a project offering wellness retreats by the water or in the mountains. The logo combines the moon and the wave to evoke natural cycles and serenity.\n\n[Follow them on Instagram](https://www.instagram.com/lunawave.retreats/)",
+      "titleEn": "Musée de la Magie Logo",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.7,
+      "descriptionEn": "An illusionist, a top hat, two spirals where the eyes should be.\n\nA logo project for the Musée de la Magie in Lyon, an imaginary museum, made as part of a training course.\n\nI was after an old-school feel, without the kitsch this world tends to fall into. Something that speaks to everyone, recognizable with or without the name.\n\nThe whole thing was hand-cut in linocut, then scanned and vectorized for sharpness and precision.",
       "onSale": false,
-      "cropX": 50,
-      "price": "",
-      "cropY": 27,
+      "cropX": 53,
+      "cropY": 50,
       "href": "#",
       "cat": "Identity",
-      "title": "Logo pour Lunawave Retreats",
+      "title": "Logo pour le Musée de la Magie",
       "images": [
         {
-          "media": "public/images/projects/lunawave.svg"
+          "media": "/public/images/projects/logo-musee.webp"
         }
       ],
-      "image": "public/images/projects/lunawave.svg",
-      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau ou à la montagne. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.\n\n[Suivez les sur Instagram](https://www.instagram.com/lunawave.retreats/)",
+      "image": "/public/images/projects/logo-musee2.webp",
+      "description": "Un illusionniste, un chapeau, deux spirales en guise de regard.\n\nProjet de logo pour le Musée de la Magie à Lyon, un musée imaginaire, conçu dans le cadre d'une formation.\n\nJe cherchais une vibe old school, sans tomber dans le kitsch qu'on trouve souvent dans cet univers. Un visuel qui parle au plus grand nombre, reconnaissable avec ou sans le titre.\n\nTout a été gravé en linogravure, puis numérisé et vectorisé pour plus de précision et de netteté.",
       "year": "2026"
     },
     {
@@ -71,6 +72,24 @@
       ],
       "image": "/public/images/projects/nuitnoirevignette.webp",
       "description": "Collaboration au long cours avec [Nuit Noire Tattoo](https://www.instagram.com/nuitnoiretattoo/), salon de tatouage basé à Vernier (Genève), autour de plusieurs supports de communication pensés pour faire vivre l'identité du studio sur ses différents canaux.\n\nTrois supports ont été produits pour le studio :\n\n* Des templates Instagram pour annoncer les artistes en guest, reconnaissables d'un coup d'œil tout en mettant en avant le travail de chaque tatoueur invité.\n* Une animation de présentation des artistes résidents, diffusée sur le compte du salon.\n* Un porte-clé en impression 3D bicolore, pensé comme produit dérivé pour la clientèle.\n\nL'ensemble traduit une même intention : prolonger l'univers du salon - soigné et attentif au détail.",
+      "year": "2026"
+    },
+    {
+      "titleEn": "Jolan Chappaz Website",
+      "cropZoom": 1.5,
+      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.\n\n[jolanchappaz.ch](https://jolanchappaz.ch/)",
+      "cropX": 50,
+      "cropY": 65,
+      "href": "#",
+      "cat": "Web",
+      "title": "Site web de Jolan Chappaz",
+      "images": [
+        {
+          "media": "public/video/jolan.webm"
+        }
+      ],
+      "image": "public/images/projects/jolan1.webp",
+      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.\n\n[jolanchappaz.ch](https://jolanchappaz.ch/)",
       "year": "2026"
     },
     {
@@ -109,21 +128,24 @@
       "year": "2026"
     },
     {
-      "titleEn": "Jolan Chappaz Website",
-      "cropZoom": 1.5,
-      "descriptionEn": "Portfolio website for Jolan Chappaz, developed in Vanilla JavaScript and deployed on GitHub Pages. A project where every interaction detail was custom-designed to reflect his tattoo practice.\n\n[jolanchappaz.ch](https://jolanchappaz.ch/)",
+      "titleEn": "Lunawave Retreats Logo",
+      "stripeUrl": "",
+      "cropZoom": 1.4,
+      "descriptionEn": "Visual identity for Lunawave Retreats, a project offering wellness retreats by the water or in the mountains. The logo combines the moon and the wave to evoke natural cycles and serenity.\n\n[Follow them on Instagram](https://www.instagram.com/lunawave.retreats/)",
+      "onSale": false,
       "cropX": 50,
-      "cropY": 65,
+      "price": "",
+      "cropY": 27,
       "href": "#",
-      "cat": "Web",
-      "title": "Site web de Jolan Chappaz",
+      "cat": "Identity",
+      "title": "Logo pour Lunawave Retreats",
       "images": [
         {
-          "media": "public/video/jolan.webm"
+          "media": "public/images/projects/lunawave.svg"
         }
       ],
-      "image": "public/images/projects/jolan1.webp",
-      "description": "Site portfolio pour Jolan Chappaz, développé en JavaScript et déployé sur GitHub Pages. Un projet où chaque détail d'interaction a été pensé sur-mesure pour refléter sa pratique du tatouage et de son art.\n\n[jolanchappaz.ch](https://jolanchappaz.ch/)",
+      "image": "public/images/projects/lunawave.svg",
+      "description": "Identité visuelle pour Lunawave Retreats, un projet de retraites bien-être au bord de l'eau ou à la montagne. Le logo associe la lune et la vague pour évoquer le cycle naturel et la sérénité.\n\n[Suivez les sur Instagram](https://www.instagram.com/lunawave.retreats/)",
       "year": "2026"
     },
     {
@@ -473,28 +495,6 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Peinture acrylique autour du thème de la nature et de l'isolement. Une silhouette face au lac, dans cet instant paisible où le paysage prend toute la place.",
       "year": "2025"
-    },
-    {
-      "titleEn": "Musée de la Magie Logo",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.7,
-      "descriptionEn": "An illusionist, a top hat, two spirals where the eyes should be.\n\nA logo project for the Musée de la Magie in Lyon, an imaginary museum, made as part of a training course.\n\nI was after an old-school feel, without the kitsch this world tends to fall into. Something that speaks to everyone, recognizable with or without the name.\n\nThe whole thing was hand-cut in linocut, then scanned and vectorized for sharpness and precision.",
-      "onSale": false,
-      "cropX": 53,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Identity",
-      "title": "Logo pour le Musée de la Magie",
-      "images": [
-        {
-          "media": "/public/images/projects/logo-musee.webp"
-        }
-      ],
-      "image": "/public/images/projects/logo-musee2.webp",
-      "description": "Un illusionniste, un chapeau, deux spirales en guise de regard.\n\nProjet de logo pour le Musée de la Magie à Lyon, un musée imaginaire, conçu dans le cadre d'une formation.\n\nJe cherchais une vibe old school, sans tomber dans le kitsch qu'on trouve souvent dans cet univers. Un visuel qui parle au plus grand nombre, reconnaissable avec ou sans le titre.\n\nTout a été gravé en linogravure, puis numérisé et vectorisé pour plus de précision et de netteté.",
-      "year": "2026"
     }
   ]
 }
