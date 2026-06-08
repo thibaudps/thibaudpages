@@ -153,3 +153,86 @@ collections:
                     default: 0.7
                     step: 0.01
                     hint: "Ex: 0.7 pour un livre portrait. Utilisé pour calculer la taille du modal."
+
+  - name: "contenu"
+    label: "Contenu du site"
+    label_singular: "Contenu"
+    description: "Textes et infos des pages Accueil, À propos, Contact + navigation et musique."
+    files:
+      - name: "site"
+        label: "Pages & contenus généraux"
+        file: "data/site.json"
+        format: "json"
+        fields:
+          # ── Général / Identité ──
+          - { label: "Nom complet", name: "name", widget: "string", hint: "Affiché en majuscules dans la nav et l'accueil." }
+          - { label: "Nom court", name: "nameShort", widget: "string", hint: "Version abrégée (ex: TPD)." }
+          - { label: "Tagline (FR)", name: "tagline", widget: "string" }
+          - { label: "Tagline (EN)", name: "taglineEn", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Bouton d'appel à l'action", name: "ctaLabel", widget: "string", hint: "Ex: Voir les projets" }
+          - { label: "URL affichée", name: "url", widget: "string", hint: "Ex: thibaudpages.com (texte affiché, pas un lien)." }
+          - { label: "Mention de pied de page", name: "location", widget: "string", hint: "Ex: Made by yours truly in 2026" }
+
+          # ── Titre d'accueil ──
+          - label: "Titre d'accueil (hero)"
+            name: "heroTitle"
+            widget: "string"
+            hint: "HTML autorisé : <br> = retour à la ligne, <em>…</em> = italique."
+
+          # ── Navigation ──
+          - label: "Navigation"
+            name: "nav"
+            widget: "list"
+            summary: "{{fields.label}} → {{fields.href}}"
+            fields:
+              - { label: "Libellé", name: "label", widget: "string" }
+              - { label: "Lien (fichier)", name: "href", widget: "string", hint: "Ex: projets.html, about.html, contact.html" }
+
+          # ── Musique ──
+          - label: "Musique d'ambiance"
+            name: "music"
+            widget: "object"
+            fields:
+              - { label: "Fichier audio", name: "file", widget: "string", hint: "Chemin, ex: public/music/chill.mp3" }
+              - { label: "Artiste", name: "artist", widget: "string" }
+              - { label: "Titre", name: "title", widget: "string" }
+
+          # ── Page À propos ──
+          - label: "Page — À propos"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Suffixe nav (FR)", name: "suffix", widget: "string", hint: "Petit texte à droite du nom dans la nav." }
+              - { label: "Suffixe nav (EN)", name: "suffixEn", widget: "string" }
+              - { label: "Image (portrait)", name: "image", widget: "string", hint: "Chemin de l'image, ex: public/images/portrait.webp. Vide = aucune image." }
+              - label: "Paragraphes (FR)"
+                name: "paragraphs"
+                widget: "list"
+                field: { label: "Paragraphe", name: "paragraph", widget: "text" }
+                hint: "Un paragraphe par entrée. HTML autorisé : <strong>…</strong> pour le gras."
+              - label: "Paragraphes (EN)"
+                name: "paragraphsEn"
+                widget: "list"
+                field: { label: "Paragraph", name: "paragraph", widget: "text" }
+                hint: "One paragraph per entry. HTML allowed: <strong>…</strong>."
+
+          # ── Page Contact ──
+          - label: "Page — Contact"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Suffixe nav (FR)", name: "suffix", widget: "string" }
+              - { label: "Suffixe nav (EN)", name: "suffixEn", widget: "string" }
+              - { label: "Titre (FR)", name: "headline", widget: "string", hint: "HTML autorisé : <br>, <em>, &nbsp;" }
+              - { label: "Titre (EN)", name: "headlineEn", widget: "string", hint: "HTML autorisé." }
+              - label: "Sections"
+                name: "sections"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Titre (FR)", name: "title", widget: "string" }
+                  - { label: "Titre (EN)", name: "titleEn", widget: "string" }
+                  - { label: "Email", name: "email", widget: "string", required: false, hint: "Pour une section de type contact email." }
+                  - { label: "Lien", name: "link", widget: "string", required: false, hint: "Pour une section avec un lien (ex: Instagram)." }
+                  - { label: "Libellé du lien", name: "linkLabel", widget: "string", required: false }
