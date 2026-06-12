@@ -6,6 +6,7 @@
         "ratio": 0.7
       },
       "cropZoom": 1.3,
+      "descriptionEn": "Album cover for \"Rêves Éveillés\" by L'Échappée Belle.\nThe goal was to say a lot with very little. No decor, no effects, just one image that captures the idea of escaping without needing to explain it.\nThe type stays quiet, present but never competing with the visual. Knowing when to stop is often the hardest part.\nA project created as part of my design training.",
       "onSale": false,
       "cropX": 45,
       "cropY": 62,
@@ -18,6 +19,7 @@
         }
       ],
       "image": "/public/images/projects/echapeebelle.webp",
+      "description": "Cover de l'album \"Rêves Éveillés\" pour L'Échappée Belle.\nL'idée était de dire beaucoup avec très peu. Pas de décor, pas d'effets, juste une image qui raconte l'évasion sans avoir besoin de l'expliquer.\nLa typo reste discrète, elle accompagne sans voler la vedette. C'est souvent le plus dur: savoir s'arrêter.\nUn projet réalisé dans le cadre de ma formation.",
       "year": "2026"
     },
     {
