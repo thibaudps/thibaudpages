@@ -2,7 +2,7 @@
   "projects": [
     {
       "titleEn": "Floral Linocut",
-      "stripeUrl": "https://buy.stripe.com/",
+      "stripeUrl": "intent://instagram.com/_u/thibaudpagesdesigns?ig_mid=A9A1A314-108B-4B71-A8B3-CE74A0D2BF4B&utm_source=instagramweb#Intent;package=com.instagram.android;action=android.intent.action.VIEW;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.instagram.android%26referrer%3Dig_mid%253DA9A1A314-108B-4B71-A8B3-CE74A0D2BF4B%2526utm_campaign%253Dunknown%2526utm_content%253Dlo%2526utm_source%253Dinstagramweb;end",
       "reader": {
         "ratio": 0.7
       },
