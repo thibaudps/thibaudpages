@@ -1,6 +1,29 @@
 {
   "projects": [
     {
+      "titleEn": "Floral Linocut",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.5,
+      "descriptionEn": "Happy to share my latest linocut, it's been a while since I last did one.\n\nPeeling the paper off is always a small surprise, even when you roughly know what you'll find.\n\nMight end up as a print soon.",
+      "onSale": true,
+      "cropX": 50,
+      "price": "35",
+      "cropY": 25,
+      "href": "#",
+      "cat": "Print",
+      "title": "Linogravure Fleurie",
+      "images": [
+        {
+          "media": "/public/images/projects/lino_print_2026_mockup.webp"
+        }
+      ],
+      "image": "/public/images/projects/lino_print_2026_mockup.webp",
+      "description": "Content de vous montrer ma dernière linogravure, ça faisait longtemps que je voulais m'y remettre.\n\nLe moment où on décolle le papier reste toujours une petite surprise, même quand on sait à peu près ce qu'on va trouver.\n\nPas impossible qu'elle se retrouve imprimée bientôt.",
+      "year": "2026"
+    },
+    {
       "titleEn": "Album cover for \"Rêves Éveillés\"",
       "reader": {
         "ratio": 0.7
@@ -20,28 +43,6 @@
       ],
       "image": "/public/images/projects/echapeebelle.webp",
       "description": "Cover de l'album \"Rêves Éveillés\" pour L'Échappée Belle.\nL'idée était de dire beaucoup avec très peu. Pas de décor, pas d'effets, juste une image qui raconte l'évasion sans avoir besoin de l'expliquer.\nLa typo reste discrète, elle accompagne sans voler la vedette. C'est souvent le plus dur: savoir s'arrêter.\nUn projet réalisé dans le cadre de ma formation.",
-      "year": "2026"
-    },
-    {
-      "titleEn": "Floral Linocut",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.5,
-      "descriptionEn": "Happy to share my latest linocut, it's been a while since I last did one.\n\nPeeling the paper off is always a small surprise, even when you roughly know what you'll find.\n\nMight end up as a print soon.",
-      "onSale": false,
-      "cropX": 50,
-      "cropY": 25,
-      "href": "#",
-      "cat": "Print",
-      "title": "Linogravure Fleurie",
-      "images": [
-        {
-          "media": "/public/images/projects/lino_print_2026_mockup.webp"
-        }
-      ],
-      "image": "/public/images/projects/lino_print_2026_mockup.webp",
-      "description": "Content de vous montrer ma dernière linogravure, ça faisait longtemps que je voulais m'y remettre.\n\nLe moment où on décolle le papier reste toujours une petite surprise, même quand on sait à peu près ce qu'on va trouver.\n\nPas impossible qu'elle se retrouve imprimée bientôt.",
       "year": "2026"
     },
     {
