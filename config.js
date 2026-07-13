@@ -32,6 +32,7 @@ const CONFIG = {
   // ── Navigation ────────────────────────────────────────────
   nav: [
     { label: "Projects",  href: "projets.html" },
+    { label: "Tools",     href: "tools.html"   },
     { label: "About me",  href: "about.html"   },
     { label: "Contact",   href: "contact.html" },
   ],

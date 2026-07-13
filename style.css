@@ -1636,3 +1636,126 @@ footer {
     font-size: 13px;
   }
 }
+
+
+/* ============================================================
+   ── MENU BURGER (mobile) ────────────────────────────────────
+   Ajouté pour remplacer les liens de page en haut par un burger
+   sur petits écrans. Le bouton est injecté par main.js (initBurger).
+   ============================================================ */
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 26px;
+  height: 26px;
+  background: none;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+.burger-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.25s ease, background 0.35s ease;
+}
+body.nav-open .burger-btn span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+body.nav-open .burger-btn span:nth-child(2) { opacity: 0; }
+body.nav-open .burger-btn span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 700px) {
+  .burger-btn { display: inline-flex; }
+
+  /* Les liens de page deviennent un overlay plein écran sous la barre nav.
+     z-index 90 : sous la nav (100) pour que le burger reste cliquable. */
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.2rem !important;
+    font-size: 22px !important;
+    letter-spacing: 3px !important;
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, background 0.35s ease;
+  }
+  body.nav-open .nav-links {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-links a {
+    border-bottom: 1px solid transparent;
+    padding: 0.3rem 0;
+  }
+  /* Empêche le scroll de la page derrière l'overlay ouvert */
+  body.nav-open { overflow: hidden; }
+}
+
+
+/* ============================================================
+   ── PAGE OUTILS (tools) ─────────────────────────────────────
+   Reprend la grille et les cards de la page projets. La grille
+   utilise id="tools-grid" (pas "grid") pour ne pas être écrasée
+   par renderProjects(). Les cards sont des liens directs vers les
+   apps (nouvel onglet), sans modal.
+   ============================================================ */
+body.page-tools {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+body.page-tools main#page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+body.page-tools #page-content > .grid {
+  flex: 1;
+  width: 100%;
+  align-content: start;
+}
+
+.tools-intro {
+  padding: 2rem 2.5rem 0;
+  max-width: 1500px;
+  margin: 0 auto;
+  width: 100%;
+}
+.tools-lead {
+  font-size: clamp(15px, 2.4vw, 19px);
+  font-weight: 300;
+  color: var(--mid);
+  max-width: 48ch;
+}
+
+/* Bascule de langue purement CSS, pilotée par <html lang="..."> */
+html[lang="en"] .fr-only { display: none; }
+html[lang="fr"] .en-only { display: none; }
+
+/* Sur écrans tactiles (pas de hover), le titre de l'app reste visible */
+@media (hover: none) {
+  .tool-card .card-body {
+    transform: none;
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.80), rgba(0,0,0,0));
+    padding-top: 2.4rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .tools-intro { padding: 1.5rem 1.5rem 0; }
+}
+@media (max-width: 700px) {
+  .tools-intro { padding: 1.2rem 1.2rem 0; }
+  .tools-lead { max-width: 100%; }
+}

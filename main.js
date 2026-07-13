@@ -13,6 +13,7 @@ const I18N = {
   fr: {
     // Navigation
     'nav.projects': 'PROJETS',
+    'nav.tools': 'OUTILS',
     'nav.about': 'À PROPOS',
     'nav.contact': 'CONTACT',
     // Page home
@@ -56,6 +57,7 @@ const I18N = {
   en: {
     // Navigation
     'nav.projects': 'PROJECTS',
+    'nav.tools': 'TOOLS',
     'nav.about': 'ABOUT ME',
     'nav.contact': 'CONTACT',
     // Page home
@@ -551,6 +553,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Bouton de langue dans la nav
   initLangButton();
 
+  // Menu burger (mobile) — la nav persiste via pjax, un seul init suffit
+  initBurger();
+
   // Singe animé (page contact uniquement, géré en interne)
   initContactSinge();
 });
@@ -695,9 +700,19 @@ function renderNav() {
   const links = document.getElementById('nav-links');
   if (!links) return;
 
+  // Garde-fou : garantit la présence du lien "Outils" entre Projets et
+  // À propos, même si CONFIG.nav est fourni/écrasé par le CMS (data/site.json).
+  if (Array.isArray(CONFIG.nav) && !CONFIG.nav.some(n => n.href === 'tools.html')) {
+    const toolsEntry = { label: 'Tools', href: 'tools.html' };
+    const aboutIdx = CONFIG.nav.findIndex(n => n.href === 'about.html');
+    if (aboutIdx >= 0) CONFIG.nav.splice(aboutIdx, 0, toolsEntry);
+    else CONFIG.nav.push(toolsEntry);
+  }
+
   // Mapping : href du lien → clé de traduction du label
   const navLabelKeys = {
     'projets.html': 'nav.projects',
+    'tools.html': 'nav.tools',
     'about.html': 'nav.about',
     'contact.html': 'nav.contact',
   };
@@ -720,6 +735,50 @@ function renderNav() {
     }
     animateSuffixChange(suffix, suffixText);
   }
+}
+
+/* ── Menu burger (mobile) ─────────────────────────────────────
+   Sur petits écrans, les liens de page (.nav-links) sont masqués et
+   remplacés par un bouton burger qui ouvre un overlay plein écran.
+   La nav vit hors de #page-content : elle persiste via pjax, donc on
+   n'initialise le burger qu'une seule fois. */
+function initBurger() {
+  const navRight = document.querySelector('.nav-right');
+  if (!navRight) return;
+  if (document.getElementById('burger-btn')) return; // déjà initialisé
+
+  const burger = document.createElement('button');
+  burger.id = 'burger-btn';
+  burger.className = 'burger-btn';
+  burger.type = 'button';
+  burger.setAttribute('aria-label', 'Menu');
+  burger.setAttribute('aria-expanded', 'false');
+  burger.innerHTML = '<span></span><span></span><span></span>';
+  navRight.appendChild(burger);
+
+  function close() {
+    document.body.classList.remove('nav-open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+  function toggle() {
+    const open = document.body.classList.toggle('nav-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  burger.addEventListener('click', toggle);
+
+  // Ferme le menu quand on clique un lien (pjax prend le relais ensuite)
+  const links = document.getElementById('nav-links');
+  if (links) {
+    links.addEventListener('click', e => {
+      if (e.target.closest('a')) close();
+    });
+  }
+
+  // Ferme si on repasse en largeur desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) close();
+  });
 }
 
 /* ── Animation du brand-suffix ────────────────────────────── */

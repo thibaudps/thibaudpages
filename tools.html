@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO de base ─────────────────────────────────────── -->
+  <title>Outils — Petites applications web | Thibaud Pagès</title>
+  <meta name="description" content="Outils et petites applications web créées par Thibaud Pagès : une table lumineuse pour iPad, et d'autres mini-applications à venir.">
+  <meta name="author" content="Thibaud Pagès">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://thibaudpages.com/tools">
+
+  <!-- ── Favicon ─────────────────────────────────────────── -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="96x96" href="/public/images/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="/public/images/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- ── Open Graph ───────────────────────────────────────── -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Thibaud Pagès Designs">
+  <meta property="og:title" content="Outils — Thibaud Pagès">
+  <meta property="og:description" content="Petites applications web créées par Thibaud Pagès.">
+  <meta property="og:url" content="https://thibaudpages.com/tools">
+  <meta property="og:image" content="https://thibaudpages.com/public/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- ── Twitter Card ─────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Outils — Thibaud Pagès">
+  <meta name="twitter:description" content="Petites applications web créées par Thibaud Pagès.">
+  <meta name="twitter:image" content="https://thibaudpages.com/public/og-image.png">
+
+  <!-- ── JSON-LD : CollectionPage ─────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Outils de Thibaud Pagès",
+    "url": "https://thibaudpages.com/tools",
+    "description": "Petites applications web créées par Thibaud Pagès.",
+    "isPartOf": { "@id": "https://thibaudpages.com/#website" },
+    "about": { "@id": "https://thibaudpages.com/#person" }
+  }
+  </script>
+
+  <!-- ── Fonts ────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-home.css">
+</head>
+<body class="page-tools">
+
+  <h1 class="sr-only">Outils et petites applications web — Thibaud Pagès</h1>
+
+  <div id="cursor">
+  <div id="cursor-eye">
+    <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+      <path d="M500,195.054c255.894,0 463.648,272.903 463.648,304.946c0,32.043 -207.754,304.946 -463.648,304.946c-255.894,0 -463.648,-267.978 -463.648,-304.946c-0,-36.968 207.754,-304.946 463.648,-304.946Zm-0,69.032c-130.204,0 -235.914,105.71 -235.914,235.914c0,130.204 105.71,235.914 235.914,235.914c130.204,0 235.914,-105.71 235.914,-235.914c0,-130.204 -105.71,-235.914 -235.914,-235.914Z"/>
+      <path transform="translate(-75 -75) scale(1.15)" d="M500,372.043c70.621,0 127.957,57.336 127.957,127.957c0,70.621 -57.336,127.957 -127.957,127.957c-70.621,0 -127.957,-57.336 -127.957,-127.957c0,-70.621 57.336,-127.957 127.957,-127.957Zm43.656,40.645c-24.094,0 -43.656,19.562 -43.656,43.656c0,24.094 19.562,43.656 43.656,43.656c24.094,0 43.656,-19.562 43.656,-43.656c0,-24.094 -19.562,-43.656 -43.656,-43.656Z"/>
+    </svg>
+  </div>
+</div>
+
+  <nav>
+    <div class="nav-brand">
+      <a href="index.html">
+        <span class="brand-full"></span>
+        <span class="brand-suffix" id="brand-suffix"></span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links" id="nav-links"></div>
+      <button class="music-btn" id="music-btn" type="button" title="Lancer la musique" aria-label="Lecture musique">
+        <svg class="music-icon-play" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0v13l11-6.5L0 0z"/>
+        </svg>
+        <svg class="music-icon-pause" width="11" height="13" viewBox="0 0 11 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="3.5" height="13"/>
+          <rect x="7.5" y="0" width="3.5" height="13"/>
+        </svg>
+      </button>
+      <audio id="music-audio" preload="metadata"></audio>
+    <div class="paint-wrap" id="paint-wrap">
+        <div class="paint-btn" id="paint-btn" title="Changer la palette">
+  <svg width="15" height="15" viewBox="0 0 500 500" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M396.507,176.54c0.509,0.284 1.019,0.569 1.528,0.853c14.492,-11.26 14.63,-10.693 34.869,-24.479c29.775,-20.283 33.645,-9.199 58.465,16.505c16.843,17.442 -11.639,37.6 -14.438,40.405c-115.352,115.621 -116.97,115.778 -118.924,114.079c-3.779,-3.285 -181.087,-180.854 -181.336,-181.108c-3.478,-3.531 -2.037,-5.833 89.755,-97.393c35.868,-35.777 44.013,-60.226 78.303,-22.607c14.512,15.921 -6.458,33.301 4.835,27.76c18.315,-8.985 20.585,-3.128 74.841,51.859c23.565,23.882 -26.55,58.513 -27.899,74.126Z"/>
+    <path d="M3.336,436.712c-6.534,-41.746 37.338,-56.766 136.628,-124.186c43.813,-29.75 -19.471,-76.417 -30.458,-87.821c-14.687,-15.243 21.624,-44.32 35.419,-57.804c4.297,-4.2 8.571,1.729 9.337,2.475c14.417,14.062 132.367,129.108 177.963,178.047c3.011,3.232 4.299,6.605 -35.502,42.294c-18.154,16.279 -50.805,-30.685 -60.72,-38.02c-45.26,-33.483 -65.499,43.758 -125.805,121.998c-18.063,23.434 -95.931,32.851 -106.861,-36.984Zm75.736,-20.256c34.74,43.248 -39.857,56.317 -37.904,18.138c1.88,-36.735 30.923,-26.829 37.904,-18.138Z"/>
+  </svg>
+</div>
+        <div class="paint-tray" id="paint-tray"></div>
+      </div>
+      <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language">EN</button>
+    </div>
+  </nav>
+  <div class="music-label" id="music-label" aria-live="polite"></div>
+
+  <main id="page-content">
+
+    <div class="tools-intro">
+      <p class="tools-lead">
+        <span class="fr-only">Au-delà du graphisme, je bricole de petites applications web. En voici l'accès libre.</span>
+        <span class="en-only">Beyond design, I tinker with small web apps. Here they are, free to use.</span>
+      </p>
+    </div>
+
+    <div class="grid tools-grid" id="tools-grid">
+
+      <!-- ── Table lumineuse ─────────────────────────────────
+           Pour ajouter un outil : dupliquer ce bloc <a>, changer
+           href, image, titre et année. -->
+      <a class="project-card tool-card" href="tools/table-lumineuse/" target="_blank" rel="noopener" data-cat="App" style="background:#26251F;">
+        <div class="card-img">
+          <img src="tools/table-lumineuse/icon-512.png"
+               alt="Table lumineuse — application de calque et de décalque pour iPad"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Web app</div>
+          <div class="card-title">Table lumineuse</div>
+          <div class="card-year">2026</div>
+        </div>
+      </a>
+
+    </div>
+
+    <footer>
+      <span id="footer-location"></span>
+      <a id="footer-url" target="_blank" rel="noopener"></a>
+    </footer>
+
+  </main>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+  <script src="home.js"></script>
+  <script src="pjax.js"></script>
+</body>
+</html>
