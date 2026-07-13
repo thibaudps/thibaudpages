@@ -663,5 +663,14 @@ c193 -4 385 -12 429 -17 43 -5 82 -7 87 -5 4 3 31 -2 58 -11 28 -9 68 -14 88
   closeInstall.addEventListener("click", function () { body.classList.remove("install-open"); });
 })();
 </script>
+<script>
+  /* Enregistrement du service worker : rend l'app utilisable hors connexion
+     apres un premier chargement en ligne. N'affecte en rien le visuel. */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./service-worker.js").catch(function () {});
+    });
+  }
+</script>
 </body>
 </html>
