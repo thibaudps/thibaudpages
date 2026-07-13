@@ -1,0 +1,24 @@
+{
+  "name": "Post Generator",
+  "short_name": "Post Gen",
+  "description": "Générateur de visuels Instagram – Thibaud Pagès Designs",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1c1f1d",
+  "theme_color": "#1c1f1d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
