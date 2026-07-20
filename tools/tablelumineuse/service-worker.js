@@ -2,7 +2,7 @@
    Met en cache la coquille de l'app au premier chargement en ligne, puis la
    sert sans connexion. Change CACHE (v1 -> v2 ...) chaque fois que tu modifies
    index.html ou les icones, pour forcer l'iPad a reprendre la nouvelle version. */
-var CACHE = "table-lumineuse-v1";
+var CACHE = "table-lumineuse-v2";
 
 var ASSETS = [
   "./",
