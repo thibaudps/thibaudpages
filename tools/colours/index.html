@@ -888,5 +888,14 @@ renderHarm();
 renderBaseSwatches();
 loadPickerFromHex(baseColors[0]);
 </script>
+<script>
+  /* Service worker : rend Colours utilisable hors ligne apres un premier chargement en ligne.
+     N'affecte en rien le visuel. */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./service-worker.js").catch(function () {});
+    });
+  }
+</script>
 </body>
 </html>
