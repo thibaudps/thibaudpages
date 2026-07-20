@@ -1377,9 +1377,9 @@ document.addEventListener('mouseout', e => {
 // 5s avant le premier passage, puis cycle :
 //   visible (durée de l'animation) → caché 10s → visible → ...
 // ────────────────────────────────────────────────────────────
-const CONTACT_SINGE_DELAY_INITIAL = 5000;  // attente avant la 1ère apparition
+const CONTACT_SINGE_DELAY_INITIAL = 3500;  // attente avant la 1ère apparition
 const CONTACT_SINGE_DURATION      = 6000;  // durée d'un passage complet (~36 frames à 6fps)
-const CONTACT_SINGE_PAUSE         = 6000;  // pause entre deux passages
+const CONTACT_SINGE_PAUSE         = 4000;  // pause entre deux passages
 
 let contactSingeTimers = [];  // timers actifs, pour pouvoir les annuler
 
