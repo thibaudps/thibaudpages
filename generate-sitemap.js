@@ -57,6 +57,13 @@ const pages = [
     sources: ['projets.html', 'data/projets.json'],
     withImages: true,
   },
+   {
+    loc: '/tools',
+    priority: '0.9',
+    changefreq: 'weekly',
+    sources: ['tools.html'],
+    withImages: true,
+  },
   {
     loc: '/about',
     priority: '0.7',
