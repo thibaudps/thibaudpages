@@ -62,7 +62,6 @@ const pages = [
     priority: '0.9',
     changefreq: 'weekly',
     sources: ['tools.html'],
-    withImages: true,
   },
   {
     loc: '/about',
