@@ -2,7 +2,7 @@
    Met en cache la coquille de l'app au premier chargement en ligne, puis la
    sert sans connexion. Change CACHE (v1 -> v2 ...) chaque fois que tu modifies
    index.html ou les icones, pour forcer les appareils a reprendre la nouvelle version. */
-var CACHE = "colours-v1";
+var CACHE = "colours-v2";
 
 var ASSETS = [
   "./",
