@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FBF7EC">
+<meta name="theme-color" content="#FAF7EC">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -13,880 +13,1262 @@
 <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
 <link rel="icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Atelier couleur · Sceau TP</title>
+<title>Colours by TP · générateur de palettes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Staatliches&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--creme:#FBF7EC;--creme-2:#F3ECDA;--marron:#2A2A24;--marron-soft:#4A4A40;--sage:#7E8C5A;--sage-deep:#5F6B41;--line:#E2D9C4;--shadow:rgba(42,42,36,.10);--radius:16px;font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{background:var(--creme);color:var(--marron);line-height:1.5;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);min-height:100vh}
-  body.tray-open{padding-bottom:132px}
-  .wrap{max-width:780px;margin:0 auto;padding:28px 20px 72px}
-  header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .seal{height:48px;width:auto;color:var(--marron);flex:none}
-  .titles h1{font-family:'Staatliches',sans-serif;font-weight:400;font-size:26px;letter-spacing:.5px;line-height:1;text-transform:uppercase}
-  .titles p{font-size:12.5px;color:var(--sage-deep);letter-spacing:.3px;margin-top:3px}
-  .tabs{display:flex;gap:6px;background:var(--creme-2);padding:5px;border-radius:14px;margin-bottom:24px}
-  .tab{flex:1;text-align:center;padding:11px 10px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:var(--marron-soft);background:transparent;border:none;transition:all .18s}
-  .tab.active{background:var(--creme);color:var(--marron);box-shadow:0 1px 4px var(--shadow)}
+  :root{
+    /* DA Thibaud Pagès : crème chaud proche du blanc, encre charbon chaud, accents vert + jaune */
+    --canvas:#FAF7EC; --ink:#262520;
+    --ink-soft:rgba(38,37,32,.60); --ink-faint:rgba(38,37,32,.28);
+    --rule:rgba(38,37,32,.24);
+    --accent:#7FA98B; --accent-soft:rgba(127,169,139,.14);
+    --accent2:#F2C24C;
+    --pad:clamp(16px,4vw,40px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--canvas);color:var(--ink);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;line-height:1.5;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:var(--pad) var(--pad) 80px}
+  header{border-bottom:1px solid var(--rule);padding-bottom:18px;margin-bottom:0}
+  h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;
+     font-size:clamp(26px,5.4vw,44px);line-height:.95;letter-spacing:-.02em;margin:0 0 10px}
+  .thesis{max-width:56ch;color:var(--ink-soft);margin:0}
+  .thesis b{color:var(--ink);font-weight:500}
+  label,.lbl{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);font-weight:600}
+
+  /* onglets */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin:0 0 26px}
+  .tab{font:inherit;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    background:none;border:0;color:var(--ink-soft);padding:14px 16px;cursor:pointer;position:relative}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--ink)}
+  .tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent)}
   .panel{display:none}
-  .panel.active{display:block}
-  .drop{border:2px dashed var(--line);border-radius:var(--radius);background:var(--creme-2);padding:38px 22px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s,transform .12s}
-  .drop:hover{border-color:var(--sage)}
-  .drop.drag{border-color:var(--sage);background:#EEF0E2;transform:scale(1.005)}
-  .drop svg{width:34px;height:34px;color:var(--sage);margin-bottom:10px}
-  .drop strong{display:block;font-weight:600;font-size:16px}
-  .drop span{font-size:13px;color:var(--marron-soft)}
-  input[type=file]{display:none}
-  .stage{display:none;margin-top:24px}
-  .stage.on{display:block}
-  .preview{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--creme-2);box-shadow:0 4px 18px var(--shadow);max-height:340px;display:flex;align-items:center;justify-content:center}
-  .preview img{max-width:100%;max-height:340px;display:block}
-  .btn-change{position:absolute;top:12px;right:12px;background:rgba(42,42,36,.82);color:var(--creme);border:none;border-radius:999px;padding:8px 14px;font-family:inherit;font-size:12.5px;font-weight:500;cursor:pointer;backdrop-filter:blur(4px)}
-  .btn-change:hover{background:var(--marron)}
-  .controls{display:flex;align-items:center;gap:16px;margin:22px 2px 6px;flex-wrap:wrap}
-  .control-label{font-size:13.5px;font-weight:500;color:var(--marron-soft);white-space:nowrap}
-  .count-badge{font-family:'Staatliches',sans-serif;font-size:20px;color:var(--sage-deep);min-width:26px;text-align:center}
-  .slider{-webkit-appearance:none;appearance:none;flex:1;min-width:150px;height:5px;border-radius:3px;background:var(--line);outline:none}
-  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--sage);border:3px solid var(--creme);box-shadow:0 1px 4px var(--shadow);cursor:pointer}
-  .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--sage);border:3px solid var(--creme);cursor:pointer}
-  .palette{display:grid;gap:12px;margin-top:18px}
-  .swatch{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 2px 8px var(--shadow)}
-  .chip{width:74px;flex:none;position:relative;cursor:pointer}
-  .chip .add-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;color:#fff;font-size:22px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-  .chip:hover .add-hint{opacity:.95}
-  .swatch .info{flex:1;display:flex;flex-direction:column;justify-content:center;padding:11px 14px;gap:2px}
-  .code-row{display:flex;align-items:center;gap:8px}
-  .code{font-size:14.5px;font-weight:600;letter-spacing:.4px}
-  .code.rgb{font-size:12.5px;font-weight:400;color:var(--marron-soft)}
-  .copy{margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;padding:5px 11px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;color:var(--marron-soft);transition:all .15s;white-space:nowrap}
-  .copy:hover{border-color:var(--sage);color:var(--sage-deep)}
-  .copy.done{background:var(--sage);color:var(--creme);border-color:var(--sage)}
-  .actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
-  .action{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;border:1px solid var(--sage);background:var(--sage);color:var(--creme);transition:all .15s}
-  .action:hover{background:var(--sage-deep);border-color:var(--sage-deep)}
-  .action.ghost{background:transparent;color:var(--sage-deep)}
-  .action.ghost:hover{background:var(--creme-2)}
-  .action svg{width:17px;height:17px}
-  .gen-intro{font-size:13.5px;color:var(--marron-soft);margin-bottom:16px}
-  .picker{display:flex;gap:24px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 8px var(--shadow)}
-  .wheel-wrap{position:relative;width:220px;height:220px;flex:none;touch-action:none;margin:0 auto;cursor:crosshair}
-  .wheel-wrap canvas{position:absolute;top:0;left:0;width:220px;height:220px;pointer-events:none}
-  .picker-side{flex:1;min-width:220px;display:flex;flex-direction:column;gap:16px}
-  .cur{display:flex;align-items:center;gap:12px}
-  .cur-swatch{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);flex:none}
-  .cur-codes{display:flex;flex-direction:column;gap:1px}
-  .cur-hex{font-size:16px;font-weight:600;letter-spacing:.4px}
-  .cur-rgb{font-size:12.5px;color:var(--marron-soft)}
-  .slider-block label{display:block;font-size:12px;font-weight:500;color:var(--marron-soft);margin-bottom:5px}
-  .paste-input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:14px;color:var(--marron);background:var(--creme);outline:none;transition:border-color .15s}
-  .paste-input:focus{border-color:var(--sage)}
-  .paste-input.bad{border-color:#C25B4A}
-  .paste-hint{font-size:11.5px;color:var(--marron-soft);margin-top:5px}
-  .harm-block{margin-top:18px}
-  .harm-label{font-size:12.5px;font-weight:500;color:var(--marron-soft);margin-bottom:8px}
-  .harm{display:flex;flex-wrap:wrap;gap:7px}
-  .harm button{border:1px solid var(--line);background:#fff;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--marron-soft);padding:7px 13px;border-radius:999px;cursor:pointer;transition:all .15s}
-  .harm button:hover{border-color:var(--sage)}
-  .harm button.on{background:var(--sage);border-color:var(--sage);color:var(--creme)}
-  .bases-row{display:flex;align-items:center;gap:10px;margin:20px 2px 2px;flex-wrap:wrap}
-  .bases-label{font-size:12.5px;font-weight:500;color:var(--marron-soft)}
-  .base-swatches{display:flex;gap:8px;flex-wrap:wrap}
-  .base-sw{position:relative;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);cursor:pointer;transition:transform .12s}
-  .base-sw.active{box-shadow:0 0 0 2px var(--creme),0 0 0 4px var(--sage)}
-  .base-sw:hover{transform:translateY(-2px)}
-  .base-sw .x{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--marron);color:#fff;font-size:11px;line-height:18px;text-align:center;border:2px solid var(--creme)}
-  .base-add{width:38px;height:38px;border-radius:10px;border:1px dashed var(--line);background:transparent;color:var(--sage-deep);font-size:20px;cursor:pointer}
-  .base-add:hover{border-color:var(--sage)}
-  .base-add:disabled{opacity:.35;cursor:default}
-  .size-row{display:flex;align-items:center;gap:12px;margin:18px 2px 4px}
-  .seg{display:inline-flex;background:var(--creme-2);border-radius:10px;padding:4px;gap:3px}
-  .seg button{border:none;background:transparent;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--marron-soft);padding:6px 13px;border-radius:7px;cursor:pointer}
-  .seg button.on{background:var(--creme);color:var(--marron);box-shadow:0 1px 3px var(--shadow)}
-  .rule-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-top:14px;box-shadow:0 2px 8px var(--shadow)}
-  .rule-head{display:flex;align-items:baseline;gap:10px;margin-bottom:11px;flex-wrap:wrap}
-  .rule-name{font-family:'Staatliches',sans-serif;font-size:18px;letter-spacing:.4px;text-transform:uppercase}
-  .rule-desc{font-size:12px;color:var(--marron-soft)}
-  .rule-actions{margin-left:auto;display:flex;gap:6px}
-  .mini-btn{background:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:500;color:var(--marron-soft)}
-  .mini-btn:hover{border-color:var(--sage);color:var(--sage-deep)}
-  .gen-row{display:flex;gap:8px;flex-wrap:wrap}
-  .gen-sw{flex:1;min-width:52px;height:64px;border-radius:10px;cursor:pointer;position:relative;border:1px solid rgba(0,0,0,.06);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;transition:transform .12s}
-  .gen-sw:hover{transform:translateY(-3px)}
-  .gen-sw span{font-size:10.5px;font-weight:600;background:rgba(255,255,255,.85);border-radius:5px;padding:1px 5px;opacity:0;transition:opacity .15s}
-  .gen-sw:hover span{opacity:1}
-  .gen-sw.picked::after{content:'✓';position:absolute;top:5px;right:6px;font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55)}
-  .tray{position:fixed;left:0;right:0;bottom:0;background:var(--marron);color:var(--creme);transform:translateY(110%);transition:transform .25s ease;z-index:40;box-shadow:0 -4px 20px rgba(0,0,0,.25);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
-  .tray.on{transform:translateY(0)}
-  .tray-inner{max-width:780px;margin:0 auto}
-  .tray-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .tray-title{font-family:'Staatliches',sans-serif;font-size:16px;letter-spacing:.4px}
-  .tray-count{font-size:12px;color:#C9C2AE}
-  .tray-clear{margin-left:auto;background:none;border:1px solid #55554C;color:#C9C2AE;border-radius:8px;padding:5px 11px;font-family:inherit;font-size:12px;cursor:pointer}
-  .tray-clear:hover{border-color:#7a7a6e;color:var(--creme)}
-  .tray-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
-  .tray-chip{flex:none;width:38px;height:38px;border-radius:9px;cursor:pointer;position:relative;border:1px solid rgba(255,255,255,.15)}
-  .tray-chip:hover::after{content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;background:rgba(0,0,0,.35);border-radius:9px}
-  .tray-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .tray-btn{flex:1;min-width:96px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;border:1px solid var(--sage);background:var(--sage);color:var(--creme)}
-  .tray-btn.ghost{background:transparent;color:var(--creme);border-color:#55554C}
-  .tray-btn.ghost:hover{border-color:#7a7a6e}
-  .tray-btn:hover{filter:brightness(1.05)}
-  footer{margin-top:44px;text-align:center;font-size:12px;color:var(--marron-soft);display:flex;align-items:center;justify-content:center;gap:4px}
-  footer .seal-mini{height:16px;width:auto;color:var(--sage-deep);opacity:.8}
-  footer a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
-  footer a:hover{border-color:var(--marron-soft)}
-  @media (max-width:440px){.chip{width:60px}.code{font-size:13.5px}}
+  .panel.on{display:block}
+
+  .sec{border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:24px}
+  .sec>.lbl{display:block;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+  .chip{position:relative;display:inline-block}
+  .chip .sqbtn{border:0;padding:0;background:none;cursor:pointer;display:block}
+  .chip .sq{width:56px;height:56px;display:block;box-shadow:inset 0 0 0 1px rgba(38,37,32,.25)}
+  .chip .sqbtn[aria-pressed="true"] .sq{box-shadow:inset 0 0 0 2px var(--ink),0 0 0 3px var(--canvas),0 0 0 4px var(--ink)}
+  .chip .code{display:block;font-size:9px;letter-spacing:.06em;padding-top:4px;color:var(--ink-soft)}
+  .kill{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border:0;border-radius:50%;
+        background:var(--ink);color:var(--canvas);font:inherit;font-size:11px;line-height:18px;
+        padding:0;cursor:pointer;text-align:center}
+  .add{width:56px;height:56px;border:1px dashed var(--rule);background:none;color:var(--ink-soft);
+       font:inherit;font-size:20px;cursor:pointer}
+  .add:hover{color:var(--ink);border-color:var(--ink)}
+  .empty{color:var(--ink-soft);font-size:11px;max-width:52ch;margin:10px 0 0}
+  .editor{display:none;gap:30px;margin-top:20px;flex-wrap:wrap;align-items:center}
+  .editor.on{display:flex}
+  canvas{touch-action:none;cursor:crosshair;display:block}
+  .sliders{flex:1;min-width:220px;max-width:360px;display:flex;flex-direction:column;gap:10px}
+  input[type=text]{font:inherit;font-size:13px;letter-spacing:.06em;color:var(--ink);
+    background:transparent;border:1px solid var(--rule);padding:8px 10px;width:100%}
+  input[type=text]::placeholder{color:var(--ink-faint)}
+  .paste-note{font-size:10px;color:var(--ink-soft);margin:2px 0 0}
+
+  /* Registre en boutons */
+  .segment{margin:0 0 24px}
+  .segment>.lbl{display:block;margin-bottom:10px}
+  .seg-btns{display:flex;flex-wrap:wrap;gap:6px}
+  .seg-btns button{font:inherit;font-size:11px;letter-spacing:.05em;background:none;border:1px solid var(--rule);
+    color:var(--ink-soft);padding:9px 15px;cursor:pointer;transition:color .12s,border-color .12s,background .12s}
+  .seg-btns button:hover{color:var(--ink);border-color:var(--ink)}
+  .seg-btns button.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px 22px;
+            border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:26px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  select{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--rule);
+    border-radius:0;padding:7px 8px;width:100%;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
+    background-position:calc(100% - 14px) 14px,calc(100% - 9px) 14px;background-size:5px 5px;background-repeat:no-repeat}
+  .thin{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;margin:0}
+  .thin::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
+  .thin::-moz-range-track{height:1px;background:var(--ink)}
+  .thin::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+    background:var(--ink);margin-top:-6px;cursor:pointer}
+  .thin::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:var(--ink);cursor:pointer}
+  .scale{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-faint);letter-spacing:.06em}
+  .go{font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+      background:var(--ink);color:var(--canvas);border:0;padding:12px 18px;cursor:pointer;align-self:end;width:100%}
+  select:focus-visible,button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .row{display:flex;justify-content:space-between;align-items:baseline}
+  .row output{font-size:11px;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+  .hero{display:flex;height:min(38vh,255px);min-height:168px}
+  .sw{flex:1;border:0;padding:0;cursor:pointer;position:relative;display:flex;align-items:flex-end;
+      justify-content:center;transition:filter .18s}
+  .sw:hover{filter:brightness(1.04)}
+  .sw .hex{font-size:11px;font-weight:600;letter-spacing:.08em;padding:0 0 14px;opacity:.82}
+  .sw .tag{position:absolute;top:9px;left:50%;transform:translateX(-50%);font-size:9px;
+           letter-spacing:.13em;text-transform:uppercase;opacity:0;white-space:nowrap}
+  .sw[data-state="base"] .tag,.sw[data-state="lock"] .tag{opacity:.9}
+  .sw[data-state="base"] .hex,.sw[data-state="lock"] .hex{opacity:1}
+  .sw[data-state="base"]{cursor:default}
+
+  /* lecture des métriques */
+  .readout{display:flex;flex-wrap:wrap;align-items:flex-start;gap:14px 26px;
+           border-bottom:1px solid var(--rule);padding:14px 0 18px;margin-bottom:8px}
+  .metric{display:flex;flex-direction:column;gap:3px;position:relative;cursor:help;outline:none}
+  .metric .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+  .metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-soft);
+             border-bottom:1px dotted var(--ink-faint);padding-bottom:1px;display:inline-block}
+  .gauge{height:4px;width:66px;border-radius:2px;position:relative;margin:1px 0 1px;
+         background:linear-gradient(90deg,#C0392B 0%,#D9A441 50%,#4D8757 100%)}
+  .gauge .mk{position:absolute;top:-2px;width:2px;height:8px;background:var(--ink);transform:translateX(-1px)}
+  .dial{margin-left:auto}
+
+  /* encart explicatif générique */
+  .metric>.tip,.tipwrap>.tip{position:absolute;bottom:calc(100% + 9px);left:0;width:220px;
+    background:var(--ink);color:var(--canvas);font-size:11px;line-height:1.5;letter-spacing:.01em;
+    text-transform:none;font-weight:400;padding:10px 12px;opacity:0;pointer-events:none;
+    transform:translateY(5px);transition:opacity .14s,transform .14s;z-index:20}
+  .metric>.tip::after,.tipwrap>.tip::after{content:"";position:absolute;top:100%;left:16px;
+    border:5px solid transparent;border-top-color:var(--ink)}
+  .metric:hover>.tip,.metric:focus-visible>.tip,.metric.show>.tip,
+  .tipwrap:hover>.tip,.tipwrap:focus-within>.tip{opacity:1;transform:translateY(0)}
+
+  .hint{font-size:11px;color:var(--ink-soft);margin:8px 0 16px}
+
+  /* barre d'export de palette */
+  .export-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+  .export-bar .xlbl{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-soft);margin-right:4px}
+  .tipwrap{position:relative;display:inline-flex}
+  .export-bar button{font:inherit;font-size:11px;letter-spacing:.05em;background:none;
+    border:1px solid var(--rule);color:var(--ink);padding:9px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+  .export-bar button:hover{border-color:var(--ink)}
+  .export-bar button.ghost{color:var(--ink-soft)}
+  .export-bar button.ghost:hover{color:var(--ink);border-color:var(--accent)}
+  .help-toggle{width:28px!important;height:28px;padding:0!important;border-radius:50%;
+    color:var(--ink-soft)!important;font-weight:600;line-height:1}
+  .help-toggle:hover,.help-toggle.on{color:var(--ink)!important;border-color:var(--ink)!important}
+  .legend{display:none;font-size:11px;line-height:1.75;color:var(--ink-soft);
+    border:1px solid var(--rule);padding:12px 15px;margin:0 0 30px;max-width:62ch}
+  .legend.open{display:block}
+  .legend b{color:var(--ink);font-weight:600}
+
+  h2{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:600;color:var(--ink-soft);margin:24px 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:18px}
+  .cand{cursor:pointer;border:0;background:none;padding:0;text-align:left;display:block;width:100%}
+  .cand .bars{display:flex;height:58px}
+  .cand .bars div{flex:1}
+  .cand .meta{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.1em;
+              color:var(--ink-soft);padding-top:6px;text-transform:uppercase}
+  .cand:hover .meta{color:var(--ink)}
+
+  /* onglet image */
+  .drop{border:1px dashed var(--rule);padding:28px 22px;text-align:center;
+        transition:border-color .15s,background .15s}
+  .drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .add-img{font:inherit;font-size:13px;font-weight:600;background:var(--ink);color:var(--canvas);
+           border:0;padding:11px 18px;cursor:pointer}
+  .add-img:hover{filter:brightness(1.08)}
+  .preview-row{display:flex;gap:20px;flex-wrap:wrap;align-items:stretch;margin:8px 0 18px}
+  .preview-row img{width:280px;max-width:42vw;object-fit:cover;border:1px solid var(--rule);display:block;align-self:flex-start}
+  .ex-hero{flex:1;min-width:240px;display:flex;min-height:180px}
+  .ex-sw{flex:1;border:0;padding:0;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;
+         position:relative;transition:filter .18s}
+  .ex-sw:hover{filter:brightness(1.05)}
+  .ex-sw .hx{font-size:10px;font-weight:600;letter-spacing:.05em;padding-bottom:10px;opacity:.92}
+
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+         color:var(--ink-soft);max-width:64ch;font-size:11px}
+  code{background:rgba(38,37,32,.10);padding:1px 4px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(14px);
+    background:var(--ink);color:var(--canvas);padding:9px 16px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:560px){
+    .hero{height:205px}
+    .sw .hex{font-size:9px;letter-spacing:.03em;writing-mode:vertical-rl;transform:rotate(180deg);padding:0 0 10px}
+    .sw .tag{font-size:8px;letter-spacing:.06em}
+    .preview-row img{width:100%;max-width:none}
+    .ex-hero{height:150px;min-height:120px}
+    .ex-sw .hx{writing-mode:vertical-rl;transform:rotate(180deg)}
+    .metric>.tip,.tipwrap>.tip{width:190px}
+  }
+  :root{ --forest:#2C5F2D; }
+  .masthead{border-bottom:1px solid var(--rule);padding-bottom:18px}
+  .masthead h1{display:flex;align-items:center;gap:.34em;flex-wrap:wrap;margin:0 0 10px}
+  .masthead .seal{height:1.15em;width:auto;color:var(--forest);flex:none;position:relative;top:.03em}
+  footer.madeby{display:flex;align-items:center;justify-content:center;gap:7px;border-top:1px solid var(--rule);margin-top:44px;padding-top:22px;max-width:none;font-size:11px;color:var(--ink-soft);letter-spacing:.02em}
+  .madeby a{display:inline-flex;align-items:center;gap:7px;color:var(--forest);text-decoration:none;font-weight:600}
+  .madeby a:hover{text-decoration:underline}
+  .madeby .seal-sm{height:19px;width:auto;color:var(--forest)}
+  @media (max-width:560px){ .masthead h1{font-size:clamp(24px,7.4vw,36px)} }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sceau" viewBox="0 0 1046 1425"><g transform="translate(0.000000,1425.000000) scale(0.100000,-0.100000)"
+fill="currentColor" stroke="none">
+<path d="M3960 13549 c-25 -4 -97 -10 -160 -13 -63 -3 -146 -10 -185 -16 -38
+-5 -116 -16 -173 -25 -56 -8 -119 -15 -138 -15 -19 0 -46 -7 -59 -16 -14 -9
+-49 -17 -79 -19 -30 -1 -64 -9 -77 -19 -13 -9 -31 -16 -40 -16 -9 0 -24 -9
+-33 -19 -23 -25 -90 -34 -167 -22 -49 8 -77 7 -127 -4 -35 -8 -80 -12 -100 -9
+-20 3 -66 -2 -102 -10 -36 -9 -85 -16 -110 -16 -25 0 -63 -9 -85 -20 -22 -11
+-53 -19 -70 -20 -32 0 -182 -49 -260 -84 -63 -29 -116 -46 -141 -46 -11 0 -31
+-12 -45 -26 -19 -20 -31 -25 -56 -21 -23 4 -43 -2 -75 -22 -24 -15 -57 -31
+-73 -35 -17 -4 -54 -24 -84 -44 -81 -56 -107 -71 -143 -80 -31 -8 -54 -38 -72
+-95 -3 -9 -17 -22 -30 -27 -23 -8 -46 -57 -46 -97 0 -7 -9 -17 -20 -23 -11 -6
+-20 -17 -20 -26 0 -19 -66 -140 -97 -178 -30 -36 -49 -80 -58 -137 -10 -59
+-28 -93 -65 -119 -27 -19 -29 -25 -24 -61 6 -35 3 -44 -23 -72 -24 -26 -33
+-47 -43 -109 -7 -42 -10 -91 -6 -108 4 -24 0 -40 -19 -68 -14 -20 -25 -50 -25
+-67 0 -17 -4 -35 -10 -41 -12 -12 -27 -80 -43 -191 -7 -45 -15 -85 -20 -89 -4
+-4 -7 -19 -7 -34 0 -15 -3 -29 -6 -33 -7 -6 -15 -117 -15 -194 0 -27 -5 -43
+-15 -47 -18 -7 -18 -24 0 -58 11 -20 12 -36 5 -65 -8 -31 -17 -261 -22 -583
+-1 -25 3 -90 7 -145 5 -55 8 -115 7 -133 -2 -48 27 -163 46 -184 15 -17 15
+-19 0 -36 -12 -13 -15 -28 -10 -55 3 -23 1 -42 -7 -52 -9 -11 -10 -18 -1 -29
+7 -8 13 -64 16 -138 2 -68 9 -136 16 -151 10 -22 10 -32 -1 -52 -11 -20 -11
+-30 0 -52 8 -18 13 -77 15 -161 1 -84 6 -137 14 -145 14 -14 14 -76 0 -151 -8
+-43 -7 -70 2 -106 10 -39 10 -59 0 -103 -10 -38 -10 -59 -3 -73 7 -14 7 -32 0
+-60 -9 -33 -8 -46 7 -77 15 -32 16 -42 6 -61 -11 -19 -9 -32 14 -87 22 -52 26
+-74 23 -124 -3 -34 1 -79 8 -104 11 -37 11 -48 -1 -72 -8 -15 -19 -31 -25 -34
+-15 -9 -12 -51 4 -64 11 -9 14 -43 15 -141 0 -79 5 -138 12 -152 7 -14 10 -48
+6 -96 -3 -40 -1 -113 5 -160 10 -85 13 -140 23 -392 3 -69 7 -170 9 -226 3
+-75 10 -120 30 -177 22 -63 24 -81 15 -99 -14 -26 -7 -154 10 -171 6 -6 11
+-34 11 -61 1 -28 8 -82 17 -121 8 -38 16 -104 18 -145 1 -41 9 -106 19 -145 9
+-38 19 -112 21 -163 2 -51 8 -99 14 -106 9 -10 9 -31 1 -77 -15 -93 -12 -135
+10 -181 22 -46 28 -96 35 -308 6 -164 17 -263 35 -301 9 -20 9 -32 1 -48 -9
+-15 -9 -32 -1 -59 6 -20 15 -77 20 -127 14 -128 28 -224 39 -267 5 -22 5 -54
+0 -75 -17 -73 -12 -104 47 -348 13 -55 26 -118 30 -140 3 -22 12 -62 19 -90 7
+-27 16 -95 19 -149 7 -102 22 -182 38 -203 6 -7 11 -50 12 -96 2 -72 7 -92 30
+-132 16 -27 26 -55 23 -67 -7 -27 20 -277 31 -291 5 -7 13 -28 17 -47 4 -19
+14 -48 23 -65 14 -28 25 -67 39 -140 3 -16 12 -37 20 -46 8 -10 16 -47 19 -92
+2 -42 9 -88 14 -102 6 -14 10 -46 10 -69 0 -31 8 -55 27 -82 22 -33 26 -48 24
+-95 -1 -37 5 -78 20 -120 19 -58 35 -116 53 -191 3 -14 22 -47 41 -72 19 -25
+48 -78 65 -118 17 -40 39 -82 49 -93 10 -11 33 -47 50 -80 18 -33 41 -69 52
+-81 10 -11 19 -24 19 -29 0 -4 25 -36 55 -70 36 -41 77 -74 122 -99 37 -20 80
+-46 95 -58 14 -11 49 -24 76 -29 27 -4 69 -16 93 -27 46 -21 102 -22 138 -3
+24 14 67 5 99 -20 12 -9 42 -20 65 -24 23 -4 61 -16 84 -26 48 -22 69 -24 79
+-8 9 15 51 3 88 -26 30 -23 38 -24 125 -19 65 3 97 1 107 -7 39 -32 254 -49
+315 -25 22 9 49 16 60 16 12 0 34 11 51 25 20 17 42 25 67 25 20 0 42 5 47 10
+7 7 31 8 70 2 66 -9 378 -7 394 3 6 4 35 -1 64 -10 50 -16 56 -16 88 -1 19 9
+49 16 68 15 56 -2 224 13 235 21 6 4 46 8 90 9 96 3 197 10 246 17 22 4 50 0
+73 -10 33 -14 41 -14 66 -1 16 8 55 15 87 15 32 0 74 5 93 10 19 6 82 13 140
+16 58 3 123 9 145 14 22 4 65 6 95 4 30 -3 62 -5 70 -5 8 0 58 2 110 6 52 4
+135 7 185 7 49 0 95 4 101 9 7 5 52 9 100 7 49 -1 140 5 203 14 69 10 123 13
+137 8 12 -5 48 -4 80 1 61 9 192 18 374 24 134 4 214 10 320 23 47 6 101 11
+120 10 19 0 53 4 75 10 22 7 72 12 110 12 39 1 124 10 190 21 196 33 416 61
+433 57 4 -1 27 11 52 26 26 17 63 31 90 33 49 5 102 26 137 53 13 10 40 21 60
+25 21 4 54 20 75 36 20 17 59 37 85 46 26 9 55 22 63 29 8 7 40 22 70 33 73
+27 161 95 235 179 33 38 78 85 101 105 41 37 134 183 134 211 0 8 5 18 11 22
+6 3 17 21 25 38 8 17 33 65 55 106 23 41 50 98 61 125 86 219 85 213 92 430 6
+163 18 295 27 301 5 3 9 24 9 47 0 24 9 69 20 101 16 44 19 65 12 90 -5 17 -8
+74 -6 126 2 52 6 165 8 250 2 85 9 196 15 245 23 200 29 579 15 890 -4 83 -7
+173 -7 200 1 28 1 92 2 144 0 52 -4 111 -9 132 -6 21 -9 87 -7 146 3 63 -2
+149 -10 208 -8 55 -14 141 -13 190 1 130 -5 269 -13 282 -4 6 -9 46 -12 90 -3
+43 -10 103 -15 133 -6 30 -12 114 -14 185 -3 127 -6 144 -29 195 -7 15 -12 93
+-14 190 -5 361 -14 584 -23 595 -6 7 -13 41 -16 76 -3 35 -10 77 -15 93 -5 17
+-5 33 0 40 11 13 8 146 -3 165 -5 7 -10 76 -13 154 -2 78 -9 158 -14 177 -6
+19 -13 98 -15 175 -2 77 -7 151 -11 165 -3 14 -7 62 -7 106 -1 45 -6 88 -12
+95 -13 16 -39 212 -31 233 6 14 -4 83 -23 171 -6 28 -15 86 -20 130 -5 44 -13
+98 -19 120 -5 22 -17 68 -25 103 -9 35 -13 74 -10 88 3 13 2 30 -4 37 -11 13
+-9 91 3 120 5 11 1 24 -10 37 -10 11 -21 50 -27 97 -6 43 -14 82 -18 86 -4 5
+-6 26 -3 47 4 27 -1 50 -15 77 -20 39 -37 119 -48 233 -4 36 -15 99 -26 140
+-11 41 -21 93 -23 115 -3 53 -15 115 -25 140 -19 47 -24 65 -46 160 -33 148
+-44 189 -55 199 -5 6 -9 22 -9 36 0 14 -6 32 -12 38 -7 7 -18 34 -24 60 -7 26
+-19 70 -27 97 -9 28 -21 70 -27 95 -22 86 -33 115 -51 138 -10 13 -21 44 -25
+70 -3 26 -13 62 -20 81 -8 18 -14 42 -14 53 0 11 -14 36 -31 56 -24 27 -30 41
+-25 63 4 21 -1 36 -19 58 -14 16 -25 40 -25 54 0 13 -8 35 -18 48 -10 13 -25
+42 -34 64 -26 63 -28 67 -58 120 -36 61 -80 154 -80 167 0 6 -11 23 -25 40
+-14 16 -25 40 -25 53 0 12 -7 28 -16 36 -18 15 -114 156 -114 168 0 4 -9 16
+-20 26 -11 10 -20 21 -20 26 0 4 -16 30 -35 59 -19 29 -35 58 -35 66 0 26
+-124 141 -186 172 -33 17 -66 37 -73 46 -8 9 -19 16 -26 16 -7 0 -29 14 -50
+30 -21 17 -44 30 -52 30 -8 0 -26 9 -40 20 -14 11 -31 20 -38 20 -6 0 -22 11
+-35 25 -14 15 -35 25 -51 25 -27 0 -69 15 -132 46 -16 8 -43 14 -61 14 -17 0
+-41 6 -52 14 -11 8 -42 17 -69 21 -28 3 -61 10 -75 14 -54 18 -137 34 -180 36
+-72 4 -203 22 -230 33 -14 5 -61 13 -105 17 -44 4 -111 14 -150 22 -89 20
+-150 30 -250 42 -44 6 -116 15 -160 21 -44 6 -154 13 -245 15 -334 8 -482 15
+-493 22 -7 4 -48 7 -92 8 -75 0 -80 1 -83 22 -2 12 -16 33 -32 47 -25 21 -44
+25 -137 33 -59 4 -133 6 -165 5 -41 -3 -63 1 -83 14 -15 10 -49 18 -78 19 -85
+3 -181 17 -195 28 -7 6 -73 12 -145 13 -402 9 -516 10 -557 3z m1615 -1952
+c193 -4 385 -12 429 -17 43 -5 82 -7 87 -5 4 3 31 -2 58 -11 28 -9 68 -14 88
+-12 26 3 51 -2 77 -15 21 -11 69 -23 106 -26 37 -4 74 -11 81 -17 13 -11 178
+-27 248 -25 21 1 42 -6 55 -18 12 -10 40 -22 63 -26 24 -4 45 -11 49 -16 3 -5
+26 -9 52 -9 26 0 61 -7 77 -16 17 -9 48 -16 70 -16 24 -1 50 -8 64 -19 13 -11
+31 -19 41 -19 20 0 77 -27 85 -40 3 -5 25 -19 48 -30 23 -11 53 -27 67 -35 14
+-7 46 -19 72 -25 66 -17 218 -141 218 -179 0 -30 22 -67 57 -94 13 -10 23 -25
+23 -34 0 -8 24 -43 54 -76 29 -34 57 -73 61 -87 4 -14 13 -32 20 -40 14 -16
+81 -145 113 -220 11 -25 36 -74 56 -108 20 -35 36 -74 36 -86 0 -12 16 -45 35
+-72 19 -27 35 -59 35 -71 0 -12 11 -35 25 -51 14 -17 25 -43 25 -59 0 -16 9
+-46 20 -68 11 -22 20 -44 20 -50 0 -6 8 -22 17 -35 19 -27 60 -141 74 -205 5
+-22 14 -70 21 -106 7 -37 20 -75 29 -85 9 -11 24 -44 33 -74 10 -30 22 -60 28
+-67 5 -7 7 -21 3 -32 -3 -10 -1 -22 5 -26 6 -4 8 -15 5 -25 -3 -10 3 -33 15
+-52 11 -18 20 -42 20 -54 0 -11 8 -36 17 -55 10 -19 21 -56 24 -84 4 -27 15
+-88 24 -135 40 -205 66 -376 71 -470 3 -47 11 -121 19 -165 7 -44 21 -147 31
+-230 13 -109 23 -157 36 -174 13 -17 18 -42 18 -85 1 -33 8 -115 16 -181 51
+-419 51 -414 63 -665 13 -262 28 -453 41 -533 5 -34 12 -103 14 -152 17 -331
+18 -382 7 -389 -17 -11 -13 -58 8 -107 14 -34 21 -82 26 -204 5 -88 8 -169 7
+-180 0 -11 4 -54 10 -95 6 -41 12 -115 14 -165 5 -143 14 -226 29 -280 7 -27
+18 -124 24 -215 6 -91 16 -199 21 -240 6 -41 10 -102 8 -135 -1 -33 2 -103 7
+-155 14 -165 12 -423 -4 -456 -38 -82 -65 -131 -79 -147 -9 -10 -26 -38 -37
+-62 -30 -66 -106 -156 -254 -303 -113 -112 -139 -133 -172 -138 -22 -4 -54
+-20 -78 -40 -21 -19 -50 -34 -63 -34 -14 0 -35 -11 -47 -24 -15 -16 -38 -25
+-74 -29 -45 -6 -105 -26 -214 -73 -17 -8 -40 -14 -50 -14 -10 0 -24 -5 -29
+-10 -8 -8 -20 -7 -39 0 -22 8 -37 7 -67 -5 -25 -10 -73 -15 -136 -16 -53 0
+-135 -5 -182 -10 -47 -6 -134 -12 -195 -15 -60 -2 -125 -9 -144 -15 -44 -15
+-193 -19 -255 -6 -32 6 -55 6 -70 -1 -31 -15 -162 -25 -491 -36 -99 -3 -226
+-10 -281 -16 -56 -6 -108 -8 -117 -4 -8 3 -25 0 -37 -6 -12 -6 -71 -13 -131
+-15 -60 -3 -114 -7 -120 -10 -5 -4 -47 -8 -92 -11 -45 -2 -100 -6 -122 -9 -22
+-2 -114 -7 -205 -9 -91 -3 -187 -11 -215 -17 -27 -6 -79 -12 -115 -13 -36 -2
+-137 -10 -225 -19 -237 -24 -546 -41 -618 -32 -34 4 -85 8 -112 10 -64 4 -165
+22 -233 41 -29 9 -101 18 -160 20 -207 9 -241 16 -317 68 -28 20 -56 36 -62
+36 -5 0 -30 11 -54 25 -24 14 -51 27 -59 30 -54 20 -170 82 -193 104 -16 14
+-40 46 -55 71 -59 104 -174 269 -227 325 -30 33 -63 74 -72 90 -8 17 -23 39
+-33 50 -9 11 -23 43 -30 70 -7 28 -23 66 -36 86 -13 19 -24 39 -24 43 0 5 -13
+36 -29 70 -41 84 -59 138 -81 231 -10 44 -26 96 -34 116 -8 20 -18 71 -21 115
+-3 43 -10 106 -15 139 -5 33 -12 148 -15 255 -9 268 -13 397 -24 665 -4 127
+-8 241 -8 255 1 14 -8 79 -19 145 -10 66 -18 154 -17 195 3 75 3 364 1 910 -1
+157 -1 330 0 385 1 188 -6 325 -17 338 -5 7 -12 65 -14 128 -2 64 -7 121 -11
+128 -4 7 -10 102 -12 212 -3 120 -9 209 -15 222 -7 11 -16 56 -20 100 -5 43
+-14 87 -19 97 -6 10 -10 69 -10 129 0 61 -4 119 -9 129 -5 9 -17 62 -26 117
+-23 130 -68 349 -92 450 -11 44 -21 107 -22 139 -1 33 -9 75 -17 94 -8 19 -14
+46 -14 61 0 14 -6 37 -13 51 -12 23 -24 139 -33 315 -1 28 -9 67 -18 88 -13
+29 -18 86 -22 255 -3 119 -9 235 -13 257 -5 22 -9 93 -10 158 -1 96 2 124 16
+148 13 22 15 31 5 41 -18 18 -15 53 8 100 11 23 23 63 26 91 4 29 16 60 30 77
+13 15 24 32 24 37 0 11 54 64 97 95 18 13 74 55 125 94 132 100 163 117 222
+121 141 9 265 15 296 15 19 -1 49 8 66 19 20 12 48 19 75 18 70 -1 118 6 131
+19 7 7 21 12 33 12 11 0 52 7 90 16 39 9 95 20 125 24 30 5 82 14 115 20 115
+21 199 31 213 25 7 -3 22 0 33 5 10 6 59 12 108 15 50 2 101 10 117 18 43 21
+121 29 144 15 16 -10 25 -9 47 4 19 11 83 22 193 33 91 9 188 21 217 27 28 6
+72 8 96 5 25 -4 48 -2 54 4 12 12 305 32 355 24 20 -4 44 -3 53 2 17 10 143
+10 680 0z"/>
+<path d="M6575 10982 c-11 -2 -26 -9 -33 -15 -8 -6 -48 -12 -90 -14 -109 -3
+-134 -7 -157 -20 -11 -6 -38 -14 -60 -18 -22 -4 -46 -12 -53 -18 -7 -6 -48
+-11 -90 -12 -48 -1 -92 -8 -116 -18 -23 -10 -48 -14 -60 -11 -35 12 -127 10
+-206 -3 -41 -7 -109 -12 -150 -13 -45 0 -81 -5 -88 -12 -9 -9 -17 -9 -34 -1
+-38 19 -139 25 -190 12 -38 -10 -52 -10 -72 0 -19 10 -31 11 -57 1 -27 -9 -46
+-9 -89 0 -30 7 -77 14 -105 16 -27 3 -59 9 -70 14 -25 11 -171 28 -333 39 -90
+7 -128 13 -141 25 -22 20 -36 20 -72 -1 -25 -15 -35 -15 -78 -4 -29 7 -108 12
+-197 12 -82 -1 -191 1 -242 5 -71 4 -99 2 -122 -9 -16 -9 -59 -19 -95 -22 -36
+-4 -68 -11 -71 -16 -7 -13 -108 -11 -137 2 -19 9 -32 6 -72 -15 -26 -14 -59
+-26 -73 -26 -14 0 -36 -9 -48 -21 -16 -15 -42 -23 -105 -29 -46 -4 -109 -15
+-139 -23 -30 -8 -76 -18 -101 -21 -26 -4 -70 -15 -98 -25 -27 -11 -74 -22
+-102 -26 -34 -5 -75 -21 -116 -46 -35 -22 -69 -39 -76 -39 -20 0 -107 -86
+-107 -106 0 -57 16 -97 51 -138 22 -24 39 -48 39 -52 0 -5 19 -26 43 -49 96
+-92 287 -297 287 -309 0 -47 225 -126 277 -97 23 12 99 14 283 8 91 -3 145 0
+165 8 19 7 104 13 230 14 110 1 207 3 215 3 8 0 38 -4 65 -10 28 -6 70 -8 95
+-5 55 6 73 -10 75 -65 0 -21 4 -43 8 -49 5 -7 1 -27 -7 -45 -8 -18 -17 -51
+-19 -73 -3 -22 -13 -87 -23 -145 -10 -58 -18 -148 -18 -200 -1 -72 -6 -104
+-20 -133 -15 -31 -16 -42 -6 -66 9 -23 9 -47 0 -107 -9 -61 -9 -86 0 -115 8
+-23 11 -65 8 -110 -3 -40 -1 -86 3 -103 5 -17 12 -69 15 -115 2 -47 8 -90 13
+-95 15 -20 20 -59 10 -78 -7 -13 -7 -33 2 -66 7 -26 14 -96 15 -157 2 -60 5
+-144 9 -185 3 -41 7 -106 9 -145 2 -38 8 -81 13 -95 5 -14 9 -59 8 -100 -2
+-41 4 -118 11 -170 12 -80 19 -99 43 -125 16 -16 32 -39 35 -51 4 -12 25 -40
+49 -63 23 -23 58 -57 77 -76 19 -19 43 -35 52 -35 9 0 40 -19 70 -42 73 -59
+144 -108 156 -108 5 0 21 -17 35 -37 38 -56 78 -96 119 -118 37 -19 37 -19 95
+1 l57 21 16 69 c9 38 19 76 22 84 4 8 5 76 3 150 -2 74 -4 172 -4 216 0 48 -6
+101 -15 127 -12 36 -14 75 -10 184 3 76 10 151 15 167 5 18 5 33 0 40 -10 12
+1 135 13 155 4 5 -1 42 -9 80 -13 55 -14 84 -7 133 6 41 6 70 0 82 -13 25 -18
+188 -9 284 5 42 4 87 0 99 -5 13 -9 62 -10 110 -1 49 -9 133 -19 188 -9 55
+-15 120 -12 144 3 30 0 46 -9 52 -10 6 -15 38 -16 116 -1 59 -4 133 -7 163 -3
+30 -6 114 -7 185 l-3 130 40 1 c21 1 52 5 67 9 19 5 33 3 45 -7 11 -9 43 -15
+91 -16 41 -1 79 -6 85 -12 5 -5 30 -10 56 -10 25 0 63 -5 85 -11 22 -6 65 -12
+95 -14 30 -2 75 -8 100 -13 28 -7 49 -7 55 -1 5 5 26 9 46 9 21 0 41 5 44 10
+3 6 39 10 78 10 40 0 130 7 202 15 71 9 141 13 156 10 17 -4 37 0 51 9 13 9
+37 15 53 15 31 -1 112 11 245 36 41 8 113 21 158 30 46 8 94 20 105 26 31 16
+77 61 77 75 0 6 7 17 15 24 10 9 14 23 11 39 -13 63 -16 204 -5 218 7 7 13 42
+14 76 1 34 8 82 14 107 11 38 11 48 -4 73 -14 23 -15 33 -5 57 8 20 9 38 1 66
+-15 55 -15 59 20 98 l31 35 -59 55 c-32 31 -63 55 -70 56 -6 0 -20 16 -32 35
+-13 22 -28 35 -41 35 -12 0 -33 6 -48 14 -33 16 -80 24 -107 18z"/>
+<path d="M3005 9144 c-44 -8 -123 -16 -175 -18 -104 -4 -135 -12 -165 -46 -26
+-29 -68 -50 -100 -50 -18 0 -29 -8 -37 -27 -7 -16 -25 -40 -40 -55 -26 -24
+-28 -34 -30 -105 -3 -111 -2 -126 6 -144 5 -12 -2 -27 -23 -48 -35 -36 -49
+-77 -32 -94 15 -15 14 -37 -3 -56 -14 -15 -29 -211 -26 -336 1 -57 36 -162 65
+-197 14 -16 25 -36 25 -44 0 -7 12 -21 28 -31 15 -9 50 -39 79 -65 28 -26 60
+-48 70 -48 11 0 37 -13 59 -29 21 -16 53 -32 71 -35 17 -4 37 -14 44 -22 16
+-20 43 -17 64 6 21 23 43 25 70 6 21 -14 57 -19 230 -35 83 -8 104 -7 123 5
+13 9 49 17 80 18 96 6 123 16 172 67 25 26 64 55 88 64 41 17 102 75 102 98 0
+7 12 35 26 62 14 28 28 75 31 105 3 30 13 80 23 110 21 63 20 239 -1 325 -6
+28 -13 59 -14 70 -1 11 -4 27 -7 35 -10 28 -27 95 -33 132 -3 20 -22 58 -43
+85 -20 26 -44 61 -52 78 -19 36 -72 49 -167 41 -60 -5 -63 -4 -83 23 -11 16
+-20 36 -20 43 0 17 -31 48 -47 48 -6 0 -16 7 -23 15 -7 8 -24 15 -39 15 -15 0
+-35 6 -46 14 -18 12 -64 22 -140 31 -16 2 -66 -3 -110 -11z"/>
+<path d="M6080 9112 c-19 -2 -49 -9 -67 -17 -17 -8 -46 -15 -65 -15 -20 0 -50
+-12 -77 -30 -24 -17 -51 -30 -61 -30 -22 0 -63 -45 -89 -97 -12 -23 -29 -47
+-39 -52 -16 -8 -20 -27 -25 -107 -5 -74 -12 -104 -28 -131 -19 -31 -21 -40
+-11 -66 7 -17 8 -35 3 -41 -14 -18 -24 -185 -12 -200 12 -15 -2 -110 -25 -164
+-11 -25 -11 -38 -3 -53 5 -11 7 -33 4 -49 -5 -22 -2 -31 12 -38 10 -6 24 -32
+31 -59 32 -121 46 -155 74 -174 16 -12 35 -34 43 -50 9 -16 23 -29 32 -29 9 0
+25 -8 35 -17 14 -12 43 -18 111 -21 63 -3 97 -9 109 -19 12 -11 28 -13 51 -9
+28 5 39 1 74 -29 38 -32 45 -35 104 -33 35 1 73 7 84 14 11 6 36 15 55 19 19
+4 64 21 100 37 l65 29 62 -27 c72 -30 93 -27 93 14 0 36 44 79 85 84 20 2 31
+9 33 23 2 11 10 27 17 35 7 8 15 35 18 59 3 27 15 53 30 70 22 22 97 168 97
+188 0 3 11 21 25 39 14 18 25 41 25 52 0 11 7 25 15 32 19 16 19 69 0 94 -8
+11 -12 28 -9 39 4 11 -2 27 -14 40 -11 12 -23 33 -27 47 -4 14 -17 48 -30 75
+-34 74 -55 133 -55 153 0 10 -42 55 -95 101 -52 46 -95 87 -95 93 0 5 -26 21
+-57 35 -32 15 -84 46 -117 70 -32 24 -68 43 -81 43 -12 0 -34 9 -48 20 -14 11
+-29 20 -33 20 -4 0 -15 6 -23 14 -16 14 -212 26 -301 18z"/>
+<path d="M6364 6284 c-14 -10 -29 -12 -45 -6 -35 12 -160 8 -187 -7 -18 -10
+-28 -9 -57 4 -19 9 -38 14 -44 11 -5 -4 -45 -16 -88 -27 -88 -22 -374 -33
+-405 -15 -11 7 -33 6 -67 -2 -28 -6 -58 -9 -66 -6 -8 4 -50 1 -93 -6 -59 -10
+-83 -10 -100 -1 -16 8 -32 8 -64 0 -72 -18 -140 -29 -203 -33 -33 -3 -100 -9
+-150 -15 -49 -6 -146 -13 -215 -15 -69 -3 -186 -11 -260 -19 -77 -8 -139 -11
+-144 -6 -16 15 -85 10 -111 -7 -16 -10 -54 -17 -112 -19 -48 -2 -104 -8 -123
+-14 -19 -6 -66 -11 -103 -11 -38 0 -77 -5 -88 -11 -12 -6 -75 -12 -142 -15
+-67 -2 -160 -12 -207 -21 -47 -9 -103 -17 -125 -18 -22 -1 -67 -8 -100 -15
+-33 -7 -82 -14 -110 -15 -80 -3 -143 -54 -178 -143 -23 -58 -21 -100 8 -147
+14 -22 25 -47 25 -55 1 -8 14 -31 30 -50 17 -19 30 -40 30 -47 0 -6 19 -21 43
+-31 23 -11 67 -43 99 -71 31 -28 61 -51 67 -51 6 0 15 -9 21 -20 6 -11 15 -20
+21 -20 13 0 50 -28 125 -92 30 -27 59 -48 66 -48 6 0 26 -11 44 -25 28 -22 36
+-23 64 -14 17 6 50 9 73 6 53 -8 173 10 212 31 17 10 70 20 125 24 92 7 252
+26 395 48 39 6 82 9 96 6 14 -3 44 1 66 9 23 8 105 16 195 20 135 5 157 4 168
+-10 8 -10 17 -62 22 -133 4 -64 13 -157 19 -207 7 -49 11 -122 11 -161 -1 -53
+2 -75 13 -84 8 -7 15 -23 15 -36 0 -12 4 -25 9 -28 5 -3 11 -32 14 -63 12
+-124 21 -159 54 -213 18 -30 33 -67 33 -81 0 -15 12 -37 30 -54 17 -16 30 -34
+30 -41 0 -7 18 -27 40 -44 23 -18 49 -49 60 -70 11 -21 38 -52 60 -70 22 -18
+51 -50 63 -72 12 -22 29 -52 38 -68 8 -15 42 -50 75 -77 32 -27 66 -58 74 -67
+8 -10 23 -22 35 -27 11 -5 43 -27 70 -49 28 -22 61 -43 75 -46 39 -8 53 -18
+70 -50 9 -16 31 -39 48 -50 40 -28 204 -91 262 -102 25 -5 63 -21 84 -35 21
+-15 44 -27 51 -27 7 0 23 -9 37 -19 36 -29 140 -47 197 -33 25 6 98 16 161 22
+63 7 125 19 138 27 12 7 27 11 32 8 5 -3 23 1 39 10 42 21 61 19 93 -12 l28
+-27 22 21 c13 11 30 23 38 27 70 32 143 91 206 168 35 43 68 78 73 78 20 0
+170 161 181 194 6 20 16 38 21 42 5 3 23 34 39 68 16 34 41 73 55 86 17 16 25
+34 25 57 0 19 9 51 20 73 11 22 20 47 20 57 0 10 7 27 15 37 8 11 15 32 15 46
+0 15 7 50 16 79 8 29 19 83 24 120 11 85 27 150 46 178 8 13 14 48 14 85 1 36
+9 87 20 118 11 30 19 69 20 87 0 17 5 35 11 39 6 3 8 16 5 29 -3 12 -8 85 -11
+161 -5 145 -17 221 -41 264 -13 25 -28 56 -80 167 -14 32 -32 69 -38 82 -29
+62 -158 178 -267 239 -31 18 -62 39 -69 48 -13 15 -90 54 -108 54 -4 0 -21 14
+-37 30 -16 17 -37 30 -48 30 -10 0 -33 10 -50 23 -18 12 -48 30 -67 41 -19 10
+-51 32 -70 47 -19 16 -44 29 -56 29 -12 0 -27 7 -34 15 -7 8 -22 15 -34 15
+-12 0 -28 6 -34 12 -19 19 -280 20 -308 2z m-23 -870 c25 -24 30 -25 80 -16
+34 6 76 6 114 0 33 -5 79 -9 102 -9 46 1 114 -31 171 -80 18 -16 43 -29 56
+-29 36 0 72 -49 80 -107 8 -60 -9 -230 -24 -248 -7 -8 -20 -49 -31 -92 -11
+-43 -24 -82 -29 -87 -6 -6 -10 -17 -10 -26 0 -22 -95 -209 -120 -235 -11 -12
+-20 -26 -20 -32 0 -24 -192 -203 -218 -203 -4 0 -28 -20 -52 -45 -29 -29 -53
+-45 -70 -45 -14 -1 -36 -7 -50 -15 -14 -8 -39 -14 -56 -15 -17 0 -52 -7 -78
+-16 -41 -14 -54 -15 -89 -3 -23 7 -53 21 -66 31 -13 10 -34 18 -47 18 -12 0
+-43 9 -69 20 -26 11 -54 20 -62 20 -21 0 -83 48 -83 64 0 7 -9 21 -20 31 -11
+10 -20 24 -20 31 0 7 -21 36 -48 66 -120 134 -112 119 -112 218 0 74 -4 95
+-22 127 -17 28 -24 56 -25 108 -1 39 -4 140 -6 225 -3 85 -8 194 -12 241 l-7
+87 30 6 c16 4 76 2 133 -5 57 -6 151 -11 209 -10 58 1 123 1 144 1 22 0 50 7
+63 15 14 10 47 15 92 15 38 0 73 5 76 10 12 20 68 11 96 -16z"/>
+<path d="M3775 4560 c-4 -7 -17 -9 -30 -6 -12 3 -25 2 -29 -2 -4 -4 -26 -7
+-49 -8 -23 -1 -67 -6 -97 -11 -49 -10 -61 -18 -116 -76 -48 -50 -63 -74 -69
+-106 -4 -22 -15 -51 -25 -64 -16 -20 -18 -33 -11 -79 6 -43 4 -63 -8 -85 -24
+-44 -18 -142 13 -196 19 -34 23 -54 19 -84 -4 -32 0 -48 21 -80 20 -30 31 -67
+43 -144 8 -57 22 -111 29 -120 8 -8 14 -22 14 -30 0 -28 75 -114 102 -117 15
+-2 32 -10 38 -18 7 -8 17 -14 23 -14 6 0 21 -10 34 -22 20 -18 37 -22 109 -24
+57 -2 93 -8 109 -18 13 -9 37 -16 52 -16 16 0 46 -9 67 -21 33 -17 49 -20 95
+-14 31 4 70 15 87 26 17 10 43 19 57 19 14 0 29 5 32 10 3 6 14 10 24 10 10 0
+28 12 42 26 15 16 30 23 43 20 14 -4 37 14 88 66 37 39 68 75 68 80 0 4 7 8
+16 8 26 0 95 66 124 117 14 27 32 58 40 70 12 19 10 33 -14 115 -15 51 -32
+100 -37 108 -5 8 -16 31 -25 50 -86 194 -150 296 -247 394 -67 67 -92 86 -114
+86 -15 0 -61 11 -101 25 -41 14 -82 25 -92 25 -11 0 -22 5 -25 10 -3 6 -14 10
+-24 10 -10 0 -24 7 -31 15 -7 8 -22 15 -34 15 -12 0 -38 8 -59 19 -20 10 -54
+22 -74 25 -21 4 -45 9 -55 12 -9 3 -19 0 -23 -6z"/>
+</g></symbol></svg>
 <div class="wrap">
-  <header>
-    <svg class="seal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1046 1425" role="img" aria-label="Sceau TP - Thibaud Pages">
-<g transform="translate(0.000000,1425.000000) scale(0.100000,-0.100000)"
-fill="currentColor" stroke="none">
-<path d="M3960 13549 c-25 -4 -97 -10 -160 -13 -63 -3 -146 -10 -185 -16 -38
--5 -116 -16 -173 -25 -56 -8 -119 -15 -138 -15 -19 0 -46 -7 -59 -16 -14 -9
--49 -17 -79 -19 -30 -1 -64 -9 -77 -19 -13 -9 -31 -16 -40 -16 -9 0 -24 -9
--33 -19 -23 -25 -90 -34 -167 -22 -49 8 -77 7 -127 -4 -35 -8 -80 -12 -100 -9
--20 3 -66 -2 -102 -10 -36 -9 -85 -16 -110 -16 -25 0 -63 -9 -85 -20 -22 -11
--53 -19 -70 -20 -32 0 -182 -49 -260 -84 -63 -29 -116 -46 -141 -46 -11 0 -31
--12 -45 -26 -19 -20 -31 -25 -56 -21 -23 4 -43 -2 -75 -22 -24 -15 -57 -31
--73 -35 -17 -4 -54 -24 -84 -44 -81 -56 -107 -71 -143 -80 -31 -8 -54 -38 -72
--95 -3 -9 -17 -22 -30 -27 -23 -8 -46 -57 -46 -97 0 -7 -9 -17 -20 -23 -11 -6
--20 -17 -20 -26 0 -19 -66 -140 -97 -178 -30 -36 -49 -80 -58 -137 -10 -59
--28 -93 -65 -119 -27 -19 -29 -25 -24 -61 6 -35 3 -44 -23 -72 -24 -26 -33
--47 -43 -109 -7 -42 -10 -91 -6 -108 4 -24 0 -40 -19 -68 -14 -20 -25 -50 -25
--67 0 -17 -4 -35 -10 -41 -12 -12 -27 -80 -43 -191 -7 -45 -15 -85 -20 -89 -4
--4 -7 -19 -7 -34 0 -15 -3 -29 -6 -33 -7 -6 -15 -117 -15 -194 0 -27 -5 -43
--15 -47 -18 -7 -18 -24 0 -58 11 -20 12 -36 5 -65 -8 -31 -17 -261 -22 -583
--1 -25 3 -90 7 -145 5 -55 8 -115 7 -133 -2 -48 27 -163 46 -184 15 -17 15
--19 0 -36 -12 -13 -15 -28 -10 -55 3 -23 1 -42 -7 -52 -9 -11 -10 -18 -1 -29
-7 -8 13 -64 16 -138 2 -68 9 -136 16 -151 10 -22 10 -32 -1 -52 -11 -20 -11
--30 0 -52 8 -18 13 -77 15 -161 1 -84 6 -137 14 -145 14 -14 14 -76 0 -151 -8
--43 -7 -70 2 -106 10 -39 10 -59 0 -103 -10 -38 -10 -59 -3 -73 7 -14 7 -32 0
--60 -9 -33 -8 -46 7 -77 15 -32 16 -42 6 -61 -11 -19 -9 -32 14 -87 22 -52 26
--74 23 -124 -3 -34 1 -79 8 -104 11 -37 11 -48 -1 -72 -8 -15 -19 -31 -25 -34
--15 -9 -12 -51 4 -64 11 -9 14 -43 15 -141 0 -79 5 -138 12 -152 7 -14 10 -48
-6 -96 -3 -40 -1 -113 5 -160 10 -85 13 -140 23 -392 3 -69 7 -170 9 -226 3
--75 10 -120 30 -177 22 -63 24 -81 15 -99 -14 -26 -7 -154 10 -171 6 -6 11
--34 11 -61 1 -28 8 -82 17 -121 8 -38 16 -104 18 -145 1 -41 9 -106 19 -145 9
--38 19 -112 21 -163 2 -51 8 -99 14 -106 9 -10 9 -31 1 -77 -15 -93 -12 -135
-10 -181 22 -46 28 -96 35 -308 6 -164 17 -263 35 -301 9 -20 9 -32 1 -48 -9
--15 -9 -32 -1 -59 6 -20 15 -77 20 -127 14 -128 28 -224 39 -267 5 -22 5 -54
-0 -75 -17 -73 -12 -104 47 -348 13 -55 26 -118 30 -140 3 -22 12 -62 19 -90 7
--27 16 -95 19 -149 7 -102 22 -182 38 -203 6 -7 11 -50 12 -96 2 -72 7 -92 30
--132 16 -27 26 -55 23 -67 -7 -27 20 -277 31 -291 5 -7 13 -28 17 -47 4 -19
-14 -48 23 -65 14 -28 25 -67 39 -140 3 -16 12 -37 20 -46 8 -10 16 -47 19 -92
-2 -42 9 -88 14 -102 6 -14 10 -46 10 -69 0 -31 8 -55 27 -82 22 -33 26 -48 24
--95 -1 -37 5 -78 20 -120 19 -58 35 -116 53 -191 3 -14 22 -47 41 -72 19 -25
-48 -78 65 -118 17 -40 39 -82 49 -93 10 -11 33 -47 50 -80 18 -33 41 -69 52
--81 10 -11 19 -24 19 -29 0 -4 25 -36 55 -70 36 -41 77 -74 122 -99 37 -20 80
--46 95 -58 14 -11 49 -24 76 -29 27 -4 69 -16 93 -27 46 -21 102 -22 138 -3
-24 14 67 5 99 -20 12 -9 42 -20 65 -24 23 -4 61 -16 84 -26 48 -22 69 -24 79
--8 9 15 51 3 88 -26 30 -23 38 -24 125 -19 65 3 97 1 107 -7 39 -32 254 -49
-315 -25 22 9 49 16 60 16 12 0 34 11 51 25 20 17 42 25 67 25 20 0 42 5 47 10
-7 7 31 8 70 2 66 -9 378 -7 394 3 6 4 35 -1 64 -10 50 -16 56 -16 88 -1 19 9
-49 16 68 15 56 -2 224 13 235 21 6 4 46 8 90 9 96 3 197 10 246 17 22 4 50 0
-73 -10 33 -14 41 -14 66 -1 16 8 55 15 87 15 32 0 74 5 93 10 19 6 82 13 140
-16 58 3 123 9 145 14 22 4 65 6 95 4 30 -3 62 -5 70 -5 8 0 58 2 110 6 52 4
-135 7 185 7 49 0 95 4 101 9 7 5 52 9 100 7 49 -1 140 5 203 14 69 10 123 13
-137 8 12 -5 48 -4 80 1 61 9 192 18 374 24 134 4 214 10 320 23 47 6 101 11
-120 10 19 0 53 4 75 10 22 7 72 12 110 12 39 1 124 10 190 21 196 33 416 61
-433 57 4 -1 27 11 52 26 26 17 63 31 90 33 49 5 102 26 137 53 13 10 40 21 60
-25 21 4 54 20 75 36 20 17 59 37 85 46 26 9 55 22 63 29 8 7 40 22 70 33 73
-27 161 95 235 179 33 38 78 85 101 105 41 37 134 183 134 211 0 8 5 18 11 22
-6 3 17 21 25 38 8 17 33 65 55 106 23 41 50 98 61 125 86 219 85 213 92 430 6
-163 18 295 27 301 5 3 9 24 9 47 0 24 9 69 20 101 16 44 19 65 12 90 -5 17 -8
-74 -6 126 2 52 6 165 8 250 2 85 9 196 15 245 23 200 29 579 15 890 -4 83 -7
-173 -7 200 1 28 1 92 2 144 0 52 -4 111 -9 132 -6 21 -9 87 -7 146 3 63 -2
-149 -10 208 -8 55 -14 141 -13 190 1 130 -5 269 -13 282 -4 6 -9 46 -12 90 -3
-43 -10 103 -15 133 -6 30 -12 114 -14 185 -3 127 -6 144 -29 195 -7 15 -12 93
--14 190 -5 361 -14 584 -23 595 -6 7 -13 41 -16 76 -3 35 -10 77 -15 93 -5 17
--5 33 0 40 11 13 8 146 -3 165 -5 7 -10 76 -13 154 -2 78 -9 158 -14 177 -6
-19 -13 98 -15 175 -2 77 -7 151 -11 165 -3 14 -7 62 -7 106 -1 45 -6 88 -12
-95 -13 16 -39 212 -31 233 6 14 -4 83 -23 171 -6 28 -15 86 -20 130 -5 44 -13
-98 -19 120 -5 22 -17 68 -25 103 -9 35 -13 74 -10 88 3 13 2 30 -4 37 -11 13
--9 91 3 120 5 11 1 24 -10 37 -10 11 -21 50 -27 97 -6 43 -14 82 -18 86 -4 5
--6 26 -3 47 4 27 -1 50 -15 77 -20 39 -37 119 -48 233 -4 36 -15 99 -26 140
--11 41 -21 93 -23 115 -3 53 -15 115 -25 140 -19 47 -24 65 -46 160 -33 148
--44 189 -55 199 -5 6 -9 22 -9 36 0 14 -6 32 -12 38 -7 7 -18 34 -24 60 -7 26
--19 70 -27 97 -9 28 -21 70 -27 95 -22 86 -33 115 -51 138 -10 13 -21 44 -25
-70 -3 26 -13 62 -20 81 -8 18 -14 42 -14 53 0 11 -14 36 -31 56 -24 27 -30 41
--25 63 4 21 -1 36 -19 58 -14 16 -25 40 -25 54 0 13 -8 35 -18 48 -10 13 -25
-42 -34 64 -26 63 -28 67 -58 120 -36 61 -80 154 -80 167 0 6 -11 23 -25 40
--14 16 -25 40 -25 53 0 12 -7 28 -16 36 -18 15 -114 156 -114 168 0 4 -9 16
--20 26 -11 10 -20 21 -20 26 0 4 -16 30 -35 59 -19 29 -35 58 -35 66 0 26
--124 141 -186 172 -33 17 -66 37 -73 46 -8 9 -19 16 -26 16 -7 0 -29 14 -50
-30 -21 17 -44 30 -52 30 -8 0 -26 9 -40 20 -14 11 -31 20 -38 20 -6 0 -22 11
--35 25 -14 15 -35 25 -51 25 -27 0 -69 15 -132 46 -16 8 -43 14 -61 14 -17 0
--41 6 -52 14 -11 8 -42 17 -69 21 -28 3 -61 10 -75 14 -54 18 -137 34 -180 36
--72 4 -203 22 -230 33 -14 5 -61 13 -105 17 -44 4 -111 14 -150 22 -89 20
--150 30 -250 42 -44 6 -116 15 -160 21 -44 6 -154 13 -245 15 -334 8 -482 15
--493 22 -7 4 -48 7 -92 8 -75 0 -80 1 -83 22 -2 12 -16 33 -32 47 -25 21 -44
-25 -137 33 -59 4 -133 6 -165 5 -41 -3 -63 1 -83 14 -15 10 -49 18 -78 19 -85
-3 -181 17 -195 28 -7 6 -73 12 -145 13 -402 9 -516 10 -557 3z m1615 -1952
-c193 -4 385 -12 429 -17 43 -5 82 -7 87 -5 4 3 31 -2 58 -11 28 -9 68 -14 88
--12 26 3 51 -2 77 -15 21 -11 69 -23 106 -26 37 -4 74 -11 81 -17 13 -11 178
--27 248 -25 21 1 42 -6 55 -18 12 -10 40 -22 63 -26 24 -4 45 -11 49 -16 3 -5
-26 -9 52 -9 26 0 61 -7 77 -16 17 -9 48 -16 70 -16 24 -1 50 -8 64 -19 13 -11
-31 -19 41 -19 20 0 77 -27 85 -40 3 -5 25 -19 48 -30 23 -11 53 -27 67 -35 14
--7 46 -19 72 -25 66 -17 218 -141 218 -179 0 -30 22 -67 57 -94 13 -10 23 -25
-23 -34 0 -8 24 -43 54 -76 29 -34 57 -73 61 -87 4 -14 13 -32 20 -40 14 -16
-81 -145 113 -220 11 -25 36 -74 56 -108 20 -35 36 -74 36 -86 0 -12 16 -45 35
--72 19 -27 35 -59 35 -71 0 -12 11 -35 25 -51 14 -17 25 -43 25 -59 0 -16 9
--46 20 -68 11 -22 20 -44 20 -50 0 -6 8 -22 17 -35 19 -27 60 -141 74 -205 5
--22 14 -70 21 -106 7 -37 20 -75 29 -85 9 -11 24 -44 33 -74 10 -30 22 -60 28
--67 5 -7 7 -21 3 -32 -3 -10 -1 -22 5 -26 6 -4 8 -15 5 -25 -3 -10 3 -33 15
--52 11 -18 20 -42 20 -54 0 -11 8 -36 17 -55 10 -19 21 -56 24 -84 4 -27 15
--88 24 -135 40 -205 66 -376 71 -470 3 -47 11 -121 19 -165 7 -44 21 -147 31
--230 13 -109 23 -157 36 -174 13 -17 18 -42 18 -85 1 -33 8 -115 16 -181 51
--419 51 -414 63 -665 13 -262 28 -453 41 -533 5 -34 12 -103 14 -152 17 -331
-18 -382 7 -389 -17 -11 -13 -58 8 -107 14 -34 21 -82 26 -204 5 -88 8 -169 7
--180 0 -11 4 -54 10 -95 6 -41 12 -115 14 -165 5 -143 14 -226 29 -280 7 -27
-18 -124 24 -215 6 -91 16 -199 21 -240 6 -41 10 -102 8 -135 -1 -33 2 -103 7
--155 14 -165 12 -423 -4 -456 -38 -82 -65 -131 -79 -147 -9 -10 -26 -38 -37
--62 -30 -66 -106 -156 -254 -303 -113 -112 -139 -133 -172 -138 -22 -4 -54
--20 -78 -40 -21 -19 -50 -34 -63 -34 -14 0 -35 -11 -47 -24 -15 -16 -38 -25
--74 -29 -45 -6 -105 -26 -214 -73 -17 -8 -40 -14 -50 -14 -10 0 -24 -5 -29
--10 -8 -8 -20 -7 -39 0 -22 8 -37 7 -67 -5 -25 -10 -73 -15 -136 -16 -53 0
--135 -5 -182 -10 -47 -6 -134 -12 -195 -15 -60 -2 -125 -9 -144 -15 -44 -15
--193 -19 -255 -6 -32 6 -55 6 -70 -1 -31 -15 -162 -25 -491 -36 -99 -3 -226
--10 -281 -16 -56 -6 -108 -8 -117 -4 -8 3 -25 0 -37 -6 -12 -6 -71 -13 -131
--15 -60 -3 -114 -7 -120 -10 -5 -4 -47 -8 -92 -11 -45 -2 -100 -6 -122 -9 -22
--2 -114 -7 -205 -9 -91 -3 -187 -11 -215 -17 -27 -6 -79 -12 -115 -13 -36 -2
--137 -10 -225 -19 -237 -24 -546 -41 -618 -32 -34 4 -85 8 -112 10 -64 4 -165
-22 -233 41 -29 9 -101 18 -160 20 -207 9 -241 16 -317 68 -28 20 -56 36 -62
-36 -5 0 -30 11 -54 25 -24 14 -51 27 -59 30 -54 20 -170 82 -193 104 -16 14
--40 46 -55 71 -59 104 -174 269 -227 325 -30 33 -63 74 -72 90 -8 17 -23 39
--33 50 -9 11 -23 43 -30 70 -7 28 -23 66 -36 86 -13 19 -24 39 -24 43 0 5 -13
-36 -29 70 -41 84 -59 138 -81 231 -10 44 -26 96 -34 116 -8 20 -18 71 -21 115
--3 43 -10 106 -15 139 -5 33 -12 148 -15 255 -9 268 -13 397 -24 665 -4 127
--8 241 -8 255 1 14 -8 79 -19 145 -10 66 -18 154 -17 195 3 75 3 364 1 910 -1
-157 -1 330 0 385 1 188 -6 325 -17 338 -5 7 -12 65 -14 128 -2 64 -7 121 -11
-128 -4 7 -10 102 -12 212 -3 120 -9 209 -15 222 -7 11 -16 56 -20 100 -5 43
--14 87 -19 97 -6 10 -10 69 -10 129 0 61 -4 119 -9 129 -5 9 -17 62 -26 117
--23 130 -68 349 -92 450 -11 44 -21 107 -22 139 -1 33 -9 75 -17 94 -8 19 -14
-46 -14 61 0 14 -6 37 -13 51 -12 23 -24 139 -33 315 -1 28 -9 67 -18 88 -13
-29 -18 86 -22 255 -3 119 -9 235 -13 257 -5 22 -9 93 -10 158 -1 96 2 124 16
-148 13 22 15 31 5 41 -18 18 -15 53 8 100 11 23 23 63 26 91 4 29 16 60 30 77
-13 15 24 32 24 37 0 11 54 64 97 95 18 13 74 55 125 94 132 100 163 117 222
-121 141 9 265 15 296 15 19 -1 49 8 66 19 20 12 48 19 75 18 70 -1 118 6 131
-19 7 7 21 12 33 12 11 0 52 7 90 16 39 9 95 20 125 24 30 5 82 14 115 20 115
-21 199 31 213 25 7 -3 22 0 33 5 10 6 59 12 108 15 50 2 101 10 117 18 43 21
-121 29 144 15 16 -10 25 -9 47 4 19 11 83 22 193 33 91 9 188 21 217 27 28 6
-72 8 96 5 25 -4 48 -2 54 4 12 12 305 32 355 24 20 -4 44 -3 53 2 17 10 143
-10 680 0z"/>
-<path d="M6575 10982 c-11 -2 -26 -9 -33 -15 -8 -6 -48 -12 -90 -14 -109 -3
--134 -7 -157 -20 -11 -6 -38 -14 -60 -18 -22 -4 -46 -12 -53 -18 -7 -6 -48
--11 -90 -12 -48 -1 -92 -8 -116 -18 -23 -10 -48 -14 -60 -11 -35 12 -127 10
--206 -3 -41 -7 -109 -12 -150 -13 -45 0 -81 -5 -88 -12 -9 -9 -17 -9 -34 -1
--38 19 -139 25 -190 12 -38 -10 -52 -10 -72 0 -19 10 -31 11 -57 1 -27 -9 -46
--9 -89 0 -30 7 -77 14 -105 16 -27 3 -59 9 -70 14 -25 11 -171 28 -333 39 -90
-7 -128 13 -141 25 -22 20 -36 20 -72 -1 -25 -15 -35 -15 -78 -4 -29 7 -108 12
--197 12 -82 -1 -191 1 -242 5 -71 4 -99 2 -122 -9 -16 -9 -59 -19 -95 -22 -36
--4 -68 -11 -71 -16 -7 -13 -108 -11 -137 2 -19 9 -32 6 -72 -15 -26 -14 -59
--26 -73 -26 -14 0 -36 -9 -48 -21 -16 -15 -42 -23 -105 -29 -46 -4 -109 -15
--139 -23 -30 -8 -76 -18 -101 -21 -26 -4 -70 -15 -98 -25 -27 -11 -74 -22
--102 -26 -34 -5 -75 -21 -116 -46 -35 -22 -69 -39 -76 -39 -20 0 -107 -86
--107 -106 0 -57 16 -97 51 -138 22 -24 39 -48 39 -52 0 -5 19 -26 43 -49 96
--92 287 -297 287 -309 0 -47 225 -126 277 -97 23 12 99 14 283 8 91 -3 145 0
-165 8 19 7 104 13 230 14 110 1 207 3 215 3 8 0 38 -4 65 -10 28 -6 70 -8 95
--5 55 6 73 -10 75 -65 0 -21 4 -43 8 -49 5 -7 1 -27 -7 -45 -8 -18 -17 -51
--19 -73 -3 -22 -13 -87 -23 -145 -10 -58 -18 -148 -18 -200 -1 -72 -6 -104
--20 -133 -15 -31 -16 -42 -6 -66 9 -23 9 -47 0 -107 -9 -61 -9 -86 0 -115 8
--23 11 -65 8 -110 -3 -40 -1 -86 3 -103 5 -17 12 -69 15 -115 2 -47 8 -90 13
--95 15 -20 20 -59 10 -78 -7 -13 -7 -33 2 -66 7 -26 14 -96 15 -157 2 -60 5
--144 9 -185 3 -41 7 -106 9 -145 2 -38 8 -81 13 -95 5 -14 9 -59 8 -100 -2
--41 4 -118 11 -170 12 -80 19 -99 43 -125 16 -16 32 -39 35 -51 4 -12 25 -40
-49 -63 23 -23 58 -57 77 -76 19 -19 43 -35 52 -35 9 0 40 -19 70 -42 73 -59
-144 -108 156 -108 5 0 21 -17 35 -37 38 -56 78 -96 119 -118 37 -19 37 -19 95
-1 l57 21 16 69 c9 38 19 76 22 84 4 8 5 76 3 150 -2 74 -4 172 -4 216 0 48 -6
-101 -15 127 -12 36 -14 75 -10 184 3 76 10 151 15 167 5 18 5 33 0 40 -10 12
-1 135 13 155 4 5 -1 42 -9 80 -13 55 -14 84 -7 133 6 41 6 70 0 82 -13 25 -18
-188 -9 284 5 42 4 87 0 99 -5 13 -9 62 -10 110 -1 49 -9 133 -19 188 -9 55
--15 120 -12 144 3 30 0 46 -9 52 -10 6 -15 38 -16 116 -1 59 -4 133 -7 163 -3
-30 -6 114 -7 185 l-3 130 40 1 c21 1 52 5 67 9 19 5 33 3 45 -7 11 -9 43 -15
-91 -16 41 -1 79 -6 85 -12 5 -5 30 -10 56 -10 25 0 63 -5 85 -11 22 -6 65 -12
-95 -14 30 -2 75 -8 100 -13 28 -7 49 -7 55 -1 5 5 26 9 46 9 21 0 41 5 44 10
-3 6 39 10 78 10 40 0 130 7 202 15 71 9 141 13 156 10 17 -4 37 0 51 9 13 9
-37 15 53 15 31 -1 112 11 245 36 41 8 113 21 158 30 46 8 94 20 105 26 31 16
-77 61 77 75 0 6 7 17 15 24 10 9 14 23 11 39 -13 63 -16 204 -5 218 7 7 13 42
-14 76 1 34 8 82 14 107 11 38 11 48 -4 73 -14 23 -15 33 -5 57 8 20 9 38 1 66
--15 55 -15 59 20 98 l31 35 -59 55 c-32 31 -63 55 -70 56 -6 0 -20 16 -32 35
--13 22 -28 35 -41 35 -12 0 -33 6 -48 14 -33 16 -80 24 -107 18z"/>
-<path d="M3005 9144 c-44 -8 -123 -16 -175 -18 -104 -4 -135 -12 -165 -46 -26
--29 -68 -50 -100 -50 -18 0 -29 -8 -37 -27 -7 -16 -25 -40 -40 -55 -26 -24
--28 -34 -30 -105 -3 -111 -2 -126 6 -144 5 -12 -2 -27 -23 -48 -35 -36 -49
--77 -32 -94 15 -15 14 -37 -3 -56 -14 -15 -29 -211 -26 -336 1 -57 36 -162 65
--197 14 -16 25 -36 25 -44 0 -7 12 -21 28 -31 15 -9 50 -39 79 -65 28 -26 60
--48 70 -48 11 0 37 -13 59 -29 21 -16 53 -32 71 -35 17 -4 37 -14 44 -22 16
--20 43 -17 64 6 21 23 43 25 70 6 21 -14 57 -19 230 -35 83 -8 104 -7 123 5
-13 9 49 17 80 18 96 6 123 16 172 67 25 26 64 55 88 64 41 17 102 75 102 98 0
-7 12 35 26 62 14 28 28 75 31 105 3 30 13 80 23 110 21 63 20 239 -1 325 -6
-28 -13 59 -14 70 -1 11 -4 27 -7 35 -10 28 -27 95 -33 132 -3 20 -22 58 -43
-85 -20 26 -44 61 -52 78 -19 36 -72 49 -167 41 -60 -5 -63 -4 -83 23 -11 16
--20 36 -20 43 0 17 -31 48 -47 48 -6 0 -16 7 -23 15 -7 8 -24 15 -39 15 -15 0
--35 6 -46 14 -18 12 -64 22 -140 31 -16 2 -66 -3 -110 -11z"/>
-<path d="M6080 9112 c-19 -2 -49 -9 -67 -17 -17 -8 -46 -15 -65 -15 -20 0 -50
--12 -77 -30 -24 -17 -51 -30 -61 -30 -22 0 -63 -45 -89 -97 -12 -23 -29 -47
--39 -52 -16 -8 -20 -27 -25 -107 -5 -74 -12 -104 -28 -131 -19 -31 -21 -40
--11 -66 7 -17 8 -35 3 -41 -14 -18 -24 -185 -12 -200 12 -15 -2 -110 -25 -164
--11 -25 -11 -38 -3 -53 5 -11 7 -33 4 -49 -5 -22 -2 -31 12 -38 10 -6 24 -32
-31 -59 32 -121 46 -155 74 -174 16 -12 35 -34 43 -50 9 -16 23 -29 32 -29 9 0
-25 -8 35 -17 14 -12 43 -18 111 -21 63 -3 97 -9 109 -19 12 -11 28 -13 51 -9
-28 5 39 1 74 -29 38 -32 45 -35 104 -33 35 1 73 7 84 14 11 6 36 15 55 19 19
-4 64 21 100 37 l65 29 62 -27 c72 -30 93 -27 93 14 0 36 44 79 85 84 20 2 31
-9 33 23 2 11 10 27 17 35 7 8 15 35 18 59 3 27 15 53 30 70 22 22 97 168 97
-188 0 3 11 21 25 39 14 18 25 41 25 52 0 11 7 25 15 32 19 16 19 69 0 94 -8
-11 -12 28 -9 39 4 11 -2 27 -14 40 -11 12 -23 33 -27 47 -4 14 -17 48 -30 75
--34 74 -55 133 -55 153 0 10 -42 55 -95 101 -52 46 -95 87 -95 93 0 5 -26 21
--57 35 -32 15 -84 46 -117 70 -32 24 -68 43 -81 43 -12 0 -34 9 -48 20 -14 11
--29 20 -33 20 -4 0 -15 6 -23 14 -16 14 -212 26 -301 18z"/>
-<path d="M6364 6284 c-14 -10 -29 -12 -45 -6 -35 12 -160 8 -187 -7 -18 -10
--28 -9 -57 4 -19 9 -38 14 -44 11 -5 -4 -45 -16 -88 -27 -88 -22 -374 -33
--405 -15 -11 7 -33 6 -67 -2 -28 -6 -58 -9 -66 -6 -8 4 -50 1 -93 -6 -59 -10
--83 -10 -100 -1 -16 8 -32 8 -64 0 -72 -18 -140 -29 -203 -33 -33 -3 -100 -9
--150 -15 -49 -6 -146 -13 -215 -15 -69 -3 -186 -11 -260 -19 -77 -8 -139 -11
--144 -6 -16 15 -85 10 -111 -7 -16 -10 -54 -17 -112 -19 -48 -2 -104 -8 -123
--14 -19 -6 -66 -11 -103 -11 -38 0 -77 -5 -88 -11 -12 -6 -75 -12 -142 -15
--67 -2 -160 -12 -207 -21 -47 -9 -103 -17 -125 -18 -22 -1 -67 -8 -100 -15
--33 -7 -82 -14 -110 -15 -80 -3 -143 -54 -178 -143 -23 -58 -21 -100 8 -147
-14 -22 25 -47 25 -55 1 -8 14 -31 30 -50 17 -19 30 -40 30 -47 0 -6 19 -21 43
--31 23 -11 67 -43 99 -71 31 -28 61 -51 67 -51 6 0 15 -9 21 -20 6 -11 15 -20
-21 -20 13 0 50 -28 125 -92 30 -27 59 -48 66 -48 6 0 26 -11 44 -25 28 -22 36
--23 64 -14 17 6 50 9 73 6 53 -8 173 10 212 31 17 10 70 20 125 24 92 7 252
-26 395 48 39 6 82 9 96 6 14 -3 44 1 66 9 23 8 105 16 195 20 135 5 157 4 168
--10 8 -10 17 -62 22 -133 4 -64 13 -157 19 -207 7 -49 11 -122 11 -161 -1 -53
-2 -75 13 -84 8 -7 15 -23 15 -36 0 -12 4 -25 9 -28 5 -3 11 -32 14 -63 12
--124 21 -159 54 -213 18 -30 33 -67 33 -81 0 -15 12 -37 30 -54 17 -16 30 -34
-30 -41 0 -7 18 -27 40 -44 23 -18 49 -49 60 -70 11 -21 38 -52 60 -70 22 -18
-51 -50 63 -72 12 -22 29 -52 38 -68 8 -15 42 -50 75 -77 32 -27 66 -58 74 -67
-8 -10 23 -22 35 -27 11 -5 43 -27 70 -49 28 -22 61 -43 75 -46 39 -8 53 -18
-70 -50 9 -16 31 -39 48 -50 40 -28 204 -91 262 -102 25 -5 63 -21 84 -35 21
--15 44 -27 51 -27 7 0 23 -9 37 -19 36 -29 140 -47 197 -33 25 6 98 16 161 22
-63 7 125 19 138 27 12 7 27 11 32 8 5 -3 23 1 39 10 42 21 61 19 93 -12 l28
--27 22 21 c13 11 30 23 38 27 70 32 143 91 206 168 35 43 68 78 73 78 20 0
-170 161 181 194 6 20 16 38 21 42 5 3 23 34 39 68 16 34 41 73 55 86 17 16 25
-34 25 57 0 19 9 51 20 73 11 22 20 47 20 57 0 10 7 27 15 37 8 11 15 32 15 46
-0 15 7 50 16 79 8 29 19 83 24 120 11 85 27 150 46 178 8 13 14 48 14 85 1 36
-9 87 20 118 11 30 19 69 20 87 0 17 5 35 11 39 6 3 8 16 5 29 -3 12 -8 85 -11
-161 -5 145 -17 221 -41 264 -13 25 -28 56 -80 167 -14 32 -32 69 -38 82 -29
-62 -158 178 -267 239 -31 18 -62 39 -69 48 -13 15 -90 54 -108 54 -4 0 -21 14
--37 30 -16 17 -37 30 -48 30 -10 0 -33 10 -50 23 -18 12 -48 30 -67 41 -19 10
--51 32 -70 47 -19 16 -44 29 -56 29 -12 0 -27 7 -34 15 -7 8 -22 15 -34 15
--12 0 -28 6 -34 12 -19 19 -280 20 -308 2z m-23 -870 c25 -24 30 -25 80 -16
-34 6 76 6 114 0 33 -5 79 -9 102 -9 46 1 114 -31 171 -80 18 -16 43 -29 56
--29 36 0 72 -49 80 -107 8 -60 -9 -230 -24 -248 -7 -8 -20 -49 -31 -92 -11
--43 -24 -82 -29 -87 -6 -6 -10 -17 -10 -26 0 -22 -95 -209 -120 -235 -11 -12
--20 -26 -20 -32 0 -24 -192 -203 -218 -203 -4 0 -28 -20 -52 -45 -29 -29 -53
--45 -70 -45 -14 -1 -36 -7 -50 -15 -14 -8 -39 -14 -56 -15 -17 0 -52 -7 -78
--16 -41 -14 -54 -15 -89 -3 -23 7 -53 21 -66 31 -13 10 -34 18 -47 18 -12 0
--43 9 -69 20 -26 11 -54 20 -62 20 -21 0 -83 48 -83 64 0 7 -9 21 -20 31 -11
-10 -20 24 -20 31 0 7 -21 36 -48 66 -120 134 -112 119 -112 218 0 74 -4 95
--22 127 -17 28 -24 56 -25 108 -1 39 -4 140 -6 225 -3 85 -8 194 -12 241 l-7
-87 30 6 c16 4 76 2 133 -5 57 -6 151 -11 209 -10 58 1 123 1 144 1 22 0 50 7
-63 15 14 10 47 15 92 15 38 0 73 5 76 10 12 20 68 11 96 -16z"/>
-<path d="M3775 4560 c-4 -7 -17 -9 -30 -6 -12 3 -25 2 -29 -2 -4 -4 -26 -7
--49 -8 -23 -1 -67 -6 -97 -11 -49 -10 -61 -18 -116 -76 -48 -50 -63 -74 -69
--106 -4 -22 -15 -51 -25 -64 -16 -20 -18 -33 -11 -79 6 -43 4 -63 -8 -85 -24
--44 -18 -142 13 -196 19 -34 23 -54 19 -84 -4 -32 0 -48 21 -80 20 -30 31 -67
-43 -144 8 -57 22 -111 29 -120 8 -8 14 -22 14 -30 0 -28 75 -114 102 -117 15
--2 32 -10 38 -18 7 -8 17 -14 23 -14 6 0 21 -10 34 -22 20 -18 37 -22 109 -24
-57 -2 93 -8 109 -18 13 -9 37 -16 52 -16 16 0 46 -9 67 -21 33 -17 49 -20 95
--14 31 4 70 15 87 26 17 10 43 19 57 19 14 0 29 5 32 10 3 6 14 10 24 10 10 0
-28 12 42 26 15 16 30 23 43 20 14 -4 37 14 88 66 37 39 68 75 68 80 0 4 7 8
-16 8 26 0 95 66 124 117 14 27 32 58 40 70 12 19 10 33 -14 115 -15 51 -32
-100 -37 108 -5 8 -16 31 -25 50 -86 194 -150 296 -247 394 -67 67 -92 86 -114
-86 -15 0 -61 11 -101 25 -41 14 -82 25 -92 25 -11 0 -22 5 -25 10 -3 6 -14 10
--24 10 -10 0 -24 7 -31 15 -7 8 -22 15 -34 15 -12 0 -38 8 -59 19 -20 10 -54
-22 -74 25 -21 4 -45 9 -55 12 -9 3 -19 0 -23 -6z"/>
-</g>
-</svg>
 
-    <div class="titles"><h1>Atelier couleur</h1><p>Extraire ou générer une palette</p></div>
-  </header>
+<header class="masthead">
+  <h1><svg class="seal" viewBox="0 0 1046 1425" role="img" aria-label="Sceau Thibaud Pagès"><use href="#sceau"/></svg> Colours</h1>
+  <p class="thesis">Un banc d'essai pour composer des palettes qui tiennent. Pose tes couleurs sûres, le reste vient s'accorder.</p>
+</header>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="extract">Extraire d'une image</button>
-    <button class="tab" data-tab="generate">Générer une palette</button>
+<nav class="tabs" role="tablist">
+  <button class="tab on" id="tab-gen" data-tab="gen" role="tab" aria-selected="true">Générateur</button>
+  <button class="tab" id="tab-img" data-tab="img" role="tab" aria-selected="false">Extraire d'une image</button>
+</nav>
+
+<!-- ============ ONGLET GÉNÉRATEUR ============ -->
+<div class="panel on" id="panel-gen" role="tabpanel" aria-labelledby="tab-gen">
+
+<section class="sec">
+  <span class="lbl">Couleurs de base</span>
+  <div class="chips" id="chips"></div>
+  <p class="empty" id="empty">Aucune couleur imposée pour l'instant. Ajoutes-en une à quatre : elles seront présentes dans chaque palette générée, les autres viendront les accompagner.</p>
+  <div class="editor" id="editor">
+    <canvas id="wheel" width="220" height="220" tabindex="0" aria-label="Roue chromatique : anneau pour la teinte, triangle pour la saturation et la luminosité"></canvas>
+    <div class="sliders">
+      <div class="row"><span class="lbl">Code couleur</span></div>
+      <input type="text" id="paste" placeholder="#7E8C5A ou 126, 140, 90" spellcheck="false">
+      <p class="paste-note">Bouge le point sur l'anneau pour la teinte, dans le triangle pour la saturation et la luminosité. Ou colle un code : hex 3/6 chiffres, rgb(...), trois nombres.</p>
+    </div>
   </div>
+</section>
 
-  <section class="panel active" id="panel-extract">
-    <div class="drop" id="drop">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg>
-      <strong>Dépose une image ici</strong><span>ou touche pour choisir un fichier (JPG, PNG, WebP…)</span>
-    </div>
-    <input type="file" id="file" accept="image/*">
-    <div class="stage" id="stage">
-      <div class="preview"><img id="img" alt="Aperçu de l'image"><button class="btn-change" id="change">Changer d'image</button></div>
-      <div class="controls"><span class="control-label">Nombre de couleurs</span><input type="range" class="slider" id="count" min="2" max="12" value="5"><span class="count-badge" id="countVal">5</span></div>
-      <div class="palette" id="palette"></div>
-      <div class="actions">
-        <button class="action" id="copyAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copier tous les codes</button>
-        <button class="action ghost" id="exportPng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Exporter en PNG</button>
-        <button class="action ghost" id="exportFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Exporter le fichier</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-generate">
-    <p class="gen-intro">Choisis la teinte sur l'anneau, puis la saturation et la luminosité dans le triangle central (couleur pure en pointe, blanc et noir aux deux autres coins). Ou colle un code. Choisis une méthode d'harmonie pour la voir tracée sur l'anneau et filtrer les propositions.</p>
-    <div class="picker">
-      <div class="wheel-wrap" id="wheelWrap">
-        <canvas id="wheelRing" width="220" height="220"></canvas>
-        <canvas id="wheelTri" width="220" height="220"></canvas>
-        <canvas id="wheelOverlay" width="220" height="220"></canvas>
-      </div>
-      <div class="picker-side">
-        <div class="cur"><div class="cur-swatch" id="curSwatch"></div><div class="cur-codes"><span class="cur-hex" id="curHex">#3E6FB0</span><span class="cur-rgb" id="curRgb">rgb(62, 111, 176)</span></div></div>
-        <div class="slider-block"><label>Coller un hex ou un rgb</label><input type="text" class="paste-input" id="pasteInput" placeholder="#3E6FB0 ou 62, 111, 176" spellcheck="false" autocomplete="off"><div class="paste-hint">Accepte #hex, rgb(…) ou r, g, b</div></div>
-      </div>
-    </div>
-    <div class="harm-block"><div class="harm-label">Méthode d'harmonie</div><div class="harm" id="harm"></div></div>
-    <div class="bases-row"><span class="bases-label">Couleurs de base (conservées)</span><div class="base-swatches" id="baseSwatches"></div><button class="base-add" id="baseAdd" title="Ajouter une couleur de base">+</button></div>
-    <div class="size-row"><span class="control-label">Couleurs par palette</span><div class="seg" id="sizeSeg"><button data-size="4">4</button><button data-size="5" class="on">5</button><button data-size="6">6</button></div></div>
-    <div id="rules"></div>
-  </section>
-
-  <footer><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1046 1425" role="img" aria-label="Sceau TP - Thibaud Pages">
-<g transform="translate(0.000000,1425.000000) scale(0.100000,-0.100000)"
-fill="currentColor" stroke="none">
-<path d="M3960 13549 c-25 -4 -97 -10 -160 -13 -63 -3 -146 -10 -185 -16 -38
--5 -116 -16 -173 -25 -56 -8 -119 -15 -138 -15 -19 0 -46 -7 -59 -16 -14 -9
--49 -17 -79 -19 -30 -1 -64 -9 -77 -19 -13 -9 -31 -16 -40 -16 -9 0 -24 -9
--33 -19 -23 -25 -90 -34 -167 -22 -49 8 -77 7 -127 -4 -35 -8 -80 -12 -100 -9
--20 3 -66 -2 -102 -10 -36 -9 -85 -16 -110 -16 -25 0 -63 -9 -85 -20 -22 -11
--53 -19 -70 -20 -32 0 -182 -49 -260 -84 -63 -29 -116 -46 -141 -46 -11 0 -31
--12 -45 -26 -19 -20 -31 -25 -56 -21 -23 4 -43 -2 -75 -22 -24 -15 -57 -31
--73 -35 -17 -4 -54 -24 -84 -44 -81 -56 -107 -71 -143 -80 -31 -8 -54 -38 -72
--95 -3 -9 -17 -22 -30 -27 -23 -8 -46 -57 -46 -97 0 -7 -9 -17 -20 -23 -11 -6
--20 -17 -20 -26 0 -19 -66 -140 -97 -178 -30 -36 -49 -80 -58 -137 -10 -59
--28 -93 -65 -119 -27 -19 -29 -25 -24 -61 6 -35 3 -44 -23 -72 -24 -26 -33
--47 -43 -109 -7 -42 -10 -91 -6 -108 4 -24 0 -40 -19 -68 -14 -20 -25 -50 -25
--67 0 -17 -4 -35 -10 -41 -12 -12 -27 -80 -43 -191 -7 -45 -15 -85 -20 -89 -4
--4 -7 -19 -7 -34 0 -15 -3 -29 -6 -33 -7 -6 -15 -117 -15 -194 0 -27 -5 -43
--15 -47 -18 -7 -18 -24 0 -58 11 -20 12 -36 5 -65 -8 -31 -17 -261 -22 -583
--1 -25 3 -90 7 -145 5 -55 8 -115 7 -133 -2 -48 27 -163 46 -184 15 -17 15
--19 0 -36 -12 -13 -15 -28 -10 -55 3 -23 1 -42 -7 -52 -9 -11 -10 -18 -1 -29
-7 -8 13 -64 16 -138 2 -68 9 -136 16 -151 10 -22 10 -32 -1 -52 -11 -20 -11
--30 0 -52 8 -18 13 -77 15 -161 1 -84 6 -137 14 -145 14 -14 14 -76 0 -151 -8
--43 -7 -70 2 -106 10 -39 10 -59 0 -103 -10 -38 -10 -59 -3 -73 7 -14 7 -32 0
--60 -9 -33 -8 -46 7 -77 15 -32 16 -42 6 -61 -11 -19 -9 -32 14 -87 22 -52 26
--74 23 -124 -3 -34 1 -79 8 -104 11 -37 11 -48 -1 -72 -8 -15 -19 -31 -25 -34
--15 -9 -12 -51 4 -64 11 -9 14 -43 15 -141 0 -79 5 -138 12 -152 7 -14 10 -48
-6 -96 -3 -40 -1 -113 5 -160 10 -85 13 -140 23 -392 3 -69 7 -170 9 -226 3
--75 10 -120 30 -177 22 -63 24 -81 15 -99 -14 -26 -7 -154 10 -171 6 -6 11
--34 11 -61 1 -28 8 -82 17 -121 8 -38 16 -104 18 -145 1 -41 9 -106 19 -145 9
--38 19 -112 21 -163 2 -51 8 -99 14 -106 9 -10 9 -31 1 -77 -15 -93 -12 -135
-10 -181 22 -46 28 -96 35 -308 6 -164 17 -263 35 -301 9 -20 9 -32 1 -48 -9
--15 -9 -32 -1 -59 6 -20 15 -77 20 -127 14 -128 28 -224 39 -267 5 -22 5 -54
-0 -75 -17 -73 -12 -104 47 -348 13 -55 26 -118 30 -140 3 -22 12 -62 19 -90 7
--27 16 -95 19 -149 7 -102 22 -182 38 -203 6 -7 11 -50 12 -96 2 -72 7 -92 30
--132 16 -27 26 -55 23 -67 -7 -27 20 -277 31 -291 5 -7 13 -28 17 -47 4 -19
-14 -48 23 -65 14 -28 25 -67 39 -140 3 -16 12 -37 20 -46 8 -10 16 -47 19 -92
-2 -42 9 -88 14 -102 6 -14 10 -46 10 -69 0 -31 8 -55 27 -82 22 -33 26 -48 24
--95 -1 -37 5 -78 20 -120 19 -58 35 -116 53 -191 3 -14 22 -47 41 -72 19 -25
-48 -78 65 -118 17 -40 39 -82 49 -93 10 -11 33 -47 50 -80 18 -33 41 -69 52
--81 10 -11 19 -24 19 -29 0 -4 25 -36 55 -70 36 -41 77 -74 122 -99 37 -20 80
--46 95 -58 14 -11 49 -24 76 -29 27 -4 69 -16 93 -27 46 -21 102 -22 138 -3
-24 14 67 5 99 -20 12 -9 42 -20 65 -24 23 -4 61 -16 84 -26 48 -22 69 -24 79
--8 9 15 51 3 88 -26 30 -23 38 -24 125 -19 65 3 97 1 107 -7 39 -32 254 -49
-315 -25 22 9 49 16 60 16 12 0 34 11 51 25 20 17 42 25 67 25 20 0 42 5 47 10
-7 7 31 8 70 2 66 -9 378 -7 394 3 6 4 35 -1 64 -10 50 -16 56 -16 88 -1 19 9
-49 16 68 15 56 -2 224 13 235 21 6 4 46 8 90 9 96 3 197 10 246 17 22 4 50 0
-73 -10 33 -14 41 -14 66 -1 16 8 55 15 87 15 32 0 74 5 93 10 19 6 82 13 140
-16 58 3 123 9 145 14 22 4 65 6 95 4 30 -3 62 -5 70 -5 8 0 58 2 110 6 52 4
-135 7 185 7 49 0 95 4 101 9 7 5 52 9 100 7 49 -1 140 5 203 14 69 10 123 13
-137 8 12 -5 48 -4 80 1 61 9 192 18 374 24 134 4 214 10 320 23 47 6 101 11
-120 10 19 0 53 4 75 10 22 7 72 12 110 12 39 1 124 10 190 21 196 33 416 61
-433 57 4 -1 27 11 52 26 26 17 63 31 90 33 49 5 102 26 137 53 13 10 40 21 60
-25 21 4 54 20 75 36 20 17 59 37 85 46 26 9 55 22 63 29 8 7 40 22 70 33 73
-27 161 95 235 179 33 38 78 85 101 105 41 37 134 183 134 211 0 8 5 18 11 22
-6 3 17 21 25 38 8 17 33 65 55 106 23 41 50 98 61 125 86 219 85 213 92 430 6
-163 18 295 27 301 5 3 9 24 9 47 0 24 9 69 20 101 16 44 19 65 12 90 -5 17 -8
-74 -6 126 2 52 6 165 8 250 2 85 9 196 15 245 23 200 29 579 15 890 -4 83 -7
-173 -7 200 1 28 1 92 2 144 0 52 -4 111 -9 132 -6 21 -9 87 -7 146 3 63 -2
-149 -10 208 -8 55 -14 141 -13 190 1 130 -5 269 -13 282 -4 6 -9 46 -12 90 -3
-43 -10 103 -15 133 -6 30 -12 114 -14 185 -3 127 -6 144 -29 195 -7 15 -12 93
--14 190 -5 361 -14 584 -23 595 -6 7 -13 41 -16 76 -3 35 -10 77 -15 93 -5 17
--5 33 0 40 11 13 8 146 -3 165 -5 7 -10 76 -13 154 -2 78 -9 158 -14 177 -6
-19 -13 98 -15 175 -2 77 -7 151 -11 165 -3 14 -7 62 -7 106 -1 45 -6 88 -12
-95 -13 16 -39 212 -31 233 6 14 -4 83 -23 171 -6 28 -15 86 -20 130 -5 44 -13
-98 -19 120 -5 22 -17 68 -25 103 -9 35 -13 74 -10 88 3 13 2 30 -4 37 -11 13
--9 91 3 120 5 11 1 24 -10 37 -10 11 -21 50 -27 97 -6 43 -14 82 -18 86 -4 5
--6 26 -3 47 4 27 -1 50 -15 77 -20 39 -37 119 -48 233 -4 36 -15 99 -26 140
--11 41 -21 93 -23 115 -3 53 -15 115 -25 140 -19 47 -24 65 -46 160 -33 148
--44 189 -55 199 -5 6 -9 22 -9 36 0 14 -6 32 -12 38 -7 7 -18 34 -24 60 -7 26
--19 70 -27 97 -9 28 -21 70 -27 95 -22 86 -33 115 -51 138 -10 13 -21 44 -25
-70 -3 26 -13 62 -20 81 -8 18 -14 42 -14 53 0 11 -14 36 -31 56 -24 27 -30 41
--25 63 4 21 -1 36 -19 58 -14 16 -25 40 -25 54 0 13 -8 35 -18 48 -10 13 -25
-42 -34 64 -26 63 -28 67 -58 120 -36 61 -80 154 -80 167 0 6 -11 23 -25 40
--14 16 -25 40 -25 53 0 12 -7 28 -16 36 -18 15 -114 156 -114 168 0 4 -9 16
--20 26 -11 10 -20 21 -20 26 0 4 -16 30 -35 59 -19 29 -35 58 -35 66 0 26
--124 141 -186 172 -33 17 -66 37 -73 46 -8 9 -19 16 -26 16 -7 0 -29 14 -50
-30 -21 17 -44 30 -52 30 -8 0 -26 9 -40 20 -14 11 -31 20 -38 20 -6 0 -22 11
--35 25 -14 15 -35 25 -51 25 -27 0 -69 15 -132 46 -16 8 -43 14 -61 14 -17 0
--41 6 -52 14 -11 8 -42 17 -69 21 -28 3 -61 10 -75 14 -54 18 -137 34 -180 36
--72 4 -203 22 -230 33 -14 5 -61 13 -105 17 -44 4 -111 14 -150 22 -89 20
--150 30 -250 42 -44 6 -116 15 -160 21 -44 6 -154 13 -245 15 -334 8 -482 15
--493 22 -7 4 -48 7 -92 8 -75 0 -80 1 -83 22 -2 12 -16 33 -32 47 -25 21 -44
-25 -137 33 -59 4 -133 6 -165 5 -41 -3 -63 1 -83 14 -15 10 -49 18 -78 19 -85
-3 -181 17 -195 28 -7 6 -73 12 -145 13 -402 9 -516 10 -557 3z m1615 -1952
-c193 -4 385 -12 429 -17 43 -5 82 -7 87 -5 4 3 31 -2 58 -11 28 -9 68 -14 88
--12 26 3 51 -2 77 -15 21 -11 69 -23 106 -26 37 -4 74 -11 81 -17 13 -11 178
--27 248 -25 21 1 42 -6 55 -18 12 -10 40 -22 63 -26 24 -4 45 -11 49 -16 3 -5
-26 -9 52 -9 26 0 61 -7 77 -16 17 -9 48 -16 70 -16 24 -1 50 -8 64 -19 13 -11
-31 -19 41 -19 20 0 77 -27 85 -40 3 -5 25 -19 48 -30 23 -11 53 -27 67 -35 14
--7 46 -19 72 -25 66 -17 218 -141 218 -179 0 -30 22 -67 57 -94 13 -10 23 -25
-23 -34 0 -8 24 -43 54 -76 29 -34 57 -73 61 -87 4 -14 13 -32 20 -40 14 -16
-81 -145 113 -220 11 -25 36 -74 56 -108 20 -35 36 -74 36 -86 0 -12 16 -45 35
--72 19 -27 35 -59 35 -71 0 -12 11 -35 25 -51 14 -17 25 -43 25 -59 0 -16 9
--46 20 -68 11 -22 20 -44 20 -50 0 -6 8 -22 17 -35 19 -27 60 -141 74 -205 5
--22 14 -70 21 -106 7 -37 20 -75 29 -85 9 -11 24 -44 33 -74 10 -30 22 -60 28
--67 5 -7 7 -21 3 -32 -3 -10 -1 -22 5 -26 6 -4 8 -15 5 -25 -3 -10 3 -33 15
--52 11 -18 20 -42 20 -54 0 -11 8 -36 17 -55 10 -19 21 -56 24 -84 4 -27 15
--88 24 -135 40 -205 66 -376 71 -470 3 -47 11 -121 19 -165 7 -44 21 -147 31
--230 13 -109 23 -157 36 -174 13 -17 18 -42 18 -85 1 -33 8 -115 16 -181 51
--419 51 -414 63 -665 13 -262 28 -453 41 -533 5 -34 12 -103 14 -152 17 -331
-18 -382 7 -389 -17 -11 -13 -58 8 -107 14 -34 21 -82 26 -204 5 -88 8 -169 7
--180 0 -11 4 -54 10 -95 6 -41 12 -115 14 -165 5 -143 14 -226 29 -280 7 -27
-18 -124 24 -215 6 -91 16 -199 21 -240 6 -41 10 -102 8 -135 -1 -33 2 -103 7
--155 14 -165 12 -423 -4 -456 -38 -82 -65 -131 -79 -147 -9 -10 -26 -38 -37
--62 -30 -66 -106 -156 -254 -303 -113 -112 -139 -133 -172 -138 -22 -4 -54
--20 -78 -40 -21 -19 -50 -34 -63 -34 -14 0 -35 -11 -47 -24 -15 -16 -38 -25
--74 -29 -45 -6 -105 -26 -214 -73 -17 -8 -40 -14 -50 -14 -10 0 -24 -5 -29
--10 -8 -8 -20 -7 -39 0 -22 8 -37 7 -67 -5 -25 -10 -73 -15 -136 -16 -53 0
--135 -5 -182 -10 -47 -6 -134 -12 -195 -15 -60 -2 -125 -9 -144 -15 -44 -15
--193 -19 -255 -6 -32 6 -55 6 -70 -1 -31 -15 -162 -25 -491 -36 -99 -3 -226
--10 -281 -16 -56 -6 -108 -8 -117 -4 -8 3 -25 0 -37 -6 -12 -6 -71 -13 -131
--15 -60 -3 -114 -7 -120 -10 -5 -4 -47 -8 -92 -11 -45 -2 -100 -6 -122 -9 -22
--2 -114 -7 -205 -9 -91 -3 -187 -11 -215 -17 -27 -6 -79 -12 -115 -13 -36 -2
--137 -10 -225 -19 -237 -24 -546 -41 -618 -32 -34 4 -85 8 -112 10 -64 4 -165
-22 -233 41 -29 9 -101 18 -160 20 -207 9 -241 16 -317 68 -28 20 -56 36 -62
-36 -5 0 -30 11 -54 25 -24 14 -51 27 -59 30 -54 20 -170 82 -193 104 -16 14
--40 46 -55 71 -59 104 -174 269 -227 325 -30 33 -63 74 -72 90 -8 17 -23 39
--33 50 -9 11 -23 43 -30 70 -7 28 -23 66 -36 86 -13 19 -24 39 -24 43 0 5 -13
-36 -29 70 -41 84 -59 138 -81 231 -10 44 -26 96 -34 116 -8 20 -18 71 -21 115
--3 43 -10 106 -15 139 -5 33 -12 148 -15 255 -9 268 -13 397 -24 665 -4 127
--8 241 -8 255 1 14 -8 79 -19 145 -10 66 -18 154 -17 195 3 75 3 364 1 910 -1
-157 -1 330 0 385 1 188 -6 325 -17 338 -5 7 -12 65 -14 128 -2 64 -7 121 -11
-128 -4 7 -10 102 -12 212 -3 120 -9 209 -15 222 -7 11 -16 56 -20 100 -5 43
--14 87 -19 97 -6 10 -10 69 -10 129 0 61 -4 119 -9 129 -5 9 -17 62 -26 117
--23 130 -68 349 -92 450 -11 44 -21 107 -22 139 -1 33 -9 75 -17 94 -8 19 -14
-46 -14 61 0 14 -6 37 -13 51 -12 23 -24 139 -33 315 -1 28 -9 67 -18 88 -13
-29 -18 86 -22 255 -3 119 -9 235 -13 257 -5 22 -9 93 -10 158 -1 96 2 124 16
-148 13 22 15 31 5 41 -18 18 -15 53 8 100 11 23 23 63 26 91 4 29 16 60 30 77
-13 15 24 32 24 37 0 11 54 64 97 95 18 13 74 55 125 94 132 100 163 117 222
-121 141 9 265 15 296 15 19 -1 49 8 66 19 20 12 48 19 75 18 70 -1 118 6 131
-19 7 7 21 12 33 12 11 0 52 7 90 16 39 9 95 20 125 24 30 5 82 14 115 20 115
-21 199 31 213 25 7 -3 22 0 33 5 10 6 59 12 108 15 50 2 101 10 117 18 43 21
-121 29 144 15 16 -10 25 -9 47 4 19 11 83 22 193 33 91 9 188 21 217 27 28 6
-72 8 96 5 25 -4 48 -2 54 4 12 12 305 32 355 24 20 -4 44 -3 53 2 17 10 143
-10 680 0z"/>
-<path d="M6575 10982 c-11 -2 -26 -9 -33 -15 -8 -6 -48 -12 -90 -14 -109 -3
--134 -7 -157 -20 -11 -6 -38 -14 -60 -18 -22 -4 -46 -12 -53 -18 -7 -6 -48
--11 -90 -12 -48 -1 -92 -8 -116 -18 -23 -10 -48 -14 -60 -11 -35 12 -127 10
--206 -3 -41 -7 -109 -12 -150 -13 -45 0 -81 -5 -88 -12 -9 -9 -17 -9 -34 -1
--38 19 -139 25 -190 12 -38 -10 -52 -10 -72 0 -19 10 -31 11 -57 1 -27 -9 -46
--9 -89 0 -30 7 -77 14 -105 16 -27 3 -59 9 -70 14 -25 11 -171 28 -333 39 -90
-7 -128 13 -141 25 -22 20 -36 20 -72 -1 -25 -15 -35 -15 -78 -4 -29 7 -108 12
--197 12 -82 -1 -191 1 -242 5 -71 4 -99 2 -122 -9 -16 -9 -59 -19 -95 -22 -36
--4 -68 -11 -71 -16 -7 -13 -108 -11 -137 2 -19 9 -32 6 -72 -15 -26 -14 -59
--26 -73 -26 -14 0 -36 -9 -48 -21 -16 -15 -42 -23 -105 -29 -46 -4 -109 -15
--139 -23 -30 -8 -76 -18 -101 -21 -26 -4 -70 -15 -98 -25 -27 -11 -74 -22
--102 -26 -34 -5 -75 -21 -116 -46 -35 -22 -69 -39 -76 -39 -20 0 -107 -86
--107 -106 0 -57 16 -97 51 -138 22 -24 39 -48 39 -52 0 -5 19 -26 43 -49 96
--92 287 -297 287 -309 0 -47 225 -126 277 -97 23 12 99 14 283 8 91 -3 145 0
-165 8 19 7 104 13 230 14 110 1 207 3 215 3 8 0 38 -4 65 -10 28 -6 70 -8 95
--5 55 6 73 -10 75 -65 0 -21 4 -43 8 -49 5 -7 1 -27 -7 -45 -8 -18 -17 -51
--19 -73 -3 -22 -13 -87 -23 -145 -10 -58 -18 -148 -18 -200 -1 -72 -6 -104
--20 -133 -15 -31 -16 -42 -6 -66 9 -23 9 -47 0 -107 -9 -61 -9 -86 0 -115 8
--23 11 -65 8 -110 -3 -40 -1 -86 3 -103 5 -17 12 -69 15 -115 2 -47 8 -90 13
--95 15 -20 20 -59 10 -78 -7 -13 -7 -33 2 -66 7 -26 14 -96 15 -157 2 -60 5
--144 9 -185 3 -41 7 -106 9 -145 2 -38 8 -81 13 -95 5 -14 9 -59 8 -100 -2
--41 4 -118 11 -170 12 -80 19 -99 43 -125 16 -16 32 -39 35 -51 4 -12 25 -40
-49 -63 23 -23 58 -57 77 -76 19 -19 43 -35 52 -35 9 0 40 -19 70 -42 73 -59
-144 -108 156 -108 5 0 21 -17 35 -37 38 -56 78 -96 119 -118 37 -19 37 -19 95
-1 l57 21 16 69 c9 38 19 76 22 84 4 8 5 76 3 150 -2 74 -4 172 -4 216 0 48 -6
-101 -15 127 -12 36 -14 75 -10 184 3 76 10 151 15 167 5 18 5 33 0 40 -10 12
-1 135 13 155 4 5 -1 42 -9 80 -13 55 -14 84 -7 133 6 41 6 70 0 82 -13 25 -18
-188 -9 284 5 42 4 87 0 99 -5 13 -9 62 -10 110 -1 49 -9 133 -19 188 -9 55
--15 120 -12 144 3 30 0 46 -9 52 -10 6 -15 38 -16 116 -1 59 -4 133 -7 163 -3
-30 -6 114 -7 185 l-3 130 40 1 c21 1 52 5 67 9 19 5 33 3 45 -7 11 -9 43 -15
-91 -16 41 -1 79 -6 85 -12 5 -5 30 -10 56 -10 25 0 63 -5 85 -11 22 -6 65 -12
-95 -14 30 -2 75 -8 100 -13 28 -7 49 -7 55 -1 5 5 26 9 46 9 21 0 41 5 44 10
-3 6 39 10 78 10 40 0 130 7 202 15 71 9 141 13 156 10 17 -4 37 0 51 9 13 9
-37 15 53 15 31 -1 112 11 245 36 41 8 113 21 158 30 46 8 94 20 105 26 31 16
-77 61 77 75 0 6 7 17 15 24 10 9 14 23 11 39 -13 63 -16 204 -5 218 7 7 13 42
-14 76 1 34 8 82 14 107 11 38 11 48 -4 73 -14 23 -15 33 -5 57 8 20 9 38 1 66
--15 55 -15 59 20 98 l31 35 -59 55 c-32 31 -63 55 -70 56 -6 0 -20 16 -32 35
--13 22 -28 35 -41 35 -12 0 -33 6 -48 14 -33 16 -80 24 -107 18z"/>
-<path d="M3005 9144 c-44 -8 -123 -16 -175 -18 -104 -4 -135 -12 -165 -46 -26
--29 -68 -50 -100 -50 -18 0 -29 -8 -37 -27 -7 -16 -25 -40 -40 -55 -26 -24
--28 -34 -30 -105 -3 -111 -2 -126 6 -144 5 -12 -2 -27 -23 -48 -35 -36 -49
--77 -32 -94 15 -15 14 -37 -3 -56 -14 -15 -29 -211 -26 -336 1 -57 36 -162 65
--197 14 -16 25 -36 25 -44 0 -7 12 -21 28 -31 15 -9 50 -39 79 -65 28 -26 60
--48 70 -48 11 0 37 -13 59 -29 21 -16 53 -32 71 -35 17 -4 37 -14 44 -22 16
--20 43 -17 64 6 21 23 43 25 70 6 21 -14 57 -19 230 -35 83 -8 104 -7 123 5
-13 9 49 17 80 18 96 6 123 16 172 67 25 26 64 55 88 64 41 17 102 75 102 98 0
-7 12 35 26 62 14 28 28 75 31 105 3 30 13 80 23 110 21 63 20 239 -1 325 -6
-28 -13 59 -14 70 -1 11 -4 27 -7 35 -10 28 -27 95 -33 132 -3 20 -22 58 -43
-85 -20 26 -44 61 -52 78 -19 36 -72 49 -167 41 -60 -5 -63 -4 -83 23 -11 16
--20 36 -20 43 0 17 -31 48 -47 48 -6 0 -16 7 -23 15 -7 8 -24 15 -39 15 -15 0
--35 6 -46 14 -18 12 -64 22 -140 31 -16 2 -66 -3 -110 -11z"/>
-<path d="M6080 9112 c-19 -2 -49 -9 -67 -17 -17 -8 -46 -15 -65 -15 -20 0 -50
--12 -77 -30 -24 -17 -51 -30 -61 -30 -22 0 -63 -45 -89 -97 -12 -23 -29 -47
--39 -52 -16 -8 -20 -27 -25 -107 -5 -74 -12 -104 -28 -131 -19 -31 -21 -40
--11 -66 7 -17 8 -35 3 -41 -14 -18 -24 -185 -12 -200 12 -15 -2 -110 -25 -164
--11 -25 -11 -38 -3 -53 5 -11 7 -33 4 -49 -5 -22 -2 -31 12 -38 10 -6 24 -32
-31 -59 32 -121 46 -155 74 -174 16 -12 35 -34 43 -50 9 -16 23 -29 32 -29 9 0
-25 -8 35 -17 14 -12 43 -18 111 -21 63 -3 97 -9 109 -19 12 -11 28 -13 51 -9
-28 5 39 1 74 -29 38 -32 45 -35 104 -33 35 1 73 7 84 14 11 6 36 15 55 19 19
-4 64 21 100 37 l65 29 62 -27 c72 -30 93 -27 93 14 0 36 44 79 85 84 20 2 31
-9 33 23 2 11 10 27 17 35 7 8 15 35 18 59 3 27 15 53 30 70 22 22 97 168 97
-188 0 3 11 21 25 39 14 18 25 41 25 52 0 11 7 25 15 32 19 16 19 69 0 94 -8
-11 -12 28 -9 39 4 11 -2 27 -14 40 -11 12 -23 33 -27 47 -4 14 -17 48 -30 75
--34 74 -55 133 -55 153 0 10 -42 55 -95 101 -52 46 -95 87 -95 93 0 5 -26 21
--57 35 -32 15 -84 46 -117 70 -32 24 -68 43 -81 43 -12 0 -34 9 -48 20 -14 11
--29 20 -33 20 -4 0 -15 6 -23 14 -16 14 -212 26 -301 18z"/>
-<path d="M6364 6284 c-14 -10 -29 -12 -45 -6 -35 12 -160 8 -187 -7 -18 -10
--28 -9 -57 4 -19 9 -38 14 -44 11 -5 -4 -45 -16 -88 -27 -88 -22 -374 -33
--405 -15 -11 7 -33 6 -67 -2 -28 -6 -58 -9 -66 -6 -8 4 -50 1 -93 -6 -59 -10
--83 -10 -100 -1 -16 8 -32 8 -64 0 -72 -18 -140 -29 -203 -33 -33 -3 -100 -9
--150 -15 -49 -6 -146 -13 -215 -15 -69 -3 -186 -11 -260 -19 -77 -8 -139 -11
--144 -6 -16 15 -85 10 -111 -7 -16 -10 -54 -17 -112 -19 -48 -2 -104 -8 -123
--14 -19 -6 -66 -11 -103 -11 -38 0 -77 -5 -88 -11 -12 -6 -75 -12 -142 -15
--67 -2 -160 -12 -207 -21 -47 -9 -103 -17 -125 -18 -22 -1 -67 -8 -100 -15
--33 -7 -82 -14 -110 -15 -80 -3 -143 -54 -178 -143 -23 -58 -21 -100 8 -147
-14 -22 25 -47 25 -55 1 -8 14 -31 30 -50 17 -19 30 -40 30 -47 0 -6 19 -21 43
--31 23 -11 67 -43 99 -71 31 -28 61 -51 67 -51 6 0 15 -9 21 -20 6 -11 15 -20
-21 -20 13 0 50 -28 125 -92 30 -27 59 -48 66 -48 6 0 26 -11 44 -25 28 -22 36
--23 64 -14 17 6 50 9 73 6 53 -8 173 10 212 31 17 10 70 20 125 24 92 7 252
-26 395 48 39 6 82 9 96 6 14 -3 44 1 66 9 23 8 105 16 195 20 135 5 157 4 168
--10 8 -10 17 -62 22 -133 4 -64 13 -157 19 -207 7 -49 11 -122 11 -161 -1 -53
-2 -75 13 -84 8 -7 15 -23 15 -36 0 -12 4 -25 9 -28 5 -3 11 -32 14 -63 12
--124 21 -159 54 -213 18 -30 33 -67 33 -81 0 -15 12 -37 30 -54 17 -16 30 -34
-30 -41 0 -7 18 -27 40 -44 23 -18 49 -49 60 -70 11 -21 38 -52 60 -70 22 -18
-51 -50 63 -72 12 -22 29 -52 38 -68 8 -15 42 -50 75 -77 32 -27 66 -58 74 -67
-8 -10 23 -22 35 -27 11 -5 43 -27 70 -49 28 -22 61 -43 75 -46 39 -8 53 -18
-70 -50 9 -16 31 -39 48 -50 40 -28 204 -91 262 -102 25 -5 63 -21 84 -35 21
--15 44 -27 51 -27 7 0 23 -9 37 -19 36 -29 140 -47 197 -33 25 6 98 16 161 22
-63 7 125 19 138 27 12 7 27 11 32 8 5 -3 23 1 39 10 42 21 61 19 93 -12 l28
--27 22 21 c13 11 30 23 38 27 70 32 143 91 206 168 35 43 68 78 73 78 20 0
-170 161 181 194 6 20 16 38 21 42 5 3 23 34 39 68 16 34 41 73 55 86 17 16 25
-34 25 57 0 19 9 51 20 73 11 22 20 47 20 57 0 10 7 27 15 37 8 11 15 32 15 46
-0 15 7 50 16 79 8 29 19 83 24 120 11 85 27 150 46 178 8 13 14 48 14 85 1 36
-9 87 20 118 11 30 19 69 20 87 0 17 5 35 11 39 6 3 8 16 5 29 -3 12 -8 85 -11
-161 -5 145 -17 221 -41 264 -13 25 -28 56 -80 167 -14 32 -32 69 -38 82 -29
-62 -158 178 -267 239 -31 18 -62 39 -69 48 -13 15 -90 54 -108 54 -4 0 -21 14
--37 30 -16 17 -37 30 -48 30 -10 0 -33 10 -50 23 -18 12 -48 30 -67 41 -19 10
--51 32 -70 47 -19 16 -44 29 -56 29 -12 0 -27 7 -34 15 -7 8 -22 15 -34 15
--12 0 -28 6 -34 12 -19 19 -280 20 -308 2z m-23 -870 c25 -24 30 -25 80 -16
-34 6 76 6 114 0 33 -5 79 -9 102 -9 46 1 114 -31 171 -80 18 -16 43 -29 56
--29 36 0 72 -49 80 -107 8 -60 -9 -230 -24 -248 -7 -8 -20 -49 -31 -92 -11
--43 -24 -82 -29 -87 -6 -6 -10 -17 -10 -26 0 -22 -95 -209 -120 -235 -11 -12
--20 -26 -20 -32 0 -24 -192 -203 -218 -203 -4 0 -28 -20 -52 -45 -29 -29 -53
--45 -70 -45 -14 -1 -36 -7 -50 -15 -14 -8 -39 -14 -56 -15 -17 0 -52 -7 -78
--16 -41 -14 -54 -15 -89 -3 -23 7 -53 21 -66 31 -13 10 -34 18 -47 18 -12 0
--43 9 -69 20 -26 11 -54 20 -62 20 -21 0 -83 48 -83 64 0 7 -9 21 -20 31 -11
-10 -20 24 -20 31 0 7 -21 36 -48 66 -120 134 -112 119 -112 218 0 74 -4 95
--22 127 -17 28 -24 56 -25 108 -1 39 -4 140 -6 225 -3 85 -8 194 -12 241 l-7
-87 30 6 c16 4 76 2 133 -5 57 -6 151 -11 209 -10 58 1 123 1 144 1 22 0 50 7
-63 15 14 10 47 15 92 15 38 0 73 5 76 10 12 20 68 11 96 -16z"/>
-<path d="M3775 4560 c-4 -7 -17 -9 -30 -6 -12 3 -25 2 -29 -2 -4 -4 -26 -7
--49 -8 -23 -1 -67 -6 -97 -11 -49 -10 -61 -18 -116 -76 -48 -50 -63 -74 -69
--106 -4 -22 -15 -51 -25 -64 -16 -20 -18 -33 -11 -79 6 -43 4 -63 -8 -85 -24
--44 -18 -142 13 -196 19 -34 23 -54 19 -84 -4 -32 0 -48 21 -80 20 -30 31 -67
-43 -144 8 -57 22 -111 29 -120 8 -8 14 -22 14 -30 0 -28 75 -114 102 -117 15
--2 32 -10 38 -18 7 -8 17 -14 23 -14 6 0 21 -10 34 -22 20 -18 37 -22 109 -24
-57 -2 93 -8 109 -18 13 -9 37 -16 52 -16 16 0 46 -9 67 -21 33 -17 49 -20 95
--14 31 4 70 15 87 26 17 10 43 19 57 19 14 0 29 5 32 10 3 6 14 10 24 10 10 0
-28 12 42 26 15 16 30 23 43 20 14 -4 37 14 88 66 37 39 68 75 68 80 0 4 7 8
-16 8 26 0 95 66 124 117 14 27 32 58 40 70 12 19 10 33 -14 115 -15 51 -32
-100 -37 108 -5 8 -16 31 -25 50 -86 194 -150 296 -247 394 -67 67 -92 86 -114
-86 -15 0 -61 11 -101 25 -41 14 -82 25 -92 25 -11 0 -22 5 -25 10 -3 6 -14 10
--24 10 -10 0 -24 7 -31 15 -7 8 -22 15 -34 15 -12 0 -38 8 -59 19 -20 10 -54
-22 -74 25 -21 4 -45 9 -55 12 -9 3 -19 0 -23 -6z"/>
-</g>
-</svg>
-<a href="http://thibaudpages.com" target="_blank" rel="noopener">Un outil de Thibaud Pagès</a></footer>
+<div class="segment">
+  <span class="lbl">Registre</span>
+  <div class="seg-btns" id="profBtns" role="group" aria-label="Registre"></div>
 </div>
 
-<div class="tray" id="tray"><div class="tray-inner">
-  <div class="tray-top"><span class="tray-title">Ma sélection</span><span class="tray-count" id="trayCount">0 couleur</span><button class="tray-clear" id="trayClear">Vider</button></div>
-  <div class="tray-chips" id="trayChips"></div>
-  <div class="tray-actions"><button class="tray-btn" id="trayCopy">Copier les codes</button><button class="tray-btn ghost" id="trayPng">Exporter PNG</button><button class="tray-btn ghost" id="trayJson">Exporter JSON</button></div>
-</div></div>
+<div class="controls">
+  <div class="field">
+    <label for="rule">Règle chromatique</label>
+    <select id="rule"></select>
+  </div>
+  <div class="field">
+    <div class="row"><span class="lbl">Écart à la règle</span><output id="chaosOut">0</output></div>
+    <input type="range" class="thin" id="chaos" min="0" max="100" value="0">
+    <div class="scale"><span>théorie</span><span>libre</span></div>
+  </div>
+  <div class="field">
+    <div class="row"><span class="lbl">Nombre de couleurs</span><output id="countOut">5</output></div>
+    <input type="range" class="thin" id="count" min="2" max="8" value="5">
+    <div class="scale"><span>2</span><span>8</span></div>
+  </div>
+  <button class="go" id="go">Générer · espace</button>
+</div>
+
+<div class="hero" id="hero"></div>
+<div class="readout" id="readout"></div>
+<p class="hint">Clic sur une bande pour la verrouiller, clic sur son code hex pour le copier. Les bandes marquées « base » sont tes couleurs, elles ne bougent pas. Survole une mesure (ou tape dessus sur mobile) pour son explication.</p>
+
+<div class="export-bar">
+  <span class="xlbl">Palette entière</span>
+  <span class="tipwrap"><button id="copyAllGen">Copier les hex</button><span class="tip">Copie tous les codes hex, un par ligne. À coller dans un mail, une note ou du code.</span></span>
+  <span class="tipwrap"><button id="aseGen">.ase</button><span class="tip">Nuancier Adobe / Affinity. S'importe directement comme palette dans Photoshop, Illustrator et Affinity.</span></span>
+  <span class="tipwrap"><button id="gplGen">.gpl</button><span class="tip">Palette GIMP. Pour Procreate, GIMP, Inkscape et Krita.</span></span>
+  <button class="help-toggle" data-legend="legendGen" aria-label="Aide sur les formats">?</button>
+</div>
+<div class="legend" id="legendGen">
+  <b>Copier les hex</b> — tous les codes, un par ligne, à coller n'importe où.<br>
+  <b>.ase</b> — nuancier Adobe / Affinity (Photoshop, Illustrator, Affinity).<br>
+  <b>.gpl</b> — palette GIMP (Procreate, GIMP, Inkscape, Krita).
+</div>
+
+<h2>Autres propositions</h2>
+<div class="grid" id="grid"></div>
+
+</div><!-- /panel-gen -->
+
+<!-- ============ ONGLET IMAGE ============ -->
+<div class="panel" id="panel-img" role="tabpanel" aria-labelledby="tab-img">
+
+<section class="sec">
+  <span class="lbl">Image source</span>
+  <div class="drop" id="drop">
+    <input type="file" id="file" accept="image/*" hidden>
+    <button class="add-img" id="pick">Choisir une image</button>
+    <p class="empty" style="margin:14px auto 0">…ou glisse-dépose un fichier ici. JPG, PNG, WebP. Tout se passe dans ton navigateur, rien n'est envoyé nulle part.</p>
+  </div>
+  <div class="field" style="max-width:300px;margin-top:18px">
+    <div class="row"><span class="lbl">Nombre de couleurs</span><output id="nExOut">6</output></div>
+    <input type="range" class="thin" id="nEx" min="3" max="10" value="6">
+    <div class="scale"><span>3</span><span>10</span></div>
+  </div>
+</section>
+
+<div id="imgResult" style="display:none">
+  <div class="preview-row">
+    <img id="preview" alt="Aperçu de l'image">
+    <div class="ex-hero" id="exHero"></div>
+  </div>
+  <p class="hint">Clic sur une couleur pour copier son hex. Palette triée du plus clair au plus foncé.</p>
+  <div class="export-bar">
+    <span class="xlbl">Palette entière</span>
+    <span class="tipwrap"><button id="copyAllEx">Copier les hex</button><span class="tip">Copie tous les codes hex, un par ligne. À coller dans un mail, une note ou du code.</span></span>
+    <span class="tipwrap"><button id="aseEx">.ase</button><span class="tip">Nuancier Adobe / Affinity. S'importe directement comme palette dans Photoshop, Illustrator et Affinity.</span></span>
+    <span class="tipwrap"><button id="gplEx">.gpl</button><span class="tip">Palette GIMP. Pour Procreate, GIMP, Inkscape et Krita.</span></span>
+    <span class="tipwrap"><button id="toBaseEx" class="ghost">→ Couleurs de base</button><span class="tip">Envoie les 4 premières couleurs vers l'onglet Générateur comme couleurs imposées.</span></span>
+    <button class="help-toggle" data-legend="legendImg" aria-label="Aide sur les formats">?</button>
+  </div>
+  <div class="legend" id="legendImg">
+    <b>Copier les hex</b> — tous les codes, un par ligne, à coller n'importe où.<br>
+    <b>.ase</b> — nuancier Adobe / Affinity (Photoshop, Illustrator, Affinity).<br>
+    <b>.gpl</b> — palette GIMP (Procreate, GIMP, Inkscape, Krita).
+  </div>
+</div>
+
+</div><!-- /panel-img -->
+
+<footer class="madeby">
+  <span>made with love by</span>
+  <a href="https://thibaudpages.com" target="_blank" rel="noopener">
+    <svg class="seal-sm" viewBox="0 0 1046 1425" aria-hidden="true"><use href="#sceau"/></svg>Thibaud Pagès
+  </a>
+</footer>
+</div>
+<div class="toast" id="toast"></div>
 
 <script>
-"use strict";
-/* ===== HELPERS ===== */
-function rgbToHex(r,g,b){return '#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase();}
-function hexToRgb(hex){const n=parseInt(hex.slice(1),16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255};}
-function textColorOn(r,g,b){return (0.299*r+0.587*g+0.114*b)>150?'#2A2A24':'#FBF7EC';}
-function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h,s,l=(mx+mn)/2;if(mx===mn){h=s=0;}else{const d=mx-mn;s=l>0.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}h*=60;}return{h,s,l};}
-function hslToRgb(h,s,l){h=((h%360)+360)%360;h/=360;let r,g,b;if(s===0){r=g=b=l;}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;const hue=(t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};r=hue(h+1/3);g=hue(h);b=hue(h-1/3);}return{r:r*255,g:g*255,b:b*255};}
-function hslToHex(h,s,l){const c=hslToRgb(h,s,l);return rgbToHex(c.r,c.g,c.b);}
-function hsvToRgb(h,s,v){h=((h%360)+360)%360;const c=v*s;const x=c*(1-Math.abs((h/60)%2-1));const m=v-c;let r,g,b;if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;}return{r:(r+m)*255,g:(g+m)*255,b:(b+m)*255};}
-function rgbToHsv(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;if(d){if(mx===r)h=(((g-b)/d)%6+6)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;}const s=mx===0?0:d/mx;return{h,s,v:mx};}
-function hsvToHex(h,s,v){const c=hsvToRgb(h,s,v);return rgbToHex(c.r,c.g,c.b);}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-function parseColor(input){if(!input)return null;let s=input.trim();let m=s.replace(/^#/,'');if(/^[0-9a-fA-F]{6}$/.test(m))return '#'+m.toUpperCase();if(/^[0-9a-fA-F]{3}$/.test(m))return '#'+m.split('').map(c=>c+c).join('').toUpperCase();const nums=s.match(/\d{1,3}/g);if(nums&&nums.length>=3){const [r,g,b]=nums.slice(0,3).map(Number);if([r,g,b].every(v=>v>=0&&v<=255))return rgbToHex(r,g,b);}return null;}
-function copyText(text){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));}else fallbackCopy(text);}
-function fallbackCopy(text){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-function downloadUrl(url,name,revoke){const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();if(revoke)setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function flashBtn(btn,msg){const orig=btn.innerHTML;btn.textContent=msg;setTimeout(()=>{btn.innerHTML=orig;},1150);}
-function exportPalettePng(colors,filename){if(!colors.length)return;const n=colors.length,sw=220,sh=300;const cv=document.createElement('canvas');cv.width=sw*n;cv.height=sh+60;const ctx=cv.getContext('2d');ctx.fillStyle='#FBF7EC';ctx.fillRect(0,0,cv.width,cv.height);colors.forEach((c,i)=>{const {r,g,b}=hexToRgb(c);const x=i*sw;ctx.fillStyle=c;ctx.fillRect(x,0,sw,sh);ctx.fillStyle=textColorOn(r,g,b);ctx.textAlign='center';ctx.font='600 26px Outfit, sans-serif';ctx.fillText(c,x+sw/2,sh-34);ctx.font='400 16px Outfit, sans-serif';ctx.fillText(`${r}, ${g}, ${b}`,x+sw/2,sh-10);});ctx.fillStyle='#5F6B41';ctx.textAlign='left';ctx.font='400 20px Staatliches, sans-serif';ctx.fillText('SCEAU TP · PALETTE',16,sh+38);downloadUrl(cv.toDataURL('image/png'),filename);}
-function exportPaletteJson(colors,filename){if(!colors.length)return;const payload={source:'Atelier couleur · Sceau TP',date:new Date().toISOString().slice(0,10),colors:colors.map(c=>{const {r,g,b}=hexToRgb(c);return{hex:c,rgb:[r,g,b]};})};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});downloadUrl(URL.createObjectURL(blob),filename,true);}
+/* ===== 1. COULEUR : sRGB <-> Oklab <-> OkLCh ===== */
+var s2l=function(c){return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4)};
+var l2s=function(c){return c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055};
 
-/* ===== TABS ===== */
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('panel-'+t.dataset.tab).classList.add('active');}));
-
-/* ===== TRAY ===== */
-const tray=document.getElementById('tray'),trayChips=document.getElementById('trayChips'),trayCount=document.getElementById('trayCount');
-let selection=[];
-function addToSelection(hex){hex=hex.toUpperCase();if(selection.includes(hex))return false;selection.push(hex);renderTray();return true;}
-function removeFromSelection(hex){selection=selection.filter(c=>c!==hex);renderTray();}
-function renderTray(){trayChips.innerHTML='';selection.forEach(hex=>{const c=document.createElement('div');c.className='tray-chip';c.style.background=hex;c.title=hex+' — retirer';c.addEventListener('click',()=>removeFromSelection(hex));trayChips.appendChild(c);});trayCount.textContent=selection.length+(selection.length>1?' couleurs':' couleur');if(selection.length){tray.classList.add('on');document.body.classList.add('tray-open');}else{tray.classList.remove('on');document.body.classList.remove('tray-open');}document.querySelectorAll('.gen-sw').forEach(sw=>sw.classList.toggle('picked',selection.includes(sw.dataset.hex)));}
-document.getElementById('trayClear').addEventListener('click',()=>{selection=[];renderTray();});
-document.getElementById('trayCopy').addEventListener('click',()=>{const lines=selection.map(c=>{const {r,g,b}=hexToRgb(c);return `${c}  rgb(${r}, ${g}, ${b})`;});copyText(lines.join('\n'));flashBtn(document.getElementById('trayCopy'),'Copié !');});
-document.getElementById('trayPng').addEventListener('click',()=>exportPalettePng(selection,'selection-sceau-tp.png'));
-document.getElementById('trayJson').addEventListener('click',()=>exportPaletteJson(selection,'selection-sceau-tp.json'));
-
-/* ===== EXTRACTOR ===== */
-const fileInput=document.getElementById('file'),drop=document.getElementById('drop'),stage=document.getElementById('stage'),imgEl=document.getElementById('img'),paletteEl=document.getElementById('palette'),countRange=document.getElementById('count'),countVal=document.getElementById('countVal');
-let currentPixels=null,currentPalette=[];
-function loadFile(file){if(!file||!file.type.startsWith('image/'))return;const url=URL.createObjectURL(file);imgEl.onload=()=>{URL.revokeObjectURL(url);samplePixels();stage.classList.add('on');drop.style.display='none';extract();};imgEl.src=url;}
-drop.addEventListener('click',()=>fileInput.click());
-document.getElementById('change').addEventListener('click',()=>fileInput.click());
-fileInput.addEventListener('change',e=>loadFile(e.target.files[0]));
-['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
-['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
-drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
-window.addEventListener('dragover',e=>e.preventDefault());
-window.addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
-function samplePixels(){const MAX=160;const scale=Math.min(1,MAX/Math.max(imgEl.naturalWidth,imgEl.naturalHeight));const w=Math.max(1,Math.round(imgEl.naturalWidth*scale)),h=Math.max(1,Math.round(imgEl.naturalHeight*scale));const cv=document.createElement('canvas');cv.width=w;cv.height=h;const ctx=cv.getContext('2d');ctx.drawImage(imgEl,0,0,w,h);const data=ctx.getImageData(0,0,w,h).data;const px=[];for(let i=0;i<data.length;i+=4){if(data[i+3]<125)continue;px.push([data[i],data[i+1],data[i+2]]);}currentPixels=px;}
-function makeBox(pixels){let rMin=255,rMax=0,gMin=255,gMax=0,bMin=255,bMax=0;for(const p of pixels){if(p[0]<rMin)rMin=p[0];if(p[0]>rMax)rMax=p[0];if(p[1]<gMin)gMin=p[1];if(p[1]>gMax)gMax=p[1];if(p[2]<bMin)bMin=p[2];if(p[2]>bMax)bMax=p[2];}const rr=rMax-rMin,gr=gMax-gMin,br=bMax-bMin;const range=Math.max(rr,gr,br);const longest=rr>=gr&&rr>=br?0:(gr>=br?1:2);return{pixels,range,longest};}
-function medianCut(pixels,targetCount){if(pixels.length===0)return[];let boxes=[makeBox(pixels)];while(boxes.length<targetCount){boxes.sort((a,b)=>b.range-a.range);const box=boxes.shift();if(!box||box.pixels.length<2){if(box)boxes.push(box);break;}const ch=box.longest;box.pixels.sort((p,q)=>p[ch]-q[ch]);const mid=box.pixels.length>>1;boxes.push(makeBox(box.pixels.slice(0,mid)),makeBox(box.pixels.slice(mid)));}return boxes.map(b=>{let r=0,g=0,bl=0;for(const p of b.pixels){r+=p[0];g+=p[1];bl+=p[2];}const n=b.pixels.length;const col={r:Math.round(r/n),g:Math.round(g/n),b:Math.round(bl/n),pop:n};col.hex=rgbToHex(col.r,col.g,col.b);return col;}).sort((a,b)=>b.pop-a.pop);}
-function extract(){if(!currentPixels)return;currentPalette=medianCut(currentPixels,parseInt(countRange.value,10));renderExtract();}
-function renderExtract(){paletteEl.innerHTML='';currentPalette.forEach(col=>{const rgb=`rgb(${col.r}, ${col.g}, ${col.b})`;const sw=document.createElement('div');sw.className='swatch';sw.innerHTML=`<div class="chip" style="background:${col.hex}"><div class="add-hint">＋</div></div><div class="info"><div class="code-row"><span class="code">${col.hex}</span><button class="copy" data-copy="${col.hex}">Copier</button></div><div class="code-row"><span class="code rgb">${rgb}</span><button class="copy" data-copy="${rgb}">Copier</button></div></div>`;sw.querySelector('.chip').addEventListener('click',()=>{if(addToSelection(col.hex)){const h=sw.querySelector('.add-hint');h.textContent='✓';setTimeout(()=>h.textContent='＋',700);}});paletteEl.appendChild(sw);});paletteEl.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',()=>{copyText(btn.dataset.copy);btn.classList.add('done');const t=btn.textContent;btn.textContent='Copié !';setTimeout(()=>{btn.classList.remove('done');btn.textContent=t;},1100);}));}
-countRange.addEventListener('input',()=>{countVal.textContent=countRange.value;extract();});
-document.getElementById('copyAll').addEventListener('click',()=>{const lines=currentPalette.map(c=>`${c.hex}  rgb(${c.r}, ${c.g}, ${c.b})`);copyText(lines.join('\n'));flashBtn(document.getElementById('copyAll'),'Copié !');});
-document.getElementById('exportPng').addEventListener('click',()=>exportPalettePng(currentPalette.map(c=>c.hex),'palette-sceau-tp.png'));
-document.getElementById('exportFile').addEventListener('click',()=>exportPaletteJson(currentPalette.map(c=>c.hex),'palette-sceau-tp.json'));
-
-/* ===== HARMONY RULES ===== */
-const RULES=[
-  {name:'Complémentaire',desc:'la couleur opposée sur la roue',offs:[0,180],ov:'line'},
-  {name:'Compl. divisée',desc:'l\'opposée et ses deux voisines',offs:[0,150,210],ov:'poly'},
-  {name:'Triade',desc:'trois teintes à 120°',offs:[0,120,240],ov:'poly'},
-  {name:'Tétrade',desc:'deux paires de complémentaires',offs:[0,60,180,240],ov:'poly'},
-  {name:'Carré',desc:'quatre teintes à 90°',offs:[0,90,180,270],ov:'poly'},
-  {name:'Analogues',desc:'teintes voisines, douces',offs:[-30,0,30,60],ov:'open'},
-  {name:'Monochrome',desc:'une teinte, plusieurs valeurs',offs:[0],mono:true,ov:'none'},
-];
-const MONO_STEPS=[0.82,0.66,0.5,0.34,0.2,0.9];
-
-/* ===== RING + TRIANGLE PICKER (TSV) ===== */
-const WHEEL=220, C=110, OUTER=106, INNER=84, MIDR=(OUTER+INNER)/2, TRI_R=76;
-const ringCv=document.getElementById('wheelRing'), triCv=document.getElementById('wheelTri'), ovCv=document.getElementById('wheelOverlay'), wheelWrap=document.getElementById('wheelWrap');
-const curSwatch=document.getElementById('curSwatch'),curHex=document.getElementById('curHex'),curRgb=document.getElementById('curRgb'),pasteInput=document.getElementById('pasteInput');
-let baseColors=['#3E6FB0'], activeBase=0;
-let HUE=214, SAT=0.65, VAL=0.69;
-let selectedMethod='all', paletteSize=5;
-
-function ringPoint(hue,r){const a=((hue%360)+360)%360*Math.PI/180;r=r===undefined?MIDR:r;return{x:C+r*Math.sin(a),y:C-r*Math.cos(a)};}
-function triVerts(hue){const p=o=>ringPoint(hue+o,TRI_R);return{hue:p(0),white:p(120),black:p(240)};}
-function baryOf(px,py,V){const A=V.hue,B=V.white,D=V.black;const den=(B.y-D.y)*(A.x-D.x)+(D.x-B.x)*(A.y-D.y);const a=((B.y-D.y)*(px-D.x)+(D.x-B.x)*(py-D.y))/den;const b=((D.y-A.y)*(px-D.x)+(A.x-D.x)*(py-D.y))/den;return{a,b,c:1-a-b};}
-function svToPoint(s,v,V){const a=s*v,b=v*(1-s),c=1-v;return{x:a*V.hue.x+b*V.white.x+c*V.black.x,y:a*V.hue.y+b*V.white.y+c*V.black.y};}
-
-function drawRing(){
-  const dpr=window.devicePixelRatio||1, px=Math.round(WHEEL*dpr);
-  ringCv.width=px;ringCv.height=px;ringCv.style.width=WHEEL+'px';ringCv.style.height=WHEEL+'px';
-  const ctx=ringCv.getContext('2d');const img=ctx.createImageData(px,px);const d=img.data;
-  const c=px/2, outer=OUTER*dpr, inner=INNER*dpr;
-  for(let y=0;y<px;y++){for(let x=0;x<px;x++){
-    const dx=x-c+0.5,dy=y-c+0.5,dist=Math.sqrt(dx*dx+dy*dy),i=(y*px+x)*4;
-    if(dist<inner||dist>outer){d[i+3]=0;continue;}
-    let hue=Math.atan2(dx,-dy)*180/Math.PI;hue=((hue%360)+360)%360;
-    const col=hsvToRgb(hue,1,1);d[i]=col.r;d[i+1]=col.g;d[i+2]=col.b;d[i+3]=255;
-  }}
-  ctx.putImageData(img,0,0);
+function oklabToLinear(L,a,b){
+  var l_=L+0.3963377774*a+0.2158037573*b,
+      m_=L-0.1055613458*a-0.0638541728*b,
+      s_=L-0.0894841775*a-1.2914855480*b;
+  var l=l_*l_*l_,m=m_*m_*m_,s=s_*s_*s_;
+  return [ 4.0767416621*l-3.3077115913*m+0.2309699292*s,
+          -1.2684380046*l+2.6097574011*m-0.3413193965*s,
+          -0.0041960863*l-0.7034186147*m+1.7076147010*s ];
 }
-function drawTri(){
-  const dpr=window.devicePixelRatio||1, px=Math.round(WHEEL*dpr);
-  triCv.width=px;triCv.height=px;triCv.style.width=WHEEL+'px';triCv.style.height=WHEEL+'px';
-  const ctx=triCv.getContext('2d');const img=ctx.createImageData(px,px);const d=img.data;
-  const V=triVerts(HUE);const pure=hsvToRgb(HUE,1,1);const e=-0.004;
-  for(let y=0;y<px;y++){for(let x=0;x<px;x++){
-    const cx=(x+0.5)/dpr, cy=(y+0.5)/dpr, i=(y*px+x)*4;
-    const bc=baryOf(cx,cy,V);
-    if(bc.a>=e&&bc.b>=e&&bc.c>=e){d[i]=bc.a*pure.r+bc.b*255;d[i+1]=bc.a*pure.g+bc.b*255;d[i+2]=bc.a*pure.b+bc.b*255;d[i+3]=255;}
-    else d[i+3]=0;
-  }}
-  ctx.putImageData(img,0,0);
+function linearToOklab(r,g,b){
+  var l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b),
+      m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b),
+      s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+  return [0.2104542553*l+0.7936177850*m-0.0040720468*s,
+          1.9779984951*l-2.4285922050*m+0.4505937099*s,
+          0.0259040371*l+0.7827717662*m-0.8086757660*s];
 }
-function dot(ctx,x,y,r,fill,ringW){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=ringW||2;ctx.strokeStyle='#fff';ctx.stroke();ctx.lineWidth=1;ctx.strokeStyle='rgba(0,0,0,.4)';ctx.stroke();}
-function drawOverlay(){
-  const dpr=window.devicePixelRatio||1, px=Math.round(WHEEL*dpr);
-  ovCv.width=px;ovCv.height=px;ovCv.style.width=WHEEL+'px';ovCv.style.height=WHEEL+'px';
-  const ctx=ovCv.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,WHEEL,WHEEL);
-  const rule=selectedMethod==='all'?null:RULES.find(r=>r.name===selectedMethod);
-  if(rule&&!rule.mono){
-    const pts=rule.offs.map(o=>({...ringPoint(HUE+o),hue:HUE+o}));
-    ctx.lineWidth=1.6;ctx.strokeStyle='rgba(42,42,36,.45)';ctx.lineJoin='round';
-    ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));if(rule.ov==='poly')ctx.closePath();ctx.stroke();
-    pts.forEach(p=>{if(Math.abs(((p.hue-HUE)%360+360)%360)<0.001)return;dot(ctx,p.x,p.y,6,hsvToHex(((p.hue%360)+360)%360,SAT,VAL),2);});
+function inGamut(v){return v[0]>=-5e-4&&v[0]<=1.0005&&v[1]>=-5e-4&&v[1]<=1.0005&&v[2]>=-5e-4&&v[2]<=1.0005}
+
+var mcCache={};
+function maxChroma(L,H){
+  var key=Math.round(L*200)+':'+Math.round(H*2);
+  if(mcCache[key]!==undefined) return mcCache[key];
+  var rad=H*Math.PI/180, lo=0, hi=0.42, res;
+  if(inGamut(oklabToLinear(L,hi*Math.cos(rad),hi*Math.sin(rad)))) res=hi;
+  else{
+    for(var i=0;i<18;i++){
+      var mid=(lo+hi)/2;
+      if(inGamut(oklabToLinear(L,mid*Math.cos(rad),mid*Math.sin(rad)))) lo=mid; else hi=mid;
+    }
+    res=lo;
   }
-  // main hue marker on ring
-  const hp=ringPoint(HUE);dot(ctx,hp.x,hp.y,8,hsvToHex(HUE,1,1),3);
-  // SV marker in triangle
-  const sp=svToPoint(SAT,VAL,triVerts(HUE));dot(ctx,sp.x,sp.y,8,hsvToHex(HUE,SAT,VAL),3);
+  mcCache[key]=res; return res;
 }
-function syncReadout(){const hex=hsvToHex(HUE,SAT,VAL);const {r,g,b}=hexToRgb(hex);curSwatch.style.background=hex;curHex.textContent=hex;curRgb.textContent=`rgb(${r}, ${g}, ${b})`;baseColors[activeBase]=hex;const el=document.querySelector(`.base-sw[data-i="${activeBase}"]`);if(el)el.style.background=hex;}
-function afterColorChange(){syncReadout();drawOverlay();generate();}
-function loadPickerFromHex(hex){const {r,g,b}=hexToRgb(hex);const hsv=rgbToHsv(r,g,b);HUE=hsv.h;SAT=hsv.s;VAL=hsv.v;drawTri();afterColorChange();}
-
-let mode=null;
-function pointer(ev){
-  const rect=wheelWrap.getBoundingClientRect();
-  const px=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
-  const py=(ev.touches?ev.touches[0].clientY:ev.clientY)-rect.top;
-  const dx=px-C,dy=py-C,dist=Math.hypot(dx,dy);
-  if(mode==='hue'){HUE=(((Math.atan2(dx,-dy)*180/Math.PI)%360)+360)%360;drawTri();afterColorChange();}
-  else{const V=triVerts(HUE);let {a,b,c}=baryOf(px,py,V);a=Math.max(0,a);b=Math.max(0,b);c=Math.max(0,c);const sum=a+b+c||1;a/=sum;b/=sum;VAL=clamp(a+b,0,1);SAT=(a+b)>1e-6?clamp(a/(a+b),0,1):0;afterColorChange();}
+function lchToHex(L,C,H){
+  var c=Math.min(C,maxChroma(L,H)), rad=H*Math.PI/180;
+  var lin=oklabToLinear(L,c*Math.cos(rad),c*Math.sin(rad));
+  var out='#';
+  for(var i=0;i<3;i++){
+    var n=Math.round(Math.min(1,Math.max(0,l2s(lin[i])))*255);
+    out+=(n<16?'0':'')+n.toString(16);
+  }
+  return out;
 }
-wheelWrap.addEventListener('pointerdown',e=>{const rect=wheelWrap.getBoundingClientRect();const dx=e.clientX-rect.left-C,dy=e.clientY-rect.top-C,dist=Math.hypot(dx,dy);if(dist>=INNER-4&&dist<=OUTER+6)mode='hue';else if(dist<INNER)mode='sv';else return;wheelWrap.setPointerCapture(e.pointerId);pointer(e);});
-wheelWrap.addEventListener('pointermove',e=>{if(mode)pointer(e);});
-wheelWrap.addEventListener('pointerup',()=>{mode=null;});
-wheelWrap.addEventListener('pointercancel',()=>{mode=null;});
-pasteInput.addEventListener('input',()=>{const hex=parseColor(pasteInput.value);if(hex){pasteInput.classList.remove('bad');loadPickerFromHex(hex);}else if(pasteInput.value.trim()!==''){pasteInput.classList.add('bad');}else{pasteInput.classList.remove('bad');}});
+function hexLin(hex){var n=parseInt(hex.slice(1),16);
+  return [s2l(((n>>16)&255)/255),s2l(((n>>8)&255)/255),s2l((n&255)/255)];}
+function linHex(l){var o='#';for(var i=0;i<3;i++){
+  var v=Math.round(Math.min(1,Math.max(0,l2s(l[i])))*255);o+=(v<16?'0':'')+v.toString(16);}return o;}
+function hexToOklab(hex){
+  var n=parseInt(hex.slice(1),16);
+  return linearToOklab(s2l(((n>>16)&255)/255),s2l(((n>>8)&255)/255),s2l((n&255)/255));
+}
+function hexToLch(hex){
+  var v=hexToOklab(hex);
+  return {L:v[0],C:Math.hypot(v[1],v[2]),H:((Math.atan2(v[2],v[1])*180/Math.PI)%360+360)%360,hex:hex};
+}
+/* couleur la plus vive d'une teinte OkLCh (pour l'anneau et le sommet du triangle) */
+var vividCache={};
+function vivid(H){
+  H=((H%360)+360)%360;
+  var k=Math.round(H);
+  if(vividCache[k]) return vividCache[k];
+  var bestL=.6,bestC=0;
+  for(var L=.30;L<=.86;L+=.02){var c=maxChroma(L,H); if(c>bestC){bestC=c;bestL=L;}}
+  var hex=lchToHex(bestL,bestC,H);
+  var o={hex:hex,lin:hexLin(hex)};
+  vividCache[k]=o;return o;
+}
+function relLum(hex){
+  var n=parseInt(hex.slice(1),16);
+  var r=s2l(((n>>16)&255)/255),g=s2l(((n>>8)&255)/255),b=s2l((n&255)/255);
+  return 0.2126*r+0.7152*g+0.0722*b;
+}
+function contrast(h1,h2){
+  var a=relLum(h1),b=relLum(h2);
+  return (Math.max(a,b)+0.05)/(Math.min(a,b)+0.05);
+}
+function parseColor(input){
+  if(!input) return null;
+  var s=String(input).trim(), m=s.replace(/^#/,'');
+  if(/^[0-9a-fA-F]{6}$/.test(m)) return '#'+m.toLowerCase();
+  if(/^[0-9a-fA-F]{3}$/.test(m)) return '#'+m.split('').map(function(c){return c+c}).join('').toLowerCase();
+  var nums=s.match(/\d{1,3}/g);
+  if(nums&&nums.length>=3){
+    var v=nums.slice(0,3).map(Number);
+    if(v.every(function(x){return x>=0&&x<=255}))
+      return '#'+v.map(function(x){return (x<16?'0':'')+x.toString(16)}).join('');
+  }
+  return null;
+}
 
-/* ===== HARMONY SELECTOR ===== */
-const harmEl=document.getElementById('harm');
-function renderHarm(){harmEl.innerHTML='';const opts=[{name:'all',label:'Toutes'}].concat(RULES.map(r=>({name:r.name,label:r.name})));opts.forEach(o=>{const b=document.createElement('button');b.textContent=o.label;if(o.name===selectedMethod)b.classList.add('on');b.addEventListener('click',()=>{selectedMethod=o.name;renderHarm();drawOverlay();generate();});harmEl.appendChild(b);});}
+/* ===== 2. RÈGLES ET REGISTRES ===== */
+var RULES={
+  free:  {label:'Aucune (libre)',         anchors:null},
+  mono:  {label:'Monochrome',             anchors:[0]},
+  analog:{label:'Analogue',               spread:45},
+  comp:  {label:'Complémentaire',         anchors:[0,180]},
+  split: {label:'Complémentaire divisée', anchors:[0,150,210]},
+  triad: {label:'Triadique',              anchors:[0,120,240]},
+  tetra: {label:'Tétradique',             anchors:[0,90,180,270]}
+};
+var PROFILES={
+  standard:{label:'Standard', L:[.42,.82], C:[.085,.17],  neutral:.10, windows:null},
+  vif:     {label:'Vif',      L:[.40,.86], C:[.15,.27],   neutral:.00, windows:null},
+  sourd:   {label:'Sourd',    L:[.34,.86], C:[.035,.095], neutral:.50, windows:[[25,110],[150,235],[330,390]]},
+  terre:   {label:'Terre',    L:[.32,.84], C:[.04,.125],  neutral:.42, windows:[[25,95],[95,150],[200,250]]},
+  pastel:  {label:'Pastel',   L:[.78,.94], C:[.03,.085],  neutral:.22, windows:null},
+  nocturne:{label:'Nocturne', L:[.16,.52], C:[.05,.17],   neutral:.32, windows:null}
+};
 
-/* ===== BASE SWATCHES ===== */
-const baseSwatchesEl=document.getElementById('baseSwatches');
-function renderBaseSwatches(){baseSwatchesEl.innerHTML='';baseColors.forEach((hex,i)=>{const sw=document.createElement('div');sw.className='base-sw'+(i===activeBase?' active':'');sw.style.background=hex;sw.dataset.i=i;sw.title='Modifier cette couleur';if(baseColors.length>1){const x=document.createElement('div');x.className='x';x.textContent='✕';x.addEventListener('click',ev=>{ev.stopPropagation();baseColors.splice(i,1);if(activeBase>=baseColors.length)activeBase=baseColors.length-1;renderBaseSwatches();loadPickerFromHex(baseColors[activeBase]);});sw.appendChild(x);}sw.addEventListener('click',()=>{activeBase=i;renderBaseSwatches();loadPickerFromHex(baseColors[activeBase]);});baseSwatchesEl.appendChild(sw);});document.getElementById('baseAdd').disabled=baseColors.length>=3;}
-document.getElementById('baseAdd').addEventListener('click',()=>{if(baseColors.length>=3)return;const extra=['#C77D4A','#7E8C5A','#8A5A8C'][baseColors.length-1]||'#7E8C5A';baseColors.push(extra);activeBase=baseColors.length-1;renderBaseSwatches();loadPickerFromHex(extra);});
+/* ===== 3. GÉNÉRATION ===== */
+function rnd(a,b){return a+Math.random()*(b-a)}
+function gauss(s){
+  var u=0,v=0;
+  while(!u)u=Math.random();
+  while(!v)v=Math.random();
+  return s*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function pickHue(p){
+  if(!p.windows) return rnd(0,360);
+  var w=p.windows[(Math.random()*p.windows.length)|0];
+  return rnd(w[0],w[1])%360;
+}
+function ruleHues(key,H0,n){
+  var r=RULES[key],out=[],i;
+  if(r.spread!==undefined){
+    for(i=0;i<n;i++) out.push(n===1?H0:H0-r.spread+2*r.spread*i/(n-1));
+    return out;
+  }
+  if(!r.anchors) return null;
+  for(i=0;i<n;i++) out.push(H0+r.anchors[i%r.anchors.length]);
+  return out;
+}
+function ladder(n,lo,hi,taken,jit){
+  var pool=[],i;
+  for(i=0;i<=40;i++) pool.push(lo+(hi-lo)*i/40);
+  var chosen=taken.slice(), out=[];
+  for(var k=0;k<n;k++){
+    var best=pool[0], bd=-1;
+    for(i=0;i<pool.length;i++){
+      var d;
+      if(chosen.length){
+        d=Infinity;
+        for(var j=0;j<chosen.length;j++) d=Math.min(d,Math.abs(chosen[j]-pool[i]));
+      } else d=rnd(0,.5);
+      d+=Math.random()*0.012;
+      if(d>bd){bd=d;best=pool[i];}
+    }
+    chosen.push(best);
+    out.push(Math.min(.97,Math.max(.06,best+gauss(jit))));
+  }
+  return out;
+}
+function makeCandidate(cfg,bases,locks){
+  var p=PROFILES[cfg.profile], k=cfg.chaos/100;
+  var nGen=Math.max(0,cfg.count-bases.length);
+  if(nGen===0) return bases.slice(0,cfg.count);
+  var H0=bases.length?bases[0].H:pickHue(p);
+  var hues=ruleHues(cfg.rule,H0,cfg.count);
+  if(hues) hues=hues.slice(bases.length);
+  else{ hues=[]; for(var i=0;i<nGen;i++) hues.push(pickHue(p)); }
+  hues=hues.map(function(h){return h+gauss(k*30)});
+  if(Math.random()<k*0.55) hues[(Math.random()*nGen)|0]=pickHue(p)+gauss(20);
+  hues=hues.map(function(h){return ((h%360)+360)%360});
+  var Ls=ladder(nGen,p.L[0],p.L[1],bases.map(function(b){return b.L}),k*0.06);
+  var Cs=hues.map(function(){return rnd(p.C[0],p.C[1])});
+  Cs[(Math.random()*nGen)|0]*=1.35;
+  if(Math.random()<p.neutral*(0.30+0.70*k)) Cs[(Math.random()*nGen)|0]=rnd(.006,.024);
+  var gen=hues.map(function(H,i){
+    if(locks[i]) return locks[i];
+    return {L:Ls[i],C:Cs[i],H:H,hex:lchToHex(Ls[i],Cs[i],H)};
+  });
+  return bases.concat(gen);
+}
+function score(cols,fixed){
+  var labs=cols.map(function(c){return hexToOklab(c.hex)});
+  var minD=Infinity,i,j;
+  for(i=0;i<labs.length;i++) for(j=i+1;j<labs.length;j++){
+    if(i<fixed&&j<fixed) continue;
+    var d=Math.hypot(labs[i][0]-labs[j][0],labs[i][1]-labs[j][1],labs[i][2]-labs[j][2]);
+    if(d<minD) minD=d;
+  }
+  if(minD===Infinity) minD=0.2;
+  var Ls=labs.map(function(l){return l[0]});
+  var spread=Math.max.apply(null,Ls)-Math.min.apply(null,Ls);
+  var bestC=1;
+  for(i=0;i<cols.length;i++) for(j=i+1;j<cols.length;j++)
+    bestC=Math.max(bestC,contrast(cols[i].hex,cols[j].hex));
+  var chr=labs.map(function(l){return Math.hypot(l[1],l[2])});
+  var cVar=Math.max.apply(null,chr)-Math.min.apply(null,chr);
+  var s=0;
+  s+= minD<0.075 ? -60+minD*400 : Math.min(minD,0.20)*90;
+  s+= spread<0.28 ? (spread-0.28)*120 : Math.min(spread,0.65)*55;
+  s+= bestC>=4.5 ? 22 : (bestC-4.5)*6;
+  s+= Math.min(cVar,0.14)*70;
+  return {s:s,minD:minD,spread:spread,bestC:bestC};
+}
+function generate(cfg,bases,locks,tries){
+  var best=null;
+  for(var i=0;i<(tries||24);i++){
+    var cols=makeCandidate(cfg,bases,locks);
+    var m=score(cols,bases.length);
+    if(!best||m.s>best.m.s) best={cols:cols,m:m};
+  }
+  return best;
+}
 
-/* ===== GENERATOR ===== */
-const rulesEl=document.getElementById('rules');
-function buildPalette(rule){const primary=hexToRgb(baseColors[activeBase]);const ph=rgbToHsl(primary.r,primary.g,primary.b);const anchors=[];baseColors.forEach(hex=>{const c=hexToRgb(hex);anchors.push(rgbToHsl(c.r,c.g,c.b));});if(rule.mono){let k=0;while(anchors.length<paletteSize&&k<MONO_STEPS.length){anchors.push({h:ph.h,s:clamp(ph.s,0.15,0.9),l:MONO_STEPS[k]});k++;}}else{rule.offs.forEach(o=>{if(o!==0)anchors.push({h:ph.h+o,s:clamp(ph.s,0.25,0.85),l:clamp(ph.l,0.35,0.62)});});}let toggle=0,delta=14;const cycle=Math.max(1,(rule.mono?1:rule.offs.length+baseColors.length-1));while(anchors.length<paletteSize){const a=anchors[anchors.length%cycle]||anchors[0];const dl=(toggle%2===0)?delta:-delta;if(toggle%2===1)delta+=8;anchors.push({h:a.h,s:a.s,l:clamp(a.l+dl/100,0.1,0.92)});toggle++;}return anchors.slice(0,paletteSize).map(a=>hslToHex(a.h,a.s,a.l));}
-function renderRuleCard(rule){const cols=buildPalette(rule);const card=document.createElement('div');card.className='rule-card';const head=document.createElement('div');head.className='rule-head';head.innerHTML=`<span class="rule-name">${rule.name}</span><span class="rule-desc">${rule.desc}</span><span class="rule-actions"><button class="mini-btn" data-act="add">Tout ajouter</button><button class="mini-btn" data-act="copy">Copier</button></span>`;const row=document.createElement('div');row.className='gen-row';cols.forEach(hex=>{const {r,g,b}=hexToRgb(hex);const sw=document.createElement('div');sw.className='gen-sw';sw.dataset.hex=hex;sw.style.background=hex;sw.innerHTML=`<span style="color:${textColorOn(r,g,b)}">${hex}</span>`;if(selection.includes(hex))sw.classList.add('picked');sw.addEventListener('click',()=>{if(selection.includes(hex))removeFromSelection(hex);else addToSelection(hex);});row.appendChild(sw);});head.querySelector('[data-act="add"]').addEventListener('click',()=>cols.forEach(addToSelection));head.querySelector('[data-act="copy"]').addEventListener('click',e=>{copyText(cols.join('\n'));flashBtn(e.target,'Copié !');});card.appendChild(head);card.appendChild(row);return card;}
-function generate(){rulesEl.innerHTML='';const list=selectedMethod==='all'?RULES:RULES.filter(r=>r.name===selectedMethod);list.forEach(rule=>rulesEl.appendChild(renderRuleCard(rule)));}
-document.getElementById('sizeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#sizeSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');paletteSize=parseInt(b.dataset.size,10);generate();});
+/* ===== 4. EXPORT DE PALETTE (copie / .ase / .gpl) ===== */
+function copy(txt){
+  if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(txt);
+  var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);
+  ta.select();try{document.execCommand('copy')}catch(e){}ta.remove();
+}
+function hexList(hexes){return hexes.map(function(h){return h.toUpperCase()}).join('\n')}
+function copyPalette(hexes){if(!hexes.length)return;copy(hexList(hexes));toast(hexes.length+' couleurs copiées')}
 
-/* ===== INIT ===== */
-drawRing();
-renderHarm();
-renderBaseSwatches();
-loadPickerFromHex(baseColors[0]);
+function downloadBlob(bytes,filename,mime){
+  var blob=new Blob([bytes],{type:mime||'application/octet-stream'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url)},1200);
+}
+function buildASE(hexes){
+  var bytes=[];
+  function push(a){for(var i=0;i<a.length;i++)bytes.push(a[i]&255)}
+  function u16(v){return [(v>>8)&255,v&255]}
+  function u32(v){return [(v>>>24)&255,(v>>16)&255,(v>>8)&255,v&255]}
+  function f32(v){var b=new ArrayBuffer(4);new DataView(b).setFloat32(0,v,false);var u=new Uint8Array(b);return [u[0],u[1],u[2],u[3]]}
+  push([0x41,0x53,0x45,0x46]);
+  push(u16(1));push(u16(0));
+  push(u32(hexes.length));
+  hexes.forEach(function(hex){
+    hex=hex.toUpperCase();
+    var name=hex.slice(1),nameB=[];
+    for(var i=0;i<name.length;i++){var cc=name.charCodeAt(i);nameB.push((cc>>8)&255,cc&255);}
+    nameB.push(0,0);
+    var n=parseInt(hex.slice(1),16);
+    var r=((n>>16)&255)/255,g=((n>>8)&255)/255,b=(n&255)/255;
+    var body=[];
+    body=body.concat(u16(name.length+1),nameB,[0x52,0x47,0x42,0x20],f32(r),f32(g),f32(b),u16(2));
+    push(u16(0x0001));push(u32(body.length));push(body);
+  });
+  return new Uint8Array(bytes);
+}
+function exportASE(hexes,name){if(!hexes.length)return;downloadBlob(buildASE(hexes),(name||'palette')+'.ase');toast('.ase exporté')}
+function buildGPL(hexes,name){
+  var out='GIMP Palette\nName: '+(name||'Palette')+'\nColumns: '+hexes.length+'\n#\n';
+  hexes.forEach(function(hex){
+    var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+    function pad(x){x=String(x);return '   '.slice(x.length)+x}
+    out+=pad(r)+' '+pad(g)+' '+pad(b)+'\t'+hex.toUpperCase()+'\n';
+  });
+  return out;
+}
+function exportGPL(hexes,name){if(!hexes.length)return;downloadBlob(buildGPL(hexes,name),(name||'palette')+'.gpl','text/plain');toast('.gpl exporté')}
+
+/* ===== 5. ÉTAT ET INTERFACE ===== */
+function $(id){return document.getElementById(id)}
+var ruleSel=$('rule'),chaosIn=$('chaos'),countIn=$('count');
+var bases=[],locks=[],editing=-1,hero=null,cands=[],currentProfile='standard';
+
+Object.keys(RULES).forEach(function(k){ruleSel.add(new Option(RULES[k].label,k))});
+ruleSel.value='free';
+
+/* boutons Registre */
+var profBtns={};
+Object.keys(PROFILES).forEach(function(k){
+  var b=document.createElement('button');b.type='button';b.textContent=PROFILES[k].label;
+  if(k===currentProfile) b.className='on';
+  b.addEventListener('click',function(){
+    currentProfile=k;
+    Object.keys(profBtns).forEach(function(kk){profBtns[kk].classList.toggle('on',kk===k)});
+    locks=[];run();
+  });
+  profBtns[k]=b;$('profBtns').appendChild(b);
+});
+
+function cfg(){return {rule:ruleSel.value,profile:currentProfile,chaos:+chaosIn.value,count:+countIn.value}}
+function textOn(hex){return relLum(hex)>0.34?'#262520':'#f6f1e4'}
+
+/* ===== 6. ROUE : anneau de teinte + triangle saturation / luminosité ===== */
+var SZ=220, WC=110, Rout=104, Rin=80, Rt=70;
+function hueToXY(h,R){var r=h*Math.PI/180;return {x:WC+R*Math.sin(r),y:WC-R*Math.cos(r)}}
+function xyToHue(px,py){var h=Math.atan2(px-WC,-(py-WC))*180/Math.PI;return ((h%360)+360)%360}
+
+/* barycentriques de P dans le triangle (A,B,C) — a pour A (sommet teinte) */
+function bary(px,py,A,B,C){
+  var v0x=B.x-A.x,v0y=B.y-A.y,v1x=C.x-A.x,v1y=C.y-A.y,v2x=px-A.x,v2y=py-A.y;
+  var den=v0x*v1y-v1x*v0y;
+  var b=(v2x*v1y-v1x*v2y)/den, c=(v0x*v2y-v2x*v0y)/den;
+  return [1-b-c,b,c];
+}
+/* coordonnées (a=teinte,b=blanc,c=noir) d'une couleur donnée, moindres carrés */
+function triCoords(H,targetLin){
+  var Hl=vivid(H).lin, sHH=0,sH=0,sHT=0,sT=0;
+  for(var i=0;i<3;i++){sHH+=Hl[i]*Hl[i];sH+=Hl[i];sHT+=Hl[i]*targetLin[i];sT+=targetLin[i];}
+  var det=sHH*3-sH*sH;
+  var a=(sHT*3-sH*sT)/det, b=(sHH*sT-sH*sHT)/det;
+  a=Math.max(0,Math.min(1,a)); b=Math.max(0,Math.min(1,b));
+  if(a+b>1){var s=a+b;a/=s;b/=s;}
+  return [a,b,1-a-b];
+}
+function paintTriangle(ctx,dpr,H){
+  var A=hueToXY(H,Rt),B=hueToXY(H+120,Rt),C=hueToXY(H+240,Rt);
+  var Ad={x:A.x*dpr,y:A.y*dpr},Bd={x:B.x*dpr,y:B.y*dpr},Cd={x:C.x*dpr,y:C.y*dpr};
+  var lim=Math.round(SZ*dpr);
+  var minx=Math.max(0,Math.floor(Math.min(Ad.x,Bd.x,Cd.x))-1);
+  var maxx=Math.min(lim,Math.ceil(Math.max(Ad.x,Bd.x,Cd.x))+1);
+  var miny=Math.max(0,Math.floor(Math.min(Ad.y,Bd.y,Cd.y))-1);
+  var maxy=Math.min(lim,Math.ceil(Math.max(Ad.y,Bd.y,Cd.y))+1);
+  var bw=maxx-minx, bh=maxy-miny;
+  if(bw<=0||bh<=0) return;
+  var img=ctx.createImageData(bw,bh), d=img.data, Hl=vivid(H).lin;
+  var v0x=Bd.x-Ad.x,v0y=Bd.y-Ad.y,v1x=Cd.x-Ad.x,v1y=Cd.y-Ad.y, den=v0x*v1y-v1x*v0y;
+  for(var y=0;y<bh;y++) for(var x=0;x<bw;x++){
+    var pxr=minx+x+0.5-Ad.x, pyr=miny+y+0.5-Ad.y;
+    var b=(pxr*v1y-v1x*pyr)/den, c=(v0x*pyr-pxr*v0y)/den, a=1-b-c;
+    var idx=(y*bw+x)*4;
+    if(a>=-0.002&&b>=-0.002&&c>=-0.002){
+      var lr=a*Hl[0]+b, lg=a*Hl[1]+b, lb=a*Hl[2]+b;
+      d[idx]  =Math.round(Math.min(1,Math.max(0,l2s(lr)))*255);
+      d[idx+1]=Math.round(Math.min(1,Math.max(0,l2s(lg)))*255);
+      d[idx+2]=Math.round(Math.min(1,Math.max(0,l2s(lb)))*255);
+      d[idx+3]=255;
+    } else d[idx+3]=0;
+  }
+  ctx.putImageData(img,minx,miny);
+}
+function dot(ctx,p,hex,r){
+  ctx.beginPath();ctx.arc(p.x,p.y,r,0,2*Math.PI);ctx.fillStyle=hex;ctx.fill();
+  ctx.lineWidth=2;ctx.strokeStyle='#faf7ec';ctx.stroke();
+  ctx.beginPath();ctx.arc(p.x,p.y,r+1.5,0,2*Math.PI);ctx.lineWidth=1;ctx.strokeStyle='rgba(38,37,32,.55)';ctx.stroke();
+}
+function paintWheel(){
+  var cv=$('wheel'),ctx=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1);
+  if(cv.width!==Math.round(SZ*dpr)){cv.width=cv.height=Math.round(SZ*dpr);cv.style.width=cv.style.height=SZ+'px';}
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,SZ,SZ);
+  ctx.lineWidth=Rout-Rin;
+  for(var a=0;a<360;a+=1.2){
+    ctx.beginPath();
+    ctx.arc(WC,WC,(Rout+Rin)/2,(a-91)*Math.PI/180,(a-88.4)*Math.PI/180);
+    ctx.strokeStyle=vivid(a).hex;ctx.stroke();
+  }
+  var c=bases[editing]; if(!c) return;
+  var rk=ruleSel.value;
+  if(rk!=='free'){
+    var t=ruleHues(rk,c.H,6)||[],uniq=[];
+    t.forEach(function(v){var r=Math.round(((v%360)+360)%360);if(uniq.indexOf(r)<0)uniq.push(r)});
+    uniq.forEach(function(deg){
+      var q=hueToXY(deg,Rin+(Rout-Rin)/2);
+      ctx.beginPath();ctx.arc(q.x,q.y,2.4,0,2*Math.PI);
+      ctx.fillStyle=deg===Math.round(c.H)?'#262520':'rgba(38,37,32,.55)';ctx.fill();
+      ctx.lineWidth=1;ctx.strokeStyle='#faf7ec';ctx.stroke();
+    });
+  }
+  ctx.setTransform(1,0,0,1,0,0);
+  paintTriangle(ctx,dpr,c.H);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  dot(ctx,hueToXY(c.H,(Rout+Rin)/2),c.hex,7);
+  var A=hueToXY(c.H,Rt),B=hueToXY(c.H+120,Rt),C=hueToXY(c.H+240,Rt);
+  var w=triCoords(c.H,hexLin(c.hex));
+  dot(ctx,{x:w[0]*A.x+w[1]*B.x+w[2]*C.x,y:w[0]*A.y+w[1]*B.y+w[2]*C.y},c.hex,6);
+}
+function syncEditor(){
+  var c=bases[editing];
+  $('editor').classList.toggle('on',!!c);
+  if(!c) return;
+  $('paste').value=c.hex.toUpperCase();
+  paintWheel();
+}
+var runTimer;
+function scheduleRun(){clearTimeout(runTimer);runTimer=setTimeout(run,140)}
+function updateBase(patch){
+  var c=bases[editing];
+  if(!c) return;
+  for(var k in patch) c[k]=patch[k];
+  c.C=Math.min(c.C,maxChroma(c.L,c.H));
+  c.hex=lchToHex(c.L,c.C,c.H);
+  syncEditor();renderChips();scheduleRun();
+}
+function renderChips(){
+  var el=$('chips');el.innerHTML='';
+  bases.forEach(function(c,i){
+    var wrap=document.createElement('div');wrap.className='chip';
+    var b=document.createElement('button');
+    b.className='sqbtn';b.setAttribute('aria-pressed',i===editing?'true':'false');
+    b.innerHTML='<span class="sq" style="background:'+c.hex+'"></span><span class="code">'+c.hex.toUpperCase()+'</span>';
+    b.addEventListener('click',function(){editing=(editing===i?-1:i);renderChips();syncEditor()});
+    var x=document.createElement('button');
+    x.className='kill';x.textContent='×';x.setAttribute('aria-label','Retirer cette couleur');
+    x.addEventListener('click',function(e){
+      e.stopPropagation();
+      bases.splice(i,1);editing=-1;locks=[];
+      renderChips();syncEditor();run();
+    });
+    wrap.appendChild(b);wrap.appendChild(x);el.appendChild(wrap);
+  });
+  if(bases.length<4){
+    var a=document.createElement('button');
+    a.className='add';a.textContent='+';a.setAttribute('aria-label','Ajouter une couleur de base');
+    a.addEventListener('click',function(){
+      bases.push(hexToLch(lchToHex(.62,.12,rnd(0,360))));
+      editing=bases.length-1;locks=[];
+      if(+countIn.value<=bases.length){
+        countIn.value=Math.min(8,bases.length+2);
+        $('countOut').textContent=countIn.value;
+      }
+      renderChips();syncEditor();run();
+    });
+    el.appendChild(a);
+  }
+  $('empty').style.display=bases.length?'none':'block';
+}
+function renderHero(){
+  var el=$('hero');el.innerHTML='';
+  hero.cols.forEach(function(c,i){
+    var isBase=i<bases.length,gi=i-bases.length;
+    var b=document.createElement('button');
+    b.className='sw';b.style.background=c.hex;b.style.color=textOn(c.hex);
+    b.setAttribute('data-state',isBase?'base':(locks[gi]?'lock':'free'));
+    b.innerHTML='<span class="tag">'+(isBase?'base':'verrou')+'</span><span class="hex">'+c.hex.toUpperCase()+'</span>';
+    b.querySelector('.hex').addEventListener('click',function(e){
+      e.stopPropagation();copy(c.hex.toUpperCase());toast(c.hex.toUpperCase()+' copié');
+    });
+    if(!isBase) b.addEventListener('click',function(){locks[gi]=locks[gi]?null:hero.cols[i];renderHero()});
+    el.appendChild(b);
+  });
+  renderReadout();
+}
+function clamp01(x){return Math.max(0,Math.min(1,x))}
+function qColor(q){
+  q=clamp01(q);var r,g,b,t;
+  if(q<.5){t=q/.5;r=0xC0+(0xD9-0xC0)*t;g=0x39+(0xA4-0x39)*t;b=0x2B+(0x41-0x2B)*t;}
+  else{t=(q-.5)/.5;r=0xD9+(0x4D-0xD9)*t;g=0xA4+(0x87-0xA4)*t;b=0x41+(0x57-0x41)*t;}
+  return 'rgb('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+')';
+}
+function gaugeHTML(q){return '<div class="gauge"><span class="mk" style="left:'+(clamp01(q)*100).toFixed(0)+'%"></span></div>'}
+function renderReadout(){
+  var m=hero.m;
+  var qDE=clamp01((m.minD-0.03)/0.09), qL=clamp01((m.spread-0.12)/0.38), qC=clamp01((m.bestC-1.5)/4.5);
+  function metric(val,q,useG,key,tip){
+    return '<div class="metric" tabindex="0">'+
+      '<span class="v"'+(useG?' style="color:'+qColor(q)+'"':'')+'>'+val+'</span>'+
+      (useG?gaugeHTML(q):'')+
+      '<span class="k">'+key+'</span><span class="tip">'+tip+'</span></div>';
+  }
+  $('readout').innerHTML=
+    metric(m.minD.toFixed(3),qDE,true,'ΔE min',
+      'Le plus petit écart de couleur entre deux teintes. Plus la jauge est verte, moins deux couleurs de la palette risquent de se ressembler et de se confondre.')+
+    metric(m.spread.toFixed(2),qL,true,'amplitude L',
+      'La différence entre la couleur la plus claire et la plus foncée. Une bonne amplitude donne du relief et une hiérarchie à la palette.')+
+    metric(m.bestC.toFixed(1)+':1',qC,true,'contraste max',
+      'Le meilleur contraste de la palette (norme WCAG). Au-dessus de 4,5:1 tu peux poser du texte lisible sur un fond avec ces deux couleurs.')+
+    metric(bases.length+'/'+hero.cols.length,0,false,'imposées',
+      'Combien de tes couleurs de base se retrouvent dans la palette, sur le nombre total de couleurs.')+
+    '<div class="dial">'+dial(hero.cols)+'</div>';
+  Array.prototype.forEach.call($('readout').querySelectorAll('.metric'),function(el){
+    el.addEventListener('click',function(e){
+      e.stopPropagation();var was=el.classList.contains('show');closeAllTips();if(!was)el.classList.add('show');
+    });
+  });
+}
+function dial(cols){
+  var t=cols.map(function(c){
+    var a=(c.H-90)*Math.PI/180;
+    return '<line x1="'+(30+Math.cos(a)*17)+'" y1="'+(30+Math.sin(a)*17)+
+           '" x2="'+(30+Math.cos(a)*26)+'" y2="'+(30+Math.sin(a)*26)+
+           '" stroke="'+c.hex+'" stroke-width="4"/>';
+  }).join('');
+  return '<svg width="60" height="60" viewBox="0 0 60 60" role="img" aria-label="Répartition des teintes">'+
+    '<circle cx="30" cy="30" r="26" fill="none" stroke="rgba(38,37,32,.28)" stroke-width="1"/>'+t+'</svg>';
+}
+function renderGrid(){
+  var el=$('grid');el.innerHTML='';
+  cands.forEach(function(p,i){
+    var b=document.createElement('button');
+    b.className='cand';
+    b.innerHTML='<div class="bars">'+p.cols.map(function(c){return '<div style="background:'+c.hex+'"></div>'}).join('')+'</div>'+
+      '<div class="meta"><span>'+(i+1<10?'0':'')+(i+1)+'</span><span>ΔE '+p.m.minD.toFixed(2)+' · L '+p.m.spread.toFixed(2)+'</span></div>';
+    b.addEventListener('click',function(){hero=p;locks=[];renderHero()});
+    el.appendChild(b);
+  });
+}
+function run(){
+  var c=cfg();
+  if(c.count<bases.length){
+    countIn.value=bases.length;$('countOut').textContent=bases.length;c.count=bases.length;
+  }
+  hero=generate(c,bases,locks);
+  cands=[];
+  for(var i=0;i<9;i++) cands.push(generate(c,bases,[]));
+  renderHero();renderGrid();
+}
+function heroHexes(){return hero?hero.cols.map(function(c){return c.hex}):[]}
+
+/* ===== 7. ENCARTS (tooltips / légendes) ===== */
+function closeAllTips(){
+  Array.prototype.forEach.call(document.querySelectorAll('.metric.show'),function(el){el.classList.remove('show')});
+  Array.prototype.forEach.call(document.querySelectorAll('.legend.open'),function(el){el.classList.remove('open')});
+  Array.prototype.forEach.call(document.querySelectorAll('.help-toggle.on'),function(el){el.classList.remove('on')});
+}
+Array.prototype.forEach.call(document.querySelectorAll('.help-toggle'),function(btn){
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    var lg=$(btn.getAttribute('data-legend')), was=lg.classList.contains('open');
+    closeAllTips();
+    if(!was){lg.classList.add('open');btn.classList.add('on');}
+  });
+});
+document.addEventListener('click',closeAllTips);
+
+/* ===== 8. ONGLETS ===== */
+function switchTab(name){
+  ['gen','img'].forEach(function(t){
+    $('tab-'+t).classList.toggle('on',t===name);
+    $('tab-'+t).setAttribute('aria-selected',t===name?'true':'false');
+    $('panel-'+t).classList.toggle('on',t===name);
+  });
+}
+$('tab-gen').addEventListener('click',function(){switchTab('gen')});
+$('tab-img').addEventListener('click',function(){switchTab('img')});
+
+/* ===== 9. EXTRACTION DEPUIS UNE IMAGE (median cut) ===== */
+var curImg=null, exCols=[];
+function samplePixels(img){
+  var w=110, ratio=img.naturalHeight/img.naturalWidth||1, h=Math.max(1,Math.round(w*ratio));
+  var cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  var ctx=cv.getContext('2d');ctx.drawImage(img,0,0,w,h);
+  var data; try{ data=ctx.getImageData(0,0,w,h).data; }catch(e){ return []; }
+  var px=[];
+  for(var i=0;i<data.length;i+=4){ if(data[i+3]<125) continue; px.push([data[i],data[i+1],data[i+2]]); }
+  return px;
+}
+function boxStats(box){
+  var mn=[255,255,255],mx=[0,0,0],i,c;
+  for(i=0;i<box.length;i++) for(c=0;c<3;c++){ if(box[i][c]<mn[c])mn[c]=box[i][c]; if(box[i][c]>mx[c])mx[c]=box[i][c]; }
+  var r=[mx[0]-mn[0],mx[1]-mn[1],mx[2]-mn[2]];
+  var ch=r[0]>=r[1]&&r[0]>=r[2]?0:(r[1]>=r[2]?1:2);
+  return {ch:ch,range:r[ch]};
+}
+function medianCut(px,n){
+  if(!px.length) return [];
+  var boxes=[px.slice()];
+  while(boxes.length<n){
+    var bi=-1,best=-1;
+    for(var i=0;i<boxes.length;i++){
+      if(boxes[i].length<2) continue;
+      var st=boxStats(boxes[i]), w=st.range*Math.cbrt(boxes[i].length);
+      if(w>best){best=w;bi=i;}
+    }
+    if(bi<0) break;
+    var box=boxes[bi], ch=boxStats(box).ch;
+    box.sort(function(a,b){return a[ch]-b[ch]});
+    var mid=box.length>>1;
+    boxes.splice(bi,1,box.slice(0,mid),box.slice(mid));
+  }
+  return boxes.map(function(box){
+    var s=[0,0,0],i,c;
+    for(i=0;i<box.length;i++) for(c=0;c<3;c++) s[c]+=box[i][c];
+    var v=s.map(function(x){return Math.round(x/box.length)});
+    return '#'+v.map(function(x){return (x<16?'0':'')+x.toString(16)}).join('');
+  });
+}
+function renderExtract(){
+  var el=$('exHero');el.innerHTML='';
+  exCols.forEach(function(hex){
+    var b=document.createElement('button');
+    b.className='ex-sw';b.style.background=hex;b.style.color=textOn(hex);
+    b.setAttribute('aria-label','Copier '+hex.toUpperCase());
+    b.innerHTML='<span class="hx">'+hex.toUpperCase()+'</span>';
+    b.addEventListener('click',function(){copy(hex.toUpperCase());toast(hex.toUpperCase()+' copié')});
+    el.appendChild(b);
+  });
+}
+function extractNow(){
+  if(!curImg) return;
+  var px=samplePixels(curImg);
+  if(!px.length){toast('image illisible');return;}
+  var cols=medianCut(px,+$('nEx').value);
+  cols.sort(function(a,b){return relLum(b)-relLum(a)});
+  exCols=cols;renderExtract();$('imgResult').style.display='block';
+}
+function handleFile(f){
+  if(!f||!/^image\//.test(f.type)){toast('fichier non image');return;}
+  var img=new Image();
+  img.onload=function(){ curImg=img; $('preview').src=img.src; extractNow(); };
+  img.onerror=function(){toast('chargement impossible')};
+  img.src=URL.createObjectURL(f);
+}
+$('pick').addEventListener('click',function(){$('file').click()});
+$('file').addEventListener('change',function(e){handleFile(e.target.files[0])});
+var drop=$('drop');
+['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('over')})});
+['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over')})});
+drop.addEventListener('drop',function(e){ if(e.dataTransfer&&e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+$('nEx').addEventListener('input',function(){$('nExOut').textContent=$('nEx').value;extractNow()});
+
+$('copyAllEx').addEventListener('click',function(){copyPalette(exCols)});
+$('aseEx').addEventListener('click',function(){exportASE(exCols,'palette-image')});
+$('gplEx').addEventListener('click',function(){exportGPL(exCols,'Palette image')});
+$('toBaseEx').addEventListener('click',function(){
+  if(!exCols.length) return;
+  bases=exCols.slice(0,4).map(function(h){return hexToLch(h)});
+  editing=-1;locks=[];
+  if(+countIn.value<bases.length){countIn.value=Math.min(8,bases.length+2);$('countOut').textContent=countIn.value;}
+  renderChips();syncEditor();run();switchTab('gen');
+  toast(bases.length+' couleurs envoyées');
+});
+
+$('copyAllGen').addEventListener('click',function(){copyPalette(heroHexes())});
+$('aseGen').addEventListener('click',function(){exportASE(heroHexes(),'palette')});
+$('gplGen').addEventListener('click',function(){exportGPL(heroHexes(),'Palette')});
+
+/* ===== 10. ÉCOUTEURS ROUE ===== */
+var dragMode=null;
+function wheelPos(e){var r=$('wheel').getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+function pickTriangle(px,py){
+  var c=bases[editing];if(!c)return;
+  var A=hueToXY(c.H,Rt),B=hueToXY(c.H+120,Rt),C=hueToXY(c.H+240,Rt);
+  var w=bary(px,py,A,B,C), a=w[0],b=w[1],cc=w[2];
+  a=Math.max(0,a);b=Math.max(0,b);cc=Math.max(0,cc);
+  var s=a+b+cc||1; a/=s;b/=s;cc/=s;
+  var Hl=vivid(c.H).lin;
+  var hex=linHex([a*Hl[0]+b,a*Hl[1]+b,a*Hl[2]+b]);
+  var lch=hexToLch(hex);
+  updateBase({L:lch.L,C:lch.C});
+}
+function wheelPick(e){
+  var p=wheelPos(e), dx=p.x-WC, dy=p.y-WC, dist=Math.hypot(dx,dy);
+  if(dragMode==='ring'||(dragMode===null&&dist>=Rin)){dragMode='ring';updateBase({H:xyToHue(p.x,p.y)});}
+  else{dragMode='tri';pickTriangle(p.x,p.y);}
+}
+$('wheel').addEventListener('pointerdown',function(e){
+  if(!bases[editing])return;
+  var p=wheelPos(e),dist=Math.hypot(p.x-WC,p.y-WC);
+  dragMode=dist>=Rin?'ring':'tri';
+  if($('wheel').setPointerCapture) $('wheel').setPointerCapture(e.pointerId);
+  wheelPick(e);
+});
+$('wheel').addEventListener('pointermove',function(e){if(dragMode)wheelPick(e)});
+$('wheel').addEventListener('pointerup',function(){dragMode=null});
+$('wheel').addEventListener('pointercancel',function(){dragMode=null});
+$('wheel').addEventListener('keydown',function(e){
+  var c=bases[editing];if(!c)return;
+  if(e.key==='ArrowLeft'||e.key==='ArrowDown'){e.preventDefault();updateBase({H:(c.H-3+360)%360})}
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){e.preventDefault();updateBase({H:(c.H+3)%360})}
+});
+$('paste').addEventListener('change',function(e){
+  var hex=parseColor(e.target.value);
+  if(!hex){toast('code non reconnu');syncEditor();return}
+  var c=hexToLch(hex);
+  updateBase({L:c.L,C:c.C,H:c.H});
+});
+
+/* ===== 11. ÉCOUTEURS CONTRÔLES ===== */
+chaosIn.addEventListener('input',function(){$('chaosOut').textContent=chaosIn.value});
+countIn.addEventListener('input',function(){$('countOut').textContent=countIn.value});
+[ruleSel,chaosIn,countIn].forEach(function(el){
+  el.addEventListener('change',function(){locks=[];run();if(editing>=0)paintWheel()});
+});
+$('go').addEventListener('click',run);
+document.addEventListener('keydown',function(e){
+  var t=e.target.tagName;
+  if(e.code==='Space'&&$('panel-gen').classList.contains('on')&&['SELECT','INPUT','BUTTON','CANVAS','TEXTAREA'].indexOf(t)<0){
+    e.preventDefault();run();
+  }
+});
+var tId;
+function toast(msg){
+  var t=$('toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(tId);tId=setTimeout(function(){t.classList.remove('on')},1400);
+}
+renderChips();run();
 </script>
 <script>
   /* Service worker : rend Colours utilisable hors ligne apres un premier chargement en ligne.
