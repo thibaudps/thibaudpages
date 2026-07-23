@@ -28,7 +28,7 @@
     --pad:clamp(16px,4vw,40px);
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
+  html,body{margin:0;overflow-x:hidden}
   body{background:var(--canvas);color:var(--ink);
     font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;line-height:1.5;
     -webkit-font-smoothing:antialiased}
@@ -126,7 +126,7 @@
   .dial{margin-left:auto}
 
   /* encart explicatif générique */
-  .metric>.tip,.tipwrap>.tip{position:absolute;bottom:calc(100% + 9px);left:0;width:220px;
+  .metric>.tip,.tipwrap>.tip{position:absolute;bottom:calc(100% + 9px);left:0;width:220px;max-width:calc(100vw - 30px);
     background:var(--ink);color:var(--canvas);font-size:11px;line-height:1.5;letter-spacing:.01em;
     text-transform:none;font-weight:400;padding:10px 12px;opacity:0;pointer-events:none;
     transform:translateY(5px);transition:opacity .14s,transform .14s;z-index:20}
