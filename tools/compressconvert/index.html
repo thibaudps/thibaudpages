@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF7EC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Convert &amp; Compress">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+<link rel="icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Convert &amp; Compress by TP · WebP et PDF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* DA Thibaud Pagès : crème chaud proche du blanc, encre charbon chaud, accents vert + jaune */
+    --canvas:#FAF7EC; --ink:#262520;
+    --ink-soft:rgba(38,37,32,.60); --ink-faint:rgba(38,37,32,.28);
+    --rule:rgba(38,37,32,.24);
+    --accent:#7FA98B; --accent-soft:rgba(127,169,139,.14);
+    --accent2:#F2C24C;
+    --forest:#2C5F2D;
+    --warn:#C0392B; --warn-soft:rgba(192,57,43,.12);
+    --pad:clamp(16px,4vw,40px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;overflow-x:hidden}
+  body{background:var(--canvas);color:var(--ink);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;line-height:1.5;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:var(--pad) var(--pad) 80px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;
+     font-size:clamp(26px,5.4vw,44px);line-height:.95;letter-spacing:-.02em;margin:0 0 10px}
+  .thesis{max-width:56ch;color:var(--ink-soft);margin:0}
+  .thesis b{color:var(--ink);font-weight:500}
+  label,.lbl{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);font-weight:600}
+
+  /* masthead — sceau + titre */
+  .masthead{border-bottom:1px solid var(--rule);padding-bottom:18px}
+  .masthead h1{display:flex;align-items:center;gap:.34em;flex-wrap:wrap;margin:0 0 10px}
+  .masthead .seal{height:1.15em;width:auto;color:var(--forest);flex:none;position:relative;top:.03em}
+
+  /* onglets */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin:0 0 26px;flex-wrap:wrap}
+  .tab{font:inherit;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    background:none;border:0;color:var(--ink-soft);padding:14px 16px;cursor:pointer;position:relative}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--ink)}
+  .tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent)}
+  .panel{display:none}
+  .panel.on{display:block}
+
+  .sec{border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:24px}
+  .sec>.lbl{display:block;margin-bottom:10px}
+  .hint{font-size:11px;color:var(--ink-soft);margin:8px 0 16px;max-width:62ch}
+  .note{font-size:11px;line-height:1.75;color:var(--ink-soft);
+    border:1px solid var(--rule);padding:12px 15px;margin:0 0 24px;max-width:64ch}
+  .note b{color:var(--ink);font-weight:600}
+
+  /* contrôles */
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px 26px;
+            border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:26px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .row output{font-size:11px;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+  .thin{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;margin:0}
+  .thin::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
+  .thin::-moz-range-track{height:1px;background:var(--ink)}
+  .thin::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+    background:var(--ink);margin-top:-6px;cursor:pointer}
+  .thin::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:var(--ink);cursor:pointer}
+  .scale{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-faint);letter-spacing:.06em}
+  .seg-btns{display:flex;flex-wrap:wrap;gap:6px}
+  .seg-btns button{font:inherit;font-size:11px;letter-spacing:.05em;background:none;border:1px solid var(--rule);
+    color:var(--ink-soft);padding:9px 15px;cursor:pointer;transition:color .12s,border-color .12s,background .12s}
+  .seg-btns button:hover{color:var(--ink);border-color:var(--ink)}
+  .seg-btns button.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+  button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* zone de dépôt */
+  .drop{border:1px dashed var(--rule);padding:34px 22px;text-align:center;cursor:pointer;
+        transition:border-color .15s,background .15s;margin-bottom:26px}
+  .drop:hover{border-color:var(--ink)}
+  .drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ico{color:var(--ink-faint);margin-bottom:10px;display:block;line-height:0}
+  .drop .ico svg{display:inline-block}
+  .drop.over .ico,.drop:hover .ico{color:var(--forest)}
+  .drop strong{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:17px;display:block;letter-spacing:-.01em}
+  .drop .or{color:var(--ink-soft);font-size:11px;margin-top:5px}
+  .drop .types{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin-top:12px}
+
+  /* boutons */
+  .go{font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+      background:var(--ink);color:var(--canvas);border:0;padding:12px 18px;cursor:pointer}
+  .go:hover{filter:brightness(1.35)}
+  .go:disabled{opacity:.35;cursor:default;filter:none}
+  .ghost{font:inherit;font-size:11px;letter-spacing:.05em;background:none;border:1px solid var(--rule);
+    color:var(--ink);padding:9px 14px;cursor:pointer;transition:border-color .15s,color .15s;text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px}
+  .ghost:hover{border-color:var(--ink)}
+  .ghost.soft{color:var(--ink-soft)}
+  .ghost.soft:hover{color:var(--ink);border-color:var(--accent)}
+
+  /* lecture des métriques */
+  .readout{display:none;flex-wrap:wrap;align-items:flex-end;gap:16px 30px;
+           border-bottom:1px solid var(--rule);padding:14px 0 18px;margin-bottom:6px}
+  .readout.on{display:flex}
+  .metric{display:flex;flex-direction:column;gap:3px}
+  .metric .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+  .metric .v.good{color:var(--forest)}
+  .metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-soft)}
+  .actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+  /* liste de résultats */
+  .list{margin-bottom:8px}
+  .item{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:center;
+        padding:13px 0;border-bottom:1px solid var(--rule)}
+  .thumb{width:52px;height:52px;object-fit:cover;border:1px solid var(--rule);background:var(--canvas);display:block}
+  .thumb.ph{display:grid;place-items:center;color:var(--ink-faint)}
+  .thumb.ph.done{color:var(--forest)}
+  .thumb.ph.err{color:var(--warn)}
+  .meta{min-width:0}
+  .meta .name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meta .dims{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
+  .meta .dims.err{color:var(--warn)}
+  .end{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+  .sizes{display:flex;align-items:center;gap:8px;font-size:11px;font-variant-numeric:tabular-nums}
+  .sizes .from{color:var(--ink-faint);text-decoration:line-through}
+  .sizes .arrow{color:var(--ink-faint)}
+  .sizes .to{font-weight:600}
+  .pct{font-size:11px;font-weight:600;letter-spacing:.04em;padding:3px 8px;
+       background:var(--accent-soft);color:var(--forest)}
+  .pct.up{background:var(--warn-soft);color:var(--warn)}
+  .spin{width:15px;height:15px;border-radius:50%;border:1px solid var(--rule);
+        border-top-color:var(--ink);animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* fusion : liste ordonnable */
+  .qitem{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:14px;align-items:center;
+         padding:12px 0;border-bottom:1px solid var(--rule)}
+  .qnum{font-size:11px;font-weight:600;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .qbtns{display:flex;gap:5px}
+  .icobtn{width:28px;height:28px;padding:0;border:1px solid var(--rule);background:none;color:var(--ink-soft);
+          cursor:pointer;display:grid;place-items:center;line-height:0}
+  .icobtn:hover:not(:disabled){color:var(--ink);border-color:var(--ink)}
+  .icobtn:disabled{opacity:.3;cursor:default}
+  .icobtn.del:hover{color:var(--warn);border-color:var(--warn)}
+
+  /* comparateur */
+  .overlay{position:fixed;inset:0;z-index:100;background:rgba(38,37,32,.82);
+    display:none;align-items:center;justify-content:center;padding:clamp(12px,4vw,34px)}
+  .overlay.on{display:flex}
+  .modal{background:var(--canvas);width:100%;max-width:960px;height:min(90vh,780px);max-height:100%;
+    display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--ink)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:14px 18px;border-bottom:1px solid var(--rule)}
+  .modal-head .name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmp{position:relative;flex:1;min-height:0;overflow:hidden;user-select:none;touch-action:none;
+    background:repeating-conic-gradient(rgba(38,37,32,.07) 0% 25%,transparent 0% 50%) 50% / 20px 20px}
+  .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+  .cmp .after-wrap{position:absolute;inset:0;overflow:hidden;clip-path:inset(0 0 0 50%)}
+  .cmp .handle{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--ink);
+    transform:translateX(-.5px);cursor:ew-resize}
+  .cmp .grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;
+    border-radius:50%;background:var(--ink);color:var(--canvas);display:grid;place-items:center}
+  .cmp .tag{position:absolute;top:12px;font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+    padding:5px 9px;background:var(--ink);color:var(--canvas);pointer-events:none}
+  .cmp .tag.l{left:12px} .cmp .tag.r{right:12px}
+  .modal-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:14px 18px;border-top:1px solid var(--rule)}
+  .modal-foot .readout{display:flex;border:0;padding:0;margin:0;gap:14px 26px}
+
+  /* pied de page */
+  footer.madeby{display:flex;align-items:center;justify-content:center;gap:7px;border-top:1px solid var(--rule);
+    margin-top:44px;padding-top:22px;max-width:none;font-size:11px;color:var(--ink-soft);letter-spacing:.02em}
+  .madeby a{display:inline-flex;align-items:center;gap:7px;color:var(--forest);text-decoration:none;font-weight:600}
+  .madeby a:hover{text-decoration:underline}
+  .madeby .seal-sm{height:19px;width:auto;color:var(--forest)}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(14px);
+    background:var(--ink);color:var(--canvas);padding:9px 16px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (max-width:560px){
+    .masthead h1{font-size:clamp(24px,7.4vw,36px)}
+    .item{grid-template-columns:44px minmax(0,1fr)}
+    .thumb{width:44px;height:44px}
+    .end{grid-column:1 / -1;justify-content:flex-start}
+    .actions{margin-left:0;width:100%}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sceau" viewBox="0 0 1046 1425"><g transform="translate(0.000000,1425.000000) scale(0.100000,-0.100000)"
+fill="currentColor" stroke="none">
+<path d="M3960 13549 c-25 -4 -97 -10 -160 -13 -63 -3 -146 -10 -185 -16 -38
+-5 -116 -16 -173 -25 -56 -8 -119 -15 -138 -15 -19 0 -46 -7 -59 -16 -14 -9
+-49 -17 -79 -19 -30 -1 -64 -9 -77 -19 -13 -9 -31 -16 -40 -16 -9 0 -24 -9
+-33 -19 -23 -25 -90 -34 -167 -22 -49 8 -77 7 -127 -4 -35 -8 -80 -12 -100 -9
+-20 3 -66 -2 -102 -10 -36 -9 -85 -16 -110 -16 -25 0 -63 -9 -85 -20 -22 -11
+-53 -19 -70 -20 -32 0 -182 -49 -260 -84 -63 -29 -116 -46 -141 -46 -11 0 -31
+-12 -45 -26 -19 -20 -31 -25 -56 -21 -23 4 -43 -2 -75 -22 -24 -15 -57 -31
+-73 -35 -17 -4 -54 -24 -84 -44 -81 -56 -107 -71 -143 -80 -31 -8 -54 -38 -72
+-95 -3 -9 -17 -22 -30 -27 -23 -8 -46 -57 -46 -97 0 -7 -9 -17 -20 -23 -11 -6
+-20 -17 -20 -26 0 -19 -66 -140 -97 -178 -30 -36 -49 -80 -58 -137 -10 -59
+-28 -93 -65 -119 -27 -19 -29 -25 -24 -61 6 -35 3 -44 -23 -72 -24 -26 -33
+-47 -43 -109 -7 -42 -10 -91 -6 -108 4 -24 0 -40 -19 -68 -14 -20 -25 -50 -25
+-67 0 -17 -4 -35 -10 -41 -12 -12 -27 -80 -43 -191 -7 -45 -15 -85 -20 -89 -4
+-4 -7 -19 -7 -34 0 -15 -3 -29 -6 -33 -7 -6 -15 -117 -15 -194 0 -27 -5 -43
+-15 -47 -18 -7 -18 -24 0 -58 11 -20 12 -36 5 -65 -8 -31 -17 -261 -22 -583
+-1 -25 3 -90 7 -145 5 -55 8 -115 7 -133 -2 -48 27 -163 46 -184 15 -17 15
+-19 0 -36 -12 -13 -15 -28 -10 -55 3 -23 1 -42 -7 -52 -9 -11 -10 -18 -1 -29
+7 -8 13 -64 16 -138 2 -68 9 -136 16 -151 10 -22 10 -32 -1 -52 -11 -20 -11
+-30 0 -52 8 -18 13 -77 15 -161 1 -84 6 -137 14 -145 14 -14 14 -76 0 -151 -8
+-43 -7 -70 2 -106 10 -39 10 -59 0 -103 -10 -38 -10 -59 -3 -73 7 -14 7 -32 0
+-60 -9 -33 -8 -46 7 -77 15 -32 16 -42 6 -61 -11 -19 -9 -32 14 -87 22 -52 26
+-74 23 -124 -3 -34 1 -79 8 -104 11 -37 11 -48 -1 -72 -8 -15 -19 -31 -25 -34
+-15 -9 -12 -51 4 -64 11 -9 14 -43 15 -141 0 -79 5 -138 12 -152 7 -14 10 -48
+6 -96 -3 -40 -1 -113 5 -160 10 -85 13 -140 23 -392 3 -69 7 -170 9 -226 3
+-75 10 -120 30 -177 22 -63 24 -81 15 -99 -14 -26 -7 -154 10 -171 6 -6 11
+-34 11 -61 1 -28 8 -82 17 -121 8 -38 16 -104 18 -145 1 -41 9 -106 19 -145 9
+-38 19 -112 21 -163 2 -51 8 -99 14 -106 9 -10 9 -31 1 -77 -15 -93 -12 -135
+10 -181 22 -46 28 -96 35 -308 6 -164 17 -263 35 -301 9 -20 9 -32 1 -48 -9
+-15 -9 -32 -1 -59 6 -20 15 -77 20 -127 14 -128 28 -224 39 -267 5 -22 5 -54
+0 -75 -17 -73 -12 -104 47 -348 13 -55 26 -118 30 -140 3 -22 12 -62 19 -90 7
+-27 16 -95 19 -149 7 -102 22 -182 38 -203 6 -7 11 -50 12 -96 2 -72 7 -92 30
+-132 16 -27 26 -55 23 -67 -7 -27 20 -277 31 -291 5 -7 13 -28 17 -47 4 -19
+14 -48 23 -65 14 -28 25 -67 39 -140 3 -16 12 -37 20 -46 8 -10 16 -47 19 -92
+2 -42 9 -88 14 -102 6 -14 10 -46 10 -69 0 -31 8 -55 27 -82 22 -33 26 -48 24
+-95 -1 -37 5 -78 20 -120 19 -58 35 -116 53 -191 3 -14 22 -47 41 -72 19 -25
+48 -78 65 -118 17 -40 39 -82 49 -93 10 -11 33 -47 50 -80 18 -33 41 -69 52
+-81 10 -11 19 -24 19 -29 0 -4 25 -36 55 -70 36 -41 77 -74 122 -99 37 -20 80
+-46 95 -58 14 -11 49 -24 76 -29 27 -4 69 -16 93 -27 46 -21 102 -22 138 -3
+24 14 67 5 99 -20 12 -9 42 -20 65 -24 23 -4 61 -16 84 -26 48 -22 69 -24 79
+-8 9 15 51 3 88 -26 30 -23 38 -24 125 -19 65 3 97 1 107 -7 39 -32 254 -49
+315 -25 22 9 49 16 60 16 12 0 34 11 51 25 20 17 42 25 67 25 20 0 42 5 47 10
+7 7 31 8 70 2 66 -9 378 -7 394 3 6 4 35 -1 64 -10 50 -16 56 -16 88 -1 19 9
+49 16 68 15 56 -2 224 13 235 21 6 4 46 8 90 9 96 3 197 10 246 17 22 4 50 0
+73 -10 33 -14 41 -14 66 -1 16 8 55 15 87 15 32 0 74 5 93 10 19 6 82 13 140
+16 58 3 123 9 145 14 22 4 65 6 95 4 30 -3 62 -5 70 -5 8 0 58 2 110 6 52 4
+135 7 185 7 49 0 95 4 101 9 7 5 52 9 100 7 49 -1 140 5 203 14 69 10 123 13
+137 8 12 -5 48 -4 80 1 61 9 192 18 374 24 134 4 214 10 320 23 47 6 101 11
+120 10 19 0 53 4 75 10 22 7 72 12 110 12 39 1 124 10 190 21 196 33 416 61
+433 57 4 -1 27 11 52 26 26 17 63 31 90 33 49 5 102 26 137 53 13 10 40 21 60
+25 21 4 54 20 75 36 20 17 59 37 85 46 26 9 55 22 63 29 8 7 40 22 70 33 73
+27 161 95 235 179 33 38 78 85 101 105 41 37 134 183 134 211 0 8 5 18 11 22
+6 3 17 21 25 38 8 17 33 65 55 106 23 41 50 98 61 125 86 219 85 213 92 430 6
+163 18 295 27 301 5 3 9 24 9 47 0 24 9 69 20 101 16 44 19 65 12 90 -5 17 -8
+74 -6 126 2 52 6 165 8 250 2 85 9 196 15 245 23 200 29 579 15 890 -4 83 -7
+173 -7 200 1 28 1 92 2 144 0 52 -4 111 -9 132 -6 21 -9 87 -7 146 3 63 -2
+149 -10 208 -8 55 -14 141 -13 190 1 130 -5 269 -13 282 -4 6 -9 46 -12 90 -3
+43 -10 103 -15 133 -6 30 -12 114 -14 185 -3 127 -6 144 -29 195 -7 15 -12 93
+-14 190 -5 361 -14 584 -23 595 -6 7 -13 41 -16 76 -3 35 -10 77 -15 93 -5 17
+-5 33 0 40 11 13 8 146 -3 165 -5 7 -10 76 -13 154 -2 78 -9 158 -14 177 -6
+19 -13 98 -15 175 -2 77 -7 151 -11 165 -3 14 -7 62 -7 106 -1 45 -6 88 -12
+95 -13 16 -39 212 -31 233 6 14 -4 83 -23 171 -6 28 -15 86 -20 130 -5 44 -13
+98 -19 120 -5 22 -17 68 -25 103 -9 35 -13 74 -10 88 3 13 2 30 -4 37 -11 13
+-9 91 3 120 5 11 1 24 -10 37 -10 11 -21 50 -27 97 -6 43 -14 82 -18 86 -4 5
+-6 26 -3 47 4 27 -1 50 -15 77 -20 39 -37 119 -48 233 -4 36 -15 99 -26 140
+-11 41 -21 93 -23 115 -3 53 -15 115 -25 140 -19 47 -24 65 -46 160 -33 148
+-44 189 -55 199 -5 6 -9 22 -9 36 0 14 -6 32 -12 38 -7 7 -18 34 -24 60 -7 26
+-19 70 -27 97 -9 28 -21 70 -27 95 -22 86 -33 115 -51 138 -10 13 -21 44 -25
+70 -3 26 -13 62 -20 81 -8 18 -14 42 -14 53 0 11 -14 36 -31 56 -24 27 -30 41
+-25 63 4 21 -1 36 -19 58 -14 16 -25 40 -25 54 0 13 -8 35 -18 48 -10 13 -25
+42 -34 64 -26 63 -28 67 -58 120 -36 61 -80 154 -80 167 0 6 -11 23 -25 40
+-14 16 -25 40 -25 53 0 12 -7 28 -16 36 -18 15 -114 156 -114 168 0 4 -9 16
+-20 26 -11 10 -20 21 -20 26 0 4 -16 30 -35 59 -19 29 -35 58 -35 66 0 26
+-124 141 -186 172 -33 17 -66 37 -73 46 -8 9 -19 16 -26 16 -7 0 -29 14 -50
+30 -21 17 -44 30 -52 30 -8 0 -26 9 -40 20 -14 11 -31 20 -38 20 -6 0 -22 11
+-35 25 -14 15 -35 25 -51 25 -27 0 -69 15 -132 46 -16 8 -43 14 -61 14 -17 0
+-41 6 -52 14 -11 8 -42 17 -69 21 -28 3 -61 10 -75 14 -54 18 -137 34 -180 36
+-72 4 -203 22 -230 33 -14 5 -61 13 -105 17 -44 4 -111 14 -150 22 -89 20
+-150 30 -250 42 -44 6 -116 15 -160 21 -44 6 -154 13 -245 15 -334 8 -482 15
+-493 22 -7 4 -48 7 -92 8 -75 0 -80 1 -83 22 -2 12 -16 33 -32 47 -25 21 -44
+25 -137 33 -59 4 -133 6 -165 5 -41 -3 -63 1 -83 14 -15 10 -49 18 -78 19 -85
+3 -181 17 -195 28 -7 6 -73 12 -145 13 -402 9 -516 10 -557 3z m1615 -1952
+c193 -4 385 -12 429 -17 43 -5 82 -7 87 -5 4 3 31 -2 58 -11 28 -9 68 -14 88
+-12 26 3 51 -2 77 -15 21 -11 69 -23 106 -26 37 -4 74 -11 81 -17 13 -11 178
+-27 248 -25 21 1 42 -6 55 -18 12 -10 40 -22 63 -26 24 -4 45 -11 49 -16 3 -5
+26 -9 52 -9 26 0 61 -7 77 -16 17 -9 48 -16 70 -16 24 -1 50 -8 64 -19 13 -11
+31 -19 41 -19 20 0 77 -27 85 -40 3 -5 25 -19 48 -30 23 -11 53 -27 67 -35 14
+-7 46 -19 72 -25 66 -17 218 -141 218 -179 0 -30 22 -67 57 -94 13 -10 23 -25
+23 -34 0 -8 24 -43 54 -76 29 -34 57 -73 61 -87 4 -14 13 -32 20 -40 14 -16
+81 -145 113 -220 11 -25 36 -74 56 -108 20 -35 36 -74 36 -86 0 -12 16 -45 35
+-72 19 -27 35 -59 35 -71 0 -12 11 -35 25 -51 14 -17 25 -43 25 -59 0 -16 9
+-46 20 -68 11 -22 20 -44 20 -50 0 -6 8 -22 17 -35 19 -27 60 -141 74 -205 5
+-22 14 -70 21 -106 7 -37 20 -75 29 -85 9 -11 24 -44 33 -74 10 -30 22 -60 28
+-67 5 -7 7 -21 3 -32 -3 -10 -1 -22 5 -26 6 -4 8 -15 5 -25 -3 -10 3 -33 15
+-52 11 -18 20 -42 20 -54 0 -11 8 -36 17 -55 10 -19 21 -56 24 -84 4 -27 15
+-88 24 -135 40 -205 66 -376 71 -470 3 -47 11 -121 19 -165 7 -44 21 -147 31
+-230 13 -109 23 -157 36 -174 13 -17 18 -42 18 -85 1 -33 8 -115 16 -181 51
+-419 51 -414 63 -665 13 -262 28 -453 41 -533 5 -34 12 -103 14 -152 17 -331
+18 -382 7 -389 -17 -11 -13 -58 8 -107 14 -34 21 -82 26 -204 5 -88 8 -169 7
+-180 0 -11 4 -54 10 -95 6 -41 12 -115 14 -165 5 -143 14 -226 29 -280 7 -27
+18 -124 24 -215 6 -91 16 -199 21 -240 6 -41 10 -102 8 -135 -1 -33 2 -103 7
+-155 14 -165 12 -423 -4 -456 -38 -82 -65 -131 -79 -147 -9 -10 -26 -38 -37
+-62 -30 -66 -106 -156 -254 -303 -113 -112 -139 -133 -172 -138 -22 -4 -54
+-20 -78 -40 -21 -19 -50 -34 -63 -34 -14 0 -35 -11 -47 -24 -15 -16 -38 -25
+-74 -29 -45 -6 -105 -26 -214 -73 -17 -8 -40 -14 -50 -14 -10 0 -24 -5 -29
+-10 -8 -8 -20 -7 -39 0 -22 8 -37 7 -67 -5 -25 -10 -73 -15 -136 -16 -53 0
+-135 -5 -182 -10 -47 -6 -134 -12 -195 -15 -60 -2 -125 -9 -144 -15 -44 -15
+-193 -19 -255 -6 -32 6 -55 6 -70 -1 -31 -15 -162 -25 -491 -36 -99 -3 -226
+-10 -281 -16 -56 -6 -108 -8 -117 -4 -8 3 -25 0 -37 -6 -12 -6 -71 -13 -131
+-15 -60 -3 -114 -7 -120 -10 -5 -4 -47 -8 -92 -11 -45 -2 -100 -6 -122 -9 -22
+-2 -114 -7 -205 -9 -91 -3 -187 -11 -215 -17 -27 -6 -79 -12 -115 -13 -36 -2
+-137 -10 -225 -19 -237 -24 -546 -41 -618 -32 -34 4 -85 8 -112 10 -64 4 -165
+22 -233 41 -29 9 -101 18 -160 20 -207 9 -241 16 -317 68 -28 20 -56 36 -62
+36 -5 0 -30 11 -54 25 -24 14 -51 27 -59 30 -54 20 -170 82 -193 104 -16 14
+-40 46 -55 71 -59 104 -174 269 -227 325 -30 33 -63 74 -72 90 -8 17 -23 39
+-33 50 -9 11 -23 43 -30 70 -7 28 -23 66 -36 86 -13 19 -24 39 -24 43 0 5 -13
+36 -29 70 -41 84 -59 138 -81 231 -10 44 -26 96 -34 116 -8 20 -18 71 -21 115
+-3 43 -10 106 -15 139 -5 33 -12 148 -15 255 -9 268 -13 397 -24 665 -4 127
+-8 241 -8 255 1 14 -8 79 -19 145 -10 66 -18 154 -17 195 3 75 3 364 1 910 -1
+157 -1 330 0 385 1 188 -6 325 -17 338 -5 7 -12 65 -14 128 -2 64 -7 121 -11
+128 -4 7 -10 102 -12 212 -3 120 -9 209 -15 222 -7 11 -16 56 -20 100 -5 43
+-14 87 -19 97 -6 10 -10 69 -10 129 0 61 -4 119 -9 129 -5 9 -17 62 -26 117
+-23 130 -68 349 -92 450 -11 44 -21 107 -22 139 -1 33 -9 75 -17 94 -8 19 -14
+46 -14 61 0 14 -6 37 -13 51 -12 23 -24 139 -33 315 -1 28 -9 67 -18 88 -13
+29 -18 86 -22 255 -3 119 -9 235 -13 257 -5 22 -9 93 -10 158 -1 96 2 124 16
+148 13 22 15 31 5 41 -18 18 -15 53 8 100 11 23 23 63 26 91 4 29 16 60 30 77
+13 15 24 32 24 37 0 11 54 64 97 95 18 13 74 55 125 94 132 100 163 117 222
+121 141 9 265 15 296 15 19 -1 49 8 66 19 20 12 48 19 75 18 70 -1 118 6 131
+19 7 7 21 12 33 12 11 0 52 7 90 16 39 9 95 20 125 24 30 5 82 14 115 20 115
+21 199 31 213 25 7 -3 22 0 33 5 10 6 59 12 108 15 50 2 101 10 117 18 43 21
+121 29 144 15 16 -10 25 -9 47 4 19 11 83 22 193 33 91 9 188 21 217 27 28 6
+72 8 96 5 25 -4 48 -2 54 4 12 12 305 32 355 24 20 -4 44 -3 53 2 17 10 143
+10 680 0z"/>
+<path d="M6575 10982 c-11 -2 -26 -9 -33 -15 -8 -6 -48 -12 -90 -14 -109 -3
+-134 -7 -157 -20 -11 -6 -38 -14 -60 -18 -22 -4 -46 -12 -53 -18 -7 -6 -48
+-11 -90 -12 -48 -1 -92 -8 -116 -18 -23 -10 -48 -14 -60 -11 -35 12 -127 10
+-206 -3 -41 -7 -109 -12 -150 -13 -45 0 -81 -5 -88 -12 -9 -9 -17 -9 -34 -1
+-38 19 -139 25 -190 12 -38 -10 -52 -10 -72 0 -19 10 -31 11 -57 1 -27 -9 -46
+-9 -89 0 -30 7 -77 14 -105 16 -27 3 -59 9 -70 14 -25 11 -171 28 -333 39 -90
+7 -128 13 -141 25 -22 20 -36 20 -72 -1 -25 -15 -35 -15 -78 -4 -29 7 -108 12
+-197 12 -82 -1 -191 1 -242 5 -71 4 -99 2 -122 -9 -16 -9 -59 -19 -95 -22 -36
+-4 -68 -11 -71 -16 -7 -13 -108 -11 -137 2 -19 9 -32 6 -72 -15 -26 -14 -59
+-26 -73 -26 -14 0 -36 -9 -48 -21 -16 -15 -42 -23 -105 -29 -46 -4 -109 -15
+-139 -23 -30 -8 -76 -18 -101 -21 -26 -4 -70 -15 -98 -25 -27 -11 -74 -22
+-102 -26 -34 -5 -75 -21 -116 -46 -35 -22 -69 -39 -76 -39 -20 0 -107 -86
+-107 -106 0 -57 16 -97 51 -138 22 -24 39 -48 39 -52 0 -5 19 -26 43 -49 96
+-92 287 -297 287 -309 0 -47 225 -126 277 -97 23 12 99 14 283 8 91 -3 145 0
+165 8 19 7 104 13 230 14 110 1 207 3 215 3 8 0 38 -4 65 -10 28 -6 70 -8 95
+-5 55 6 73 -10 75 -65 0 -21 4 -43 8 -49 5 -7 1 -27 -7 -45 -8 -18 -17 -51
+-19 -73 -3 -22 -13 -87 -23 -145 -10 -58 -18 -148 -18 -200 -1 -72 -6 -104
+-20 -133 -15 -31 -16 -42 -6 -66 9 -23 9 -47 0 -107 -9 -61 -9 -86 0 -115 8
+-23 11 -65 8 -110 -3 -40 -1 -86 3 -103 5 -17 12 -69 15 -115 2 -47 8 -90 13
+-95 15 -20 20 -59 10 -78 -7 -13 -7 -33 2 -66 7 -26 14 -96 15 -157 2 -60 5
+-144 9 -185 3 -41 7 -106 9 -145 2 -38 8 -81 13 -95 5 -14 9 -59 8 -100 -2
+-41 4 -118 11 -170 12 -80 19 -99 43 -125 16 -16 32 -39 35 -51 4 -12 25 -40
+49 -63 23 -23 58 -57 77 -76 19 -19 43 -35 52 -35 9 0 40 -19 70 -42 73 -59
+144 -108 156 -108 5 0 21 -17 35 -37 38 -56 78 -96 119 -118 37 -19 37 -19 95
+1 l57 21 16 69 c9 38 19 76 22 84 4 8 5 76 3 150 -2 74 -4 172 -4 216 0 48 -6
+101 -15 127 -12 36 -14 75 -10 184 3 76 10 151 15 167 5 18 5 33 0 40 -10 12
+1 135 13 155 4 5 -1 42 -9 80 -13 55 -14 84 -7 133 6 41 6 70 0 82 -13 25 -18
+188 -9 284 5 42 4 87 0 99 -5 13 -9 62 -10 110 -1 49 -9 133 -19 188 -9 55
+-15 120 -12 144 3 30 0 46 -9 52 -10 6 -15 38 -16 116 -1 59 -4 133 -7 163 -3
+30 -6 114 -7 185 l-3 130 40 1 c21 1 52 5 67 9 19 5 33 3 45 -7 11 -9 43 -15
+91 -16 41 -1 79 -6 85 -12 5 -5 30 -10 56 -10 25 0 63 -5 85 -11 22 -6 65 -12
+95 -14 30 -2 75 -8 100 -13 28 -7 49 -7 55 -1 5 5 26 9 46 9 21 0 41 5 44 10
+3 6 39 10 78 10 40 0 130 7 202 15 71 9 141 13 156 10 17 -4 37 0 51 9 13 9
+37 15 53 15 31 -1 112 11 245 36 41 8 113 21 158 30 46 8 94 20 105 26 31 16
+77 61 77 75 0 6 7 17 15 24 10 9 14 23 11 39 -13 63 -16 204 -5 218 7 7 13 42
+14 76 1 34 8 82 14 107 11 38 11 48 -4 73 -14 23 -15 33 -5 57 8 20 9 38 1 66
+-15 55 -15 59 20 98 l31 35 -59 55 c-32 31 -63 55 -70 56 -6 0 -20 16 -32 35
+-13 22 -28 35 -41 35 -12 0 -33 6 -48 14 -33 16 -80 24 -107 18z"/>
+<path d="M3005 9144 c-44 -8 -123 -16 -175 -18 -104 -4 -135 -12 -165 -46 -26
+-29 -68 -50 -100 -50 -18 0 -29 -8 -37 -27 -7 -16 -25 -40 -40 -55 -26 -24
+-28 -34 -30 -105 -3 -111 -2 -126 6 -144 5 -12 -2 -27 -23 -48 -35 -36 -49
+-77 -32 -94 15 -15 14 -37 -3 -56 -14 -15 -29 -211 -26 -336 1 -57 36 -162 65
+-197 14 -16 25 -36 25 -44 0 -7 12 -21 28 -31 15 -9 50 -39 79 -65 28 -26 60
+-48 70 -48 11 0 37 -13 59 -29 21 -16 53 -32 71 -35 17 -4 37 -14 44 -22 16
+-20 43 -17 64 6 21 23 43 25 70 6 21 -14 57 -19 230 -35 83 -8 104 -7 123 5
+13 9 49 17 80 18 96 6 123 16 172 67 25 26 64 55 88 64 41 17 102 75 102 98 0
+7 12 35 26 62 14 28 28 75 31 105 3 30 13 80 23 110 21 63 20 239 -1 325 -6
+28 -13 59 -14 70 -1 11 -4 27 -7 35 -10 28 -27 95 -33 132 -3 20 -22 58 -43
+85 -20 26 -44 61 -52 78 -19 36 -72 49 -167 41 -60 -5 -63 -4 -83 23 -11 16
+-20 36 -20 43 0 17 -31 48 -47 48 -6 0 -16 7 -23 15 -7 8 -24 15 -39 15 -15 0
+-35 6 -46 14 -18 12 -64 22 -140 31 -16 2 -66 -3 -110 -11z"/>
+<path d="M6080 9112 c-19 -2 -49 -9 -67 -17 -17 -8 -46 -15 -65 -15 -20 0 -50
+-12 -77 -30 -24 -17 -51 -30 -61 -30 -22 0 -63 -45 -89 -97 -12 -23 -29 -47
+-39 -52 -16 -8 -20 -27 -25 -107 -5 -74 -12 -104 -28 -131 -19 -31 -21 -40
+-11 -66 7 -17 8 -35 3 -41 -14 -18 -24 -185 -12 -200 12 -15 -2 -110 -25 -164
+-11 -25 -11 -38 -3 -53 5 -11 7 -33 4 -49 -5 -22 -2 -31 12 -38 10 -6 24 -32
+31 -59 32 -121 46 -155 74 -174 16 -12 35 -34 43 -50 9 -16 23 -29 32 -29 9 0
+25 -8 35 -17 14 -12 43 -18 111 -21 63 -3 97 -9 109 -19 12 -11 28 -13 51 -9
+28 5 39 1 74 -29 38 -32 45 -35 104 -33 35 1 73 7 84 14 11 6 36 15 55 19 19
+4 64 21 100 37 l65 29 62 -27 c72 -30 93 -27 93 14 0 36 44 79 85 84 20 2 31
+9 33 23 2 11 10 27 17 35 7 8 15 35 18 59 3 27 15 53 30 70 22 22 97 168 97
+188 0 3 11 21 25 39 14 18 25 41 25 52 0 11 7 25 15 32 19 16 19 69 0 94 -8
+11 -12 28 -9 39 4 11 -2 27 -14 40 -11 12 -23 33 -27 47 -4 14 -17 48 -30 75
+-34 74 -55 133 -55 153 0 10 -42 55 -95 101 -52 46 -95 87 -95 93 0 5 -26 21
+-57 35 -32 15 -84 46 -117 70 -32 24 -68 43 -81 43 -12 0 -34 9 -48 20 -14 11
+-29 20 -33 20 -4 0 -15 6 -23 14 -16 14 -212 26 -301 18z"/>
+<path d="M6364 6284 c-14 -10 -29 -12 -45 -6 -35 12 -160 8 -187 -7 -18 -10
+-28 -9 -57 4 -19 9 -38 14 -44 11 -5 -4 -45 -16 -88 -27 -88 -22 -374 -33
+-405 -15 -11 7 -33 6 -67 -2 -28 -6 -58 -9 -66 -6 -8 4 -50 1 -93 -6 -59 -10
+-83 -10 -100 -1 -16 8 -32 8 -64 0 -72 -18 -140 -29 -203 -33 -33 -3 -100 -9
+-150 -15 -49 -6 -146 -13 -215 -15 -69 -3 -186 -11 -260 -19 -77 -8 -139 -11
+-144 -6 -16 15 -85 10 -111 -7 -16 -10 -54 -17 -112 -19 -48 -2 -104 -8 -123
+-14 -19 -6 -66 -11 -103 -11 -38 0 -77 -5 -88 -11 -12 -6 -75 -12 -142 -15
+-67 -2 -160 -12 -207 -21 -47 -9 -103 -17 -125 -18 -22 -1 -67 -8 -100 -15
+-33 -7 -82 -14 -110 -15 -80 -3 -143 -54 -178 -143 -23 -58 -21 -100 8 -147
+14 -22 25 -47 25 -55 1 -8 14 -31 30 -50 17 -19 30 -40 30 -47 0 -6 19 -21 43
+-31 23 -11 67 -43 99 -71 31 -28 61 -51 67 -51 6 0 15 -9 21 -20 6 -11 15 -20
+21 -20 13 0 50 -28 125 -92 30 -27 59 -48 66 -48 6 0 26 -11 44 -25 28 -22 36
+-23 64 -14 17 6 50 9 73 6 53 -8 173 10 212 31 17 10 70 20 125 24 92 7 252
+26 395 48 39 6 82 9 96 6 14 -3 44 1 66 9 23 8 105 16 195 20 135 5 157 4 168
+-10 8 -10 17 -62 22 -133 4 -64 13 -157 19 -207 7 -49 11 -122 11 -161 -1 -53
+2 -75 13 -84 8 -7 15 -23 15 -36 0 -12 4 -25 9 -28 5 -3 11 -32 14 -63 12
+-124 21 -159 54 -213 18 -30 33 -67 33 -81 0 -15 12 -37 30 -54 17 -16 30 -34
+30 -41 0 -7 18 -27 40 -44 23 -18 49 -49 60 -70 11 -21 38 -52 60 -70 22 -18
+51 -50 63 -72 12 -22 29 -52 38 -68 8 -15 42 -50 75 -77 32 -27 66 -58 74 -67
+8 -10 23 -22 35 -27 11 -5 43 -27 70 -49 28 -22 61 -43 75 -46 39 -8 53 -18
+70 -50 9 -16 31 -39 48 -50 40 -28 204 -91 262 -102 25 -5 63 -21 84 -35 21
+-15 44 -27 51 -27 7 0 23 -9 37 -19 36 -29 140 -47 197 -33 25 6 98 16 161 22
+63 7 125 19 138 27 12 7 27 11 32 8 5 -3 23 1 39 10 42 21 61 19 93 -12 l28
+-27 22 21 c13 11 30 23 38 27 70 32 143 91 206 168 35 43 68 78 73 78 20 0
+170 161 181 194 6 20 16 38 21 42 5 3 23 34 39 68 16 34 41 73 55 86 17 16 25
+34 25 57 0 19 9 51 20 73 11 22 20 47 20 57 0 10 7 27 15 37 8 11 15 32 15 46
+0 15 7 50 16 79 8 29 19 83 24 120 11 85 27 150 46 178 8 13 14 48 14 85 1 36
+9 87 20 118 11 30 19 69 20 87 0 17 5 35 11 39 6 3 8 16 5 29 -3 12 -8 85 -11
+161 -5 145 -17 221 -41 264 -13 25 -28 56 -80 167 -14 32 -32 69 -38 82 -29
+62 -158 178 -267 239 -31 18 -62 39 -69 48 -13 15 -90 54 -108 54 -4 0 -21 14
+-37 30 -16 17 -37 30 -48 30 -10 0 -33 10 -50 23 -18 12 -48 30 -67 41 -19 10
+-51 32 -70 47 -19 16 -44 29 -56 29 -12 0 -27 7 -34 15 -7 8 -22 15 -34 15
+-12 0 -28 6 -34 12 -19 19 -280 20 -308 2z m-23 -870 c25 -24 30 -25 80 -16
+34 6 76 6 114 0 33 -5 79 -9 102 -9 46 1 114 -31 171 -80 18 -16 43 -29 56
+-29 36 0 72 -49 80 -107 8 -60 -9 -230 -24 -248 -7 -8 -20 -49 -31 -92 -11
+-43 -24 -82 -29 -87 -6 -6 -10 -17 -10 -26 0 -22 -95 -209 -120 -235 -11 -12
+-20 -26 -20 -32 0 -24 -192 -203 -218 -203 -4 0 -28 -20 -52 -45 -29 -29 -53
+-45 -70 -45 -14 -1 -36 -7 -50 -15 -14 -8 -39 -14 -56 -15 -17 0 -52 -7 -78
+-16 -41 -14 -54 -15 -89 -3 -23 7 -53 21 -66 31 -13 10 -34 18 -47 18 -12 0
+-43 9 -69 20 -26 11 -54 20 -62 20 -21 0 -83 48 -83 64 0 7 -9 21 -20 31 -11
+10 -20 24 -20 31 0 7 -21 36 -48 66 -120 134 -112 119 -112 218 0 74 -4 95
+-22 127 -17 28 -24 56 -25 108 -1 39 -4 140 -6 225 -3 85 -8 194 -12 241 l-7
+87 30 6 c16 4 76 2 133 -5 57 -6 151 -11 209 -10 58 1 123 1 144 1 22 0 50 7
+63 15 14 10 47 15 92 15 38 0 73 5 76 10 12 20 68 11 96 -16z"/>
+<path d="M3775 4560 c-4 -7 -17 -9 -30 -6 -12 3 -25 2 -29 -2 -4 -4 -26 -7
+-49 -8 -23 -1 -67 -6 -97 -11 -49 -10 -61 -18 -116 -76 -48 -50 -63 -74 -69
+-106 -4 -22 -15 -51 -25 -64 -16 -20 -18 -33 -11 -79 6 -43 4 -63 -8 -85 -24
+-44 -18 -142 13 -196 19 -34 23 -54 19 -84 -4 -32 0 -48 21 -80 20 -30 31 -67
+43 -144 8 -57 22 -111 29 -120 8 -8 14 -22 14 -30 0 -28 75 -114 102 -117 15
+-2 32 -10 38 -18 7 -8 17 -14 23 -14 6 0 21 -10 34 -22 20 -18 37 -22 109 -24
+57 -2 93 -8 109 -18 13 -9 37 -16 52 -16 16 0 46 -9 67 -21 33 -17 49 -20 95
+-14 31 4 70 15 87 26 17 10 43 19 57 19 14 0 29 5 32 10 3 6 14 10 24 10 10 0
+28 12 42 26 15 16 30 23 43 20 14 -4 37 14 88 66 37 39 68 75 68 80 0 4 7 8
+16 8 26 0 95 66 124 117 14 27 32 58 40 70 12 19 10 33 -14 115 -15 51 -32
+100 -37 108 -5 8 -16 31 -25 50 -86 194 -150 296 -247 394 -67 67 -92 86 -114
+86 -15 0 -61 11 -101 25 -41 14 -82 25 -92 25 -11 0 -22 5 -25 10 -3 6 -14 10
+-24 10 -10 0 -24 7 -31 15 -7 8 -22 15 -34 15 -12 0 -38 8 -59 19 -20 10 -54
+22 -74 25 -21 4 -45 9 -55 12 -9 3 -19 0 -23 -6z"/>
+</g></symbol></svg>
+<div class="wrap">
+
+<header class="masthead">
+  <h1><svg class="seal" viewBox="0 0 1046 1425" role="img" aria-label="Sceau Thibaud Pagès"><use href="#sceau"/></svg> Convert &amp; Compress</h1>
+  <p class="thesis">L'atelier d'allègement des fichiers. Images en WebP, PDF compressés ou fusionnés — <b>tout se passe dans ton navigateur</b>, rien ne part sur Internet.</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab on" id="tab-img" data-tab="img" role="tab" aria-selected="true">Images → WebP</button>
+  <button class="tab" id="tab-pdf" data-tab="pdf" role="tab" aria-selected="false">Compresser un PDF</button>
+  <button class="tab" id="tab-merge" data-tab="merge" role="tab" aria-selected="false">Fusionner des PDF</button>
+</nav>
+
+<!-- ============ ONGLET IMAGES ============ -->
+<div class="panel on" id="panel-img" role="tabpanel" aria-labelledby="tab-img">
+
+  <div class="controls">
+    <div class="field">
+      <div class="row"><label class="lbl" for="quality">Qualité</label><output id="qualityVal">80 %</output></div>
+      <input class="thin" type="range" id="quality" min="40" max="100" step="1" value="80">
+      <div class="scale"><span>40</span><span>100</span></div>
+      <p class="hint" style="margin:0">80 % est le meilleur compromis pour la plupart des photos.</p>
+    </div>
+    <div class="field">
+      <div class="row"><span class="lbl">Largeur maximale</span><output id="widthVal">1600 px</output></div>
+      <div class="seg-btns" id="widthSeg" role="group" aria-label="Largeur maximale">
+        <button data-w="0">Originale</button>
+        <button data-w="2400">2400</button>
+        <button data-w="1600" class="on">1600</button>
+        <button data-w="1200">1200</button>
+        <button data-w="800">800</button>
+      </div>
+      <p class="hint" style="margin:6px 0 0">Réduire la largeur est souvent le plus gros gain de poids.</p>
+    </div>
+  </div>
+
+  <div class="drop" id="drop">
+    <input type="file" id="file" accept="image/jpeg,image/png,image/jpg,image/webp" multiple hidden>
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg></span>
+    <strong>Glisse tes images ici</strong>
+    <div class="or">ou clique pour les sélectionner</div>
+    <div class="types">JPG · PNG · WebP · sélection multiple</div>
+  </div>
+
+  <div class="readout" id="summary">
+    <div class="metric"><span class="v" id="sCount">0</span><span class="k">Images</span></div>
+    <div class="metric"><span class="v" id="sBefore">—</span><span class="k">Avant</span></div>
+    <div class="metric"><span class="v good" id="sAfter">—</span><span class="k">Après</span></div>
+    <div class="metric"><span class="v good" id="sSaved">—</span><span class="k">Économie</span></div>
+    <div class="actions">
+      <button class="ghost soft" id="clearImg">Vider</button>
+      <button class="ghost" id="dlEach">Fichiers séparés</button>
+      <button class="go" id="dlZip">Télécharger le ZIP</button>
+    </div>
+  </div>
+
+  <div class="list" id="results"></div>
+</div>
+
+<!-- ============ ONGLET COMPRESSION PDF ============ -->
+<div class="panel" id="panel-pdf" role="tabpanel" aria-labelledby="tab-pdf">
+
+  <div class="note">
+    Idéal pour les PDF <b>lourds</b> — scans, brochures, documents pleins d'images. Chaque page est redessinée puis recompressée.<br>
+    <b>À savoir :</b> le texte devient une image (non sélectionnable). Un PDF « texte seul » ne gagnera presque rien.
+  </div>
+
+  <div class="controls">
+    <div class="field">
+      <div class="row"><label class="lbl" for="pdfQuality">Qualité des images</label><output id="pdfQualityVal">75 %</output></div>
+      <input class="thin" type="range" id="pdfQuality" min="30" max="95" step="1" value="75">
+      <div class="scale"><span>30</span><span>95</span></div>
+      <p class="hint" style="margin:0">Plus bas = plus léger. 70–80 % reste très lisible.</p>
+    </div>
+    <div class="field">
+      <div class="row"><span class="lbl">Résolution</span><output id="pdfScaleVal">Moyenne</output></div>
+      <div class="seg-btns" id="pdfScaleSeg" role="group" aria-label="Résolution">
+        <button data-s="1">Basse</button>
+        <button data-s="1.5" class="on">Moyenne</button>
+        <button data-s="2">Haute</button>
+      </div>
+      <p class="hint" style="margin:6px 0 0">Basse = écran. Haute = proche impression.</p>
+    </div>
+  </div>
+
+  <div class="drop" id="pdfDrop">
+    <input type="file" id="pdfFile" accept="application/pdf,.pdf" multiple hidden>
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg></span>
+    <strong>Glisse tes PDF ici</strong>
+    <div class="or">ou clique pour les sélectionner</div>
+    <div class="types">PDF · sélection multiple</div>
+  </div>
+
+  <div class="readout" id="pdfSummary">
+    <div class="metric"><span class="v" id="pCount">0</span><span class="k">Fichiers</span></div>
+    <div class="metric"><span class="v" id="pBefore">—</span><span class="k">Avant</span></div>
+    <div class="metric"><span class="v good" id="pAfter">—</span><span class="k">Après</span></div>
+    <div class="metric"><span class="v good" id="pSaved">—</span><span class="k">Économie</span></div>
+    <div class="actions">
+      <button class="ghost soft" id="clearPdf">Vider</button>
+      <button class="ghost" id="pdfDlEach">Fichiers séparés</button>
+      <button class="go" id="pdfDlZip">Télécharger le ZIP</button>
+    </div>
+  </div>
+
+  <div class="list" id="pdfResults"></div>
+</div>
+
+<!-- ============ ONGLET FUSION ============ -->
+<div class="panel" id="panel-merge" role="tabpanel" aria-labelledby="tab-merge">
+
+  <div class="note">
+    Assemble plusieurs PDF en un seul document. L'ordre de la liste est l'ordre du document final — utilise les flèches pour le réorganiser. <b>Aucune recompression :</b> les pages sont recopiées telles quelles.
+  </div>
+
+  <div class="drop" id="mgDrop">
+    <input type="file" id="mgFile" accept="application/pdf,.pdf" multiple hidden>
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v9"/><path d="M13 8h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><path d="M15 12v5"/><path d="m12.5 14.5 2.5-2.5 2.5 2.5"/></svg></span>
+    <strong>Glisse les PDF à fusionner</strong>
+    <div class="or">ou clique pour les sélectionner</div>
+    <div class="types">PDF · l'ordre est modifiable ensuite</div>
+  </div>
+
+  <div class="readout" id="mgSummary">
+    <div class="metric"><span class="v" id="mCount">0</span><span class="k">Documents</span></div>
+    <div class="metric"><span class="v" id="mPages">—</span><span class="k">Pages</span></div>
+    <div class="metric"><span class="v" id="mSize">—</span><span class="k">Poids total</span></div>
+    <div class="actions">
+      <button class="ghost soft" id="clearMg">Vider</button>
+      <button class="go" id="mgGo">Fusionner et télécharger</button>
+    </div>
+  </div>
+
+  <div class="list" id="mgList"></div>
+</div>
+
+<footer class="madeby">
+  <span>made with love by</span>
+  <a href="https://thibaudpages.com" target="_blank" rel="noopener">
+    <svg class="seal-sm" viewBox="0 0 1046 1425" aria-hidden="true"><use href="#sceau"/></svg>Thibaud Pagès
+  </a>
+</footer>
+</div>
+
+<!-- comparateur avant / après -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="name" id="cmpName">image.webp</div>
+      <button class="icobtn" id="cmpClose" aria-label="Fermer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="cmp" id="cmp">
+      <img id="cmpBefore" alt="Original">
+      <div class="after-wrap" id="cmpAfterWrap"><img id="cmpAfter" alt="WebP"></div>
+      <span class="tag l">Original</span>
+      <span class="tag r">WebP</span>
+      <div class="handle" id="cmpHandle">
+        <div class="grip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <div class="readout">
+        <div class="metric"><span class="v" id="cmpSizeBefore">—</span><span class="k">Original</span></div>
+        <div class="metric"><span class="v good" id="cmpSizeAfter">—</span><span class="k">WebP</span></div>
+        <div class="metric"><span class="v good" id="cmpSaved">—</span><span class="k">Économie</span></div>
+        <div class="metric"><span class="v" id="cmpDims">—</span><span class="k">Dimensions</span></div>
+      </div>
+      <a class="go" id="cmpDl" style="text-decoration:none">Télécharger ce WebP</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="vendor/pdf.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="vendor/pdf-lib.min.js"></script>
+<script>
+/* ============ SOCLE COMMUN ============ */
+var $=function(s){return document.querySelector(s)};
+
+function fmt(b){
+  if(b<1024) return b+' o';
+  if(b<1048576) return (b/1024).toFixed(0)+' Ko';
+  return (b/1048576).toFixed(2)+' Mo';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function pctText(before,after){
+  var p=before>0?Math.round((1-after/before)*100):0;
+  return {p:p,up:p<0,txt:(p<0?'+':'−')+Math.abs(p)+' %'};
+}
+var toastT;
+function toast(msg){
+  var t=$('#toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastT); toastT=setTimeout(function(){t.classList.remove('on')},1900);
+}
+function saveBlob(blob,name){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href); a.remove()},1000);
+}
+function dropZone(el,input,onFiles){
+  el.addEventListener('click',function(){input.click()});
+  input.addEventListener('change',function(){onFiles(input.files); input.value=''});
+  ['dragenter','dragover'].forEach(function(ev){
+    el.addEventListener(ev,function(e){e.preventDefault(); el.classList.add('over')})});
+  el.addEventListener('dragleave',function(e){
+    e.preventDefault(); if(el.contains(e.relatedTarget)) return; el.classList.remove('over')});
+  el.addEventListener('drop',function(e){
+    e.preventDefault(); el.classList.remove('over'); onFiles(e.dataTransfer.files)});
+}
+
+/* ---- ZIP minimal (méthode « store », sans compression) ---- */
+var crcTable=(function(){
+  var t=new Uint32Array(256);
+  for(var n=0;n<256;n++){var c=n;
+    for(var k=0;k<8;k++) c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);
+    t[n]=c>>>0}
+  return t})();
+function crc32(buf){
+  var c=0xFFFFFFFF;
+  for(var i=0;i<buf.length;i++) c=crcTable[(c^buf[i])&0xFF]^(c>>>8);
+  return (c^0xFFFFFFFF)>>>0;
+}
+function makeZip(files){
+  var enc=new TextEncoder(),chunks=[],central=[],offset=0;
+  files.forEach(function(f){
+    var nb=enc.encode(f.name),data=f.data,crc=crc32(data),size=data.length;
+    var lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0,true);
+    lh.setUint16(8,0,true); lh.setUint16(10,0,true); lh.setUint16(12,0,true);
+    lh.setUint32(14,crc,true); lh.setUint32(18,size,true); lh.setUint32(22,size,true);
+    lh.setUint16(26,nb.length,true); lh.setUint16(28,0,true);
+    chunks.push(new Uint8Array(lh.buffer),nb,data);
+    var ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true);
+    ch.setUint16(8,0,true); ch.setUint16(10,0,true); ch.setUint16(12,0,true); ch.setUint16(14,0,true);
+    ch.setUint32(16,crc,true); ch.setUint32(20,size,true); ch.setUint32(24,size,true);
+    ch.setUint16(28,nb.length,true); ch.setUint16(30,0,true); ch.setUint16(32,0,true);
+    ch.setUint16(34,0,true); ch.setUint16(36,0,true); ch.setUint32(38,0,true);
+    ch.setUint32(42,offset,true);
+    central.push(new Uint8Array(ch.buffer),nb);
+    offset+=30+nb.length+size;
+  });
+  var centralSize=0; central.forEach(function(c){centralSize+=c.length});
+  var eo=new DataView(new ArrayBuffer(22));
+  eo.setUint32(0,0x06054b50,true); eo.setUint16(4,0,true); eo.setUint16(6,0,true);
+  eo.setUint16(8,files.length,true); eo.setUint16(10,files.length,true);
+  eo.setUint32(12,centralSize,true); eo.setUint32(16,offset,true); eo.setUint16(20,0,true);
+  return new Blob(chunks.concat(central,[new Uint8Array(eo.buffer)]),{type:'application/zip'});
+}
+function uniqueNames(items,ext){
+  var used={},out=[];
+  items.forEach(function(it){
+    var name=it.name;
+    if(used[name]){var n=++used[name]; name=it.name.replace(new RegExp('\\.'+ext+'$','i'),'')+'-'+n+'.'+ext}
+    else used[name]=1;
+    out.push({item:it,name:name});
+  });
+  return out;
+}
+
+/* ---- onglets ---- */
+(function(){
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      tabs.forEach(function(x){
+        var on=x===b;
+        x.classList.toggle('on',on);
+        x.setAttribute('aria-selected',on?'true':'false');
+      });
+      document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});
+      $('#panel-'+b.dataset.tab).classList.add('on');
+    });
+  });
+})();
+
+/* ============ 1. IMAGES → WEBP ============ */
+(function(){
+  var results=$('#results'),summary=$('#summary');
+  var qSlider=$('#quality'),qVal=$('#qualityVal');
+  var widthSeg=$('#widthSeg'),widthVal=$('#widthVal');
+  var maxWidth=1600,sources=[],items=[];
+
+  qSlider.addEventListener('input',function(){qVal.textContent=qSlider.value+' %'});
+  qSlider.addEventListener('change',run);
+  widthSeg.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    widthSeg.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    maxWidth=parseInt(b.dataset.w,10);
+    widthVal.textContent=maxWidth===0?'Originale':maxWidth+' px';
+    run();
+  });
+
+  dropZone($('#drop'),$('#file'),handleFiles);
+
+  function loadImage(file){
+    return new Promise(function(res,rej){
+      var img=new Image();
+      img.onload=function(){res(img)};
+      img.onerror=rej;
+      img.src=URL.createObjectURL(file);
+    });
+  }
+
+  async function handleFiles(list){
+    var files=[].slice.call(list).filter(function(f){
+      return /^image\/(jpeg|png|webp)$/.test(f.type)||/\.(jpe?g|png|webp)$/i.test(f.name)});
+    if(!files.length){toast('Aucune image reconnue'); return}
+    for(var i=0;i<files.length;i++){
+      try{
+        var img=await loadImage(files[i]);
+        sources.push({name:files[i].name,img:img,origSize:files[i].size});
+      }catch(e){}
+    }
+    run();
+  }
+
+  function convert(img,quality,maxW){
+    return new Promise(function(res){
+      var w=img.naturalWidth,h=img.naturalHeight;
+      if(maxW&&w>maxW){h=Math.round(h*(maxW/w)); w=maxW}
+      var cv=document.createElement('canvas');
+      cv.width=w; cv.height=h;
+      var ctx=cv.getContext('2d');
+      ctx.imageSmoothingQuality='high';
+      ctx.drawImage(img,0,0,w,h);
+      cv.toBlob(function(blob){res({blob:blob,w:w,h:h})},'image/webp',quality);
+    });
+  }
+
+  async function run(){
+    if(!sources.length){summary.classList.remove('on'); results.innerHTML=''; return}
+    if(run._busy){run._queued=true; return}
+    run._busy=true;
+    results.innerHTML=''; items=[];
+    summary.classList.add('on');
+    sources.forEach(function(src){results.appendChild(loadingRow(src))});
+    var quality=parseInt(qSlider.value,10)/100;
+    for(var i=0;i<sources.length;i++){
+      var src=sources[i];
+      var out=await convert(src.img,quality,maxWidth);
+      var item={
+        name:src.name.replace(/\.(jpe?g|png|webp)$/i,'')+'.webp',
+        blob:out.blob,origSize:src.origSize,newSize:out.blob.size,
+        w:out.w,h:out.h,origURL:src.img.src
+      };
+      items.push(item);
+      doneRow(results.children[i],src,item,items.length-1);
+    }
+    updateSummary();
+    run._busy=false;
+    if(run._queued){run._queued=false; run()}
+  }
+
+  function loadingRow(src){
+    var el=document.createElement('div');
+    el.className='item';
+    el.innerHTML='<img class="thumb" src="'+src.img.src+'" alt="">'+
+      '<div class="meta"><div class="name">'+esc(src.name)+'</div>'+
+      '<div class="dims">conversion…</div></div>'+
+      '<div class="end"><div class="spin"></div></div>';
+    return el;
+  }
+
+  function doneRow(el,src,item,idx){
+    var r=pctText(item.origSize,item.newSize);
+    el.innerHTML='<img class="thumb" src="'+src.img.src+'" alt="">'+
+      '<div class="meta"><div class="name">'+esc(item.name)+'</div>'+
+      '<div class="dims">'+item.w+' × '+item.h+' px</div></div>'+
+      '<div class="end">'+
+        '<div class="sizes"><span class="from">'+fmt(item.origSize)+'</span>'+
+        '<span class="arrow">→</span><span class="to">'+fmt(item.newSize)+'</span></div>'+
+        '<span class="pct'+(r.up?' up':'')+'">'+r.txt+'</span>'+
+        '<button class="ghost soft cmpBtn">Comparer</button>'+
+        '<a class="ghost dl" download="'+esc(item.name)+'">Télécharger</a>'+
+      '</div>';
+    el.querySelector('.dl').href=URL.createObjectURL(item.blob);
+    el.querySelector('.cmpBtn').addEventListener('click',function(){openCompare(idx)});
+  }
+
+  function updateSummary(){
+    var before=items.reduce(function(s,i){return s+i.origSize},0);
+    var after=items.reduce(function(s,i){return s+i.newSize},0);
+    $('#sCount').textContent=items.length;
+    $('#sBefore').textContent=fmt(before);
+    $('#sAfter').textContent=fmt(after);
+    $('#sSaved').textContent=pctText(before,after).txt;
+  }
+
+  $('#clearImg').addEventListener('click',function(){
+    sources=[]; items=[]; results.innerHTML=''; summary.classList.remove('on');
+  });
+
+  $('#dlEach').addEventListener('click',function(){
+    if(!items.length) return;
+    items.forEach(function(it,i){setTimeout(function(){saveBlob(it.blob,it.name)},i*150)});
+  });
+
+  $('#dlZip').addEventListener('click',async function(){
+    if(!items.length) return;
+    var btn=this,label=btn.textContent;
+    btn.disabled=true; btn.textContent='Compression…';
+    try{
+      var named=uniqueNames(items,'webp'),files=[];
+      for(var i=0;i<named.length;i++){
+        files.push({name:named[i].name,data:new Uint8Array(await named[i].item.blob.arrayBuffer())});
+      }
+      saveBlob(makeZip(files),'images-webp.zip');
+    }finally{btn.disabled=false; btn.textContent=label}
+  });
+
+  /* ---- comparateur ---- */
+  var overlay=$('#overlay'),cmp=$('#cmp'),handle=$('#cmpHandle'),afterWrap=$('#cmpAfterWrap'),cmpURL=null;
+
+  function openCompare(idx){
+    var it=items[idx]; if(!it) return;
+    if(cmpURL) URL.revokeObjectURL(cmpURL);
+    cmpURL=URL.createObjectURL(it.blob);
+    $('#cmpName').textContent=it.name;
+    $('#cmpBefore').src=it.origURL;
+    $('#cmpAfter').src=cmpURL;
+    $('#cmpSizeBefore').textContent=fmt(it.origSize);
+    $('#cmpSizeAfter').textContent=fmt(it.newSize);
+    $('#cmpSaved').textContent=pctText(it.origSize,it.newSize).txt;
+    $('#cmpDims').textContent=it.w+' × '+it.h;
+    $('#cmpDl').href=cmpURL; $('#cmpDl').download=it.name;
+    setSplit(50);
+    overlay.classList.add('on');
+  }
+  function close(){overlay.classList.remove('on')}
+  $('#cmpClose').addEventListener('click',close);
+  overlay.addEventListener('click',function(e){if(e.target===overlay) close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') close()});
+
+  function setSplit(p){
+    p=Math.max(0,Math.min(100,p));
+    afterWrap.style.clipPath='inset(0 0 0 '+p+'%)';
+    handle.style.left=p+'%';
+  }
+  var dragging=false;
+  function at(e){return (e.touches?e.touches[0]:e).clientX}
+  function drag(x){var r=cmp.getBoundingClientRect(); setSplit(((x-r.left)/r.width)*100)}
+  cmp.addEventListener('mousedown',function(e){dragging=true; drag(at(e))});
+  cmp.addEventListener('touchstart',function(e){dragging=true; drag(at(e))},{passive:true});
+  window.addEventListener('mousemove',function(e){if(dragging) drag(at(e))});
+  window.addEventListener('touchmove',function(e){if(dragging) drag(at(e))},{passive:true});
+  window.addEventListener('mouseup',function(){dragging=false});
+  window.addEventListener('touchend',function(){dragging=false});
+})();
+
+/* ============ 2. COMPRESSION PDF ============ */
+(function(){
+  if(!window.pdfjsLib||!window.jspdf){
+    $('#panel-pdf').insertAdjacentHTML('afterbegin',
+      '<div class="note"><b>Bibliothèques PDF indisponibles.</b> Recharge la page pour la r\u00e9activer.</div>');
+    return;
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc='vendor/pdf.worker.min.js';
+
+  var results=$('#pdfResults'),summary=$('#pdfSummary');
+  var qSlider=$('#pdfQuality'),qVal=$('#pdfQualityVal');
+  var scaleSeg=$('#pdfScaleSeg'),scaleVal=$('#pdfScaleVal');
+  var scale=1.5,names={'1':'Basse','1.5':'Moyenne','2':'Haute'};
+  var sources=[],items=[];
+
+  qSlider.addEventListener('input',function(){qVal.textContent=qSlider.value+' %'});
+  qSlider.addEventListener('change',run);
+  scaleSeg.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    scaleSeg.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    scale=parseFloat(b.dataset.s);
+    scaleVal.textContent=names[b.dataset.s];
+    run();
+  });
+
+  dropZone($('#pdfDrop'),$('#pdfFile'),handleFiles);
+
+  async function handleFiles(list){
+    var files=[].slice.call(list).filter(function(f){
+      return f.type==='application/pdf'||/\.pdf$/i.test(f.name)});
+    if(!files.length){toast('Aucun PDF reconnu'); return}
+    for(var i=0;i<files.length;i++){
+      sources.push({name:files[i].name,buf:await files[i].arrayBuffer(),origSize:files[i].size});
+    }
+    run();
+  }
+
+  var pdfIcon='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg>';
+
+  async function run(){
+    if(!sources.length){summary.classList.remove('on'); results.innerHTML=''; return}
+    if(run._busy){run._queued=true; return}
+    run._busy=true;
+    results.innerHTML=''; items=[];
+    summary.classList.add('on');
+    sources.forEach(function(src){
+      var el=document.createElement('div');
+      el.className='item';
+      el.innerHTML='<div class="thumb ph">'+pdfIcon+'</div>'+
+        '<div class="meta"><div class="name">'+esc(src.name)+'</div><div class="dims">analyse…</div></div>'+
+        '<div class="end"><div class="spin"></div></div>';
+      results.appendChild(el);
+    });
+    var quality=parseInt(qSlider.value,10)/100;
+    for(var i=0;i<sources.length;i++){
+      try{
+        var out=await compress(sources[i].buf,quality,scale,i);
+        var item={
+          name:sources[i].name.replace(/\.pdf$/i,'')+'-compressé.pdf',
+          blob:out.blob,origSize:sources[i].origSize,newSize:out.blob.size,pages:out.pages
+        };
+        items.push(item);
+        doneRow(results.children[i],item);
+      }catch(err){
+        errRow(results.children[i],sources[i].name);
+      }
+    }
+    updateSummary();
+    run._busy=false;
+    if(run._queued){run._queued=false; run()}
+  }
+
+  async function compress(buf,quality,renderScale,idx){
+    var pdf=await pdfjsLib.getDocument({data:buf.slice(0)}).promise;
+    var jsPDF=window.jspdf.jsPDF,doc=null;
+    for(var p=1;p<=pdf.numPages;p++){
+      var page=await pdf.getPage(p);
+      var vp1=page.getViewport({scale:1}),vp=page.getViewport({scale:renderScale});
+      var cv=document.createElement('canvas');
+      cv.width=Math.floor(vp.width); cv.height=Math.floor(vp.height);
+      var ctx=cv.getContext('2d');
+      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,cv.width,cv.height);
+      await page.render({canvasContext:ctx,viewport:vp}).promise;
+      var jpeg=cv.toDataURL('image/jpeg',quality);
+      var wPt=vp1.width,hPt=vp1.height,orient=wPt>hPt?'l':'p';
+      if(!doc) doc=new jsPDF({orientation:orient,unit:'pt',format:[wPt,hPt],compress:true});
+      else doc.addPage([wPt,hPt],orient);
+      doc.addImage(jpeg,'JPEG',0,0,wPt,hPt);
+      var d=results.children[idx]&&results.children[idx].querySelector('.dims');
+      if(d) d.textContent='page '+p+' / '+pdf.numPages+'…';
+      cv.width=cv.height=0;
+    }
+    return {blob:doc.output('blob'),pages:pdf.numPages};
+  }
+
+  function doneRow(el,item){
+    var r=pctText(item.origSize,item.newSize);
+    el.innerHTML='<div class="thumb ph done">'+pdfIcon+'</div>'+
+      '<div class="meta"><div class="name">'+esc(item.name)+'</div>'+
+      '<div class="dims">'+item.pages+' page'+(item.pages>1?'s':'')+'</div></div>'+
+      '<div class="end">'+
+        '<div class="sizes"><span class="from">'+fmt(item.origSize)+'</span>'+
+        '<span class="arrow">→</span><span class="to">'+fmt(item.newSize)+'</span></div>'+
+        '<span class="pct'+(r.up?' up':'')+'">'+r.txt+'</span>'+
+        '<a class="ghost dl" download="'+esc(item.name)+'">Télécharger</a>'+
+      '</div>';
+    el.querySelector('.dl').href=URL.createObjectURL(item.blob);
+  }
+
+  function errRow(el,name){
+    el.innerHTML='<div class="thumb ph err"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div>'+
+      '<div class="meta"><div class="name">'+esc(name)+'</div>'+
+      '<div class="dims err">Fichier illisible ou protégé</div></div><div class="end"></div>';
+  }
+
+  function updateSummary(){
+    var before=items.reduce(function(s,i){return s+i.origSize},0);
+    var after=items.reduce(function(s,i){return s+i.newSize},0);
+    $('#pCount').textContent=items.length;
+    $('#pBefore').textContent=fmt(before);
+    $('#pAfter').textContent=fmt(after);
+    $('#pSaved').textContent=pctText(before,after).txt;
+  }
+
+  $('#clearPdf').addEventListener('click',function(){
+    sources=[]; items=[]; results.innerHTML=''; summary.classList.remove('on');
+  });
+
+  $('#pdfDlEach').addEventListener('click',function(){
+    if(!items.length) return;
+    items.forEach(function(it,i){setTimeout(function(){saveBlob(it.blob,it.name)},i*150)});
+  });
+
+  $('#pdfDlZip').addEventListener('click',async function(){
+    if(!items.length) return;
+    var btn=this,label=btn.textContent;
+    btn.disabled=true; btn.textContent='Compression…';
+    try{
+      var named=uniqueNames(items,'pdf'),files=[];
+      for(var i=0;i<named.length;i++){
+        files.push({name:named[i].name,data:new Uint8Array(await named[i].item.blob.arrayBuffer())});
+      }
+      saveBlob(makeZip(files),'pdf-compresses.zip');
+    }finally{btn.disabled=false; btn.textContent=label}
+  });
+})();
+
+/* ============ 3. FUSION PDF ============ */
+(function(){
+  if(!window.PDFLib){
+    $('#panel-merge').insertAdjacentHTML('afterbegin',
+      '<div class="note"><b>Bibliothèque de fusion indisponible.</b> Recharge la page pour la r\u00e9activer.</div>');
+    return;
+  }
+  var list=$('#mgList'),summary=$('#mgSummary'),queue=[];
+
+  dropZone($('#mgDrop'),$('#mgFile'),handleFiles);
+
+  async function handleFiles(fl){
+    var files=[].slice.call(fl).filter(function(f){
+      return f.type==='application/pdf'||/\.pdf$/i.test(f.name)});
+    if(!files.length){toast('Aucun PDF reconnu'); return}
+    for(var i=0;i<files.length;i++){
+      var buf=await files[i].arrayBuffer(),pages=null;
+      try{
+        var d=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+        pages=d.getPageCount();
+      }catch(e){pages=null}
+      queue.push({name:files[i].name,buf:buf,size:files[i].size,pages:pages});
+    }
+    render();
+  }
+
+  var mgIcon='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">';
+
+  function render(){
+    list.innerHTML='';
+    if(!queue.length){summary.classList.remove('on'); return}
+    summary.classList.add('on');
+    queue.forEach(function(it,i){
+      var el=document.createElement('div');
+      el.className='qitem';
+      var sub=it.pages===null?'<span class="dims err">illisible ou protégé</span>'
+        :it.pages+' page'+(it.pages>1?'s':'')+' · '+fmt(it.size);
+      el.innerHTML='<span class="qnum">'+String(i+1).padStart(2,'0')+'</span>'+
+        '<div class="meta"><div class="name">'+esc(it.name)+'</div>'+
+        '<div class="dims">'+sub+'</div></div>'+
+        '<div class="qbtns">'+
+          '<button class="icobtn up" title="Monter"'+(i===0?' disabled':'')+'>'+mgIcon+'<path d="m18 15-6-6-6 6"/></svg></button>'+
+          '<button class="icobtn down" title="Descendre"'+(i===queue.length-1?' disabled':'')+'>'+mgIcon+'<path d="m6 9 6 6 6-6"/></svg></button>'+
+          '<button class="icobtn del" title="Retirer">'+mgIcon+'<path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>'+
+        '</div>';
+      el.querySelector('.up').addEventListener('click',function(){swap(i,i-1)});
+      el.querySelector('.down').addEventListener('click',function(){swap(i,i+1)});
+      el.querySelector('.del').addEventListener('click',function(){queue.splice(i,1); render()});
+      list.appendChild(el);
+    });
+    var ok=queue.filter(function(q){return q.pages!==null});
+    $('#mCount').textContent=queue.length;
+    $('#mPages').textContent=ok.reduce(function(s,q){return s+q.pages},0)||'—';
+    $('#mSize').textContent=fmt(queue.reduce(function(s,q){return s+q.size},0));
+    $('#mgGo').disabled=ok.length<1;
+  }
+
+  function swap(a,b){
+    if(b<0||b>=queue.length) return;
+    var t=queue[a]; queue[a]=queue[b]; queue[b]=t;
+    render();
+  }
+
+  $('#clearMg').addEventListener('click',function(){queue=[]; render()});
+
+  $('#mgGo').addEventListener('click',async function(){
+    var usable=queue.filter(function(q){return q.pages!==null});
+    if(!usable.length) return;
+    var btn=this,label=btn.textContent;
+    btn.disabled=true; btn.textContent='Fusion…';
+    try{
+      var out=await PDFLib.PDFDocument.create();
+      for(var i=0;i<usable.length;i++){
+        var src=await PDFLib.PDFDocument.load(usable[i].buf,{ignoreEncryption:true});
+        var pages=await out.copyPages(src,src.getPageIndices());
+        pages.forEach(function(p){out.addPage(p)});
+      }
+      var bytes=await out.save();
+      saveBlob(new Blob([bytes],{type:'application/pdf'}),'documents-fusionnes.pdf');
+      toast(usable.length+' documents fusionnés');
+    }catch(e){
+      toast('Échec de la fusion');
+    }finally{btn.disabled=false; btn.textContent=label}
+  });
+})();
+
+/* ============ PWA ============ */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("./service-worker.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
