@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>L'Arche · L'atelier d'identité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Playfair+Display:wght@600&family=Archivo+Black&family=Caveat:wght@700&family=Zen+Kaku+Gothic+New:wght@700&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F1E7; --paper2:#FBF8F2; --ink:#1B1A17; --ink-soft:#5A554C;
+  --line:#DCD3C2; --accent:#1F5243; --accent-soft:#E2ECE8;
+  --good:#1F5243; --good-soft:#DCE9E4;
+  --radius:16px;
+  --shadow:0 2px 0 rgba(27,26,23,.08), 0 10px 30px rgba(27,26,23,.06);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0; padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.55;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{max-width:660px; margin:0 auto; padding:0 18px 130px}
+
+/* ---------- barre de progression ---------- */
+#topbar{
+  position:sticky; top:0; z-index:50; background:rgba(246,241,231,.94);
+  backdrop-filter:saturate(160%) blur(8px);
+  border-bottom:1px solid var(--line); padding:10px 18px 9px;
+}
+#topbar .in{max-width:660px; margin:0 auto; display:flex; align-items:center; gap:12px}
+.brandmark{display:flex; align-items:center; gap:7px; font-family:'Fraunces',serif; font-weight:800; font-size:15px; letter-spacing:.02em; white-space:nowrap}
+.brandmark .lg{width:22px; height:22px; color:var(--accent); flex:none}
+.lg svg{width:100%; height:100%; display:block}
+.hero-logo{width:78px; height:78px; color:var(--accent); margin:34px 0 14px}
+.signature{
+  display:flex; align-items:center; gap:9px; justify-content:center;
+  margin:34px 0 0; padding-top:20px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--ink-soft); letter-spacing:.02em;
+}
+.signature .lg{width:19px; height:19px; color:var(--accent); flex:none}
+.signature b{color:var(--ink); font-weight:600}
+.bar{flex:1; height:7px; background:#E7DFD0; border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .35s cubic-bezier(.4,0,.2,1)}
+.step-n{font-size:12px; color:var(--ink-soft); font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* ---------- écrans ---------- */
+.screen{display:none; animation:pop .32s ease both}
+.screen.on{display:block}
+@keyframes pop{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
+.kicker{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:26px 0 8px}
+h1{font-family:'Fraunces',serif; font-weight:800; font-size:clamp(28px,7vw,40px); line-height:1.12; margin:0 0 10px; letter-spacing:-.01em}
+h2{font-family:'Fraunces',serif; font-weight:800; font-size:clamp(22px,5.4vw,29px); line-height:1.2; margin:0 0 8px; letter-spacing:-.01em}
+.sub{color:var(--ink-soft); margin:0 0 22px; font-size:15.5px}
+.note{font-size:13.5px; color:var(--ink-soft); background:var(--paper2); border:1px dashed var(--line); border-radius:12px; padding:11px 13px; margin:16px 0}
+
+/* ---------- champs ---------- */
+.field{margin:0 0 24px}
+label.q{display:block; font-weight:600; font-size:16px; margin:0 0 4px}
+.hint{font-size:13.5px; color:var(--ink-soft); margin:0 0 10px}
+input[type=text], textarea{
+  width:100%; font:inherit; font-size:16px; color:var(--ink);
+  background:var(--paper2); border:1.5px solid var(--line); border-radius:12px;
+  padding:12px 14px; outline:none; transition:border-color .15s, box-shadow .15s;
+}
+textarea{resize:vertical; min-height:96px; line-height:1.5}
+input[type=text]:focus, textarea:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft)}
+::placeholder{color:#A9A294}
+
+/* ---------- choix ---------- */
+.opts{display:grid; gap:9px}
+.opts.two{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.opt{
+  display:flex; gap:11px; align-items:flex-start; text-align:left; width:100%;
+  background:var(--paper2); border:1.5px solid var(--line); border-radius:13px;
+  padding:12px 14px; cursor:pointer; font:inherit; color:inherit;
+  transition:transform .1s, border-color .15s, background .15s;
+}
+.opt:active{transform:scale(.985)}
+.opt .box{
+  flex:none; width:21px; height:21px; border:1.5px solid #C3B9A6; border-radius:6px;
+  background:#fff; margin-top:1px; position:relative;
+}
+.opt.radio .box{border-radius:99px}
+.opt .box:after{
+  content:''; position:absolute; inset:4px; border-radius:3px; background:var(--accent);
+  transform:scale(0); transition:transform .15s cubic-bezier(.34,1.56,.64,1);
+}
+.opt.radio .box:after{border-radius:99px}
+.opt.sel{border-color:var(--accent); background:var(--accent-soft)}
+.opt.sel .box{border-color:var(--accent)}
+.opt.sel .box:after{transform:scale(1)}
+.opt b{font-weight:600; display:block}
+.opt small{color:var(--ink-soft); font-size:13px; display:block; margin-top:1px}
+
+/* ---------- curseurs d'opposés ---------- */
+.slider-row{margin:0 0 20px}
+.slider-labels{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:2px; gap:10px}
+.slider-labels span:last-child{text-align:right}
+input[type=range]{
+  -webkit-appearance:none; appearance:none; width:100%; height:34px; background:transparent; margin:0;
+}
+input[type=range]::-webkit-slider-runnable-track{height:6px; background:#E7DFD0; border-radius:99px}
+input[type=range]::-moz-range-track{height:6px; background:#E7DFD0; border-radius:99px}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:28px; height:28px; border-radius:99px; background:var(--accent);
+  border:3px solid var(--paper); box-shadow:0 2px 6px rgba(0,0,0,.2); margin-top:-11px; cursor:grab;
+}
+input[type=range]::-moz-range-thumb{
+  width:24px; height:24px; border-radius:99px; background:var(--accent);
+  border:3px solid var(--paper); box-shadow:0 2px 6px rgba(0,0,0,.2); cursor:grab;
+}
+.ticks{display:flex; justify-content:space-between; padding:0 3px; margin-top:-6px}
+.ticks i{width:2px; height:6px; background:#DCD3C2; border-radius:2px}
+
+/* ---------- vote (palettes / lettrages) ---------- */
+.vote-legend{display:flex; gap:14px; font-size:13px; color:var(--ink-soft); margin:0 0 12px; flex-wrap:wrap}
+.vote-legend b{color:var(--ink)}
+.vgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:11px}
+.vcard{
+  position:relative; border:1.5px solid var(--line); border-radius:14px; overflow:hidden;
+  background:var(--paper2); cursor:pointer; transition:transform .1s, border-color .15s, box-shadow .15s;
+  padding:0; font:inherit; color:inherit; text-align:left; display:block; width:100%;
+}
+.vcard:active{transform:scale(.97)}
+.vcard .swatches{display:flex; height:74px}
+.vcard .swatches i{flex:1}
+.vcard .fontbox{height:74px; display:flex; align-items:center; justify-content:center; background:#fff; padding:6px}
+.vcard .fontbox span{font-size:24px; line-height:1; color:#1B1A17; text-align:center}
+.vcard .cap{padding:8px 11px 10px; font-size:12.5px; color:var(--ink-soft); display:flex; justify-content:space-between; align-items:center; gap:6px}
+.vcard .state{font-size:15px; line-height:1}
+.vcard.like{border-color:var(--good); box-shadow:0 0 0 3px var(--good-soft)}
+.vcard.nope{border-color:#B4ACA0; opacity:.55}
+.vcard.nope .swatches, .vcard.nope .fontbox{filter:grayscale(.85)}
+
+/* ---------- upload ---------- */
+.drop{
+  border:2px dashed var(--line); border-radius:14px; background:var(--paper2);
+  padding:22px 16px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.drop:active{border-color:var(--accent); background:var(--accent-soft)}
+.drop .big{margin-bottom:6px; color:var(--accent); display:flex; justify-content:center}
+.drop b{display:block; font-size:15px}
+.drop small{color:var(--ink-soft); font-size:13px}
+.thumbs{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:9px; margin-top:12px}
+.thumb{position:relative; aspect-ratio:1; border-radius:11px; overflow:hidden; border:1.5px solid var(--line); background:#fff}
+.thumb img{width:100%; height:100%; object-fit:cover; display:block}
+.thumb button{
+  position:absolute; top:4px; right:4px; width:24px; height:24px; border-radius:99px; border:none;
+  background:rgba(27,26,23,.78); color:#fff; font-size:14px; line-height:1; cursor:pointer;
+}
+
+/* ---------- canvas ---------- */
+.canvas-wrap{border:1.5px solid var(--line); border-radius:14px; overflow:hidden; background:#fff}
+canvas{display:block; width:100%; height:340px; touch-action:none; cursor:crosshair}
+.tools{display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:9px; border-top:1.5px solid var(--line); background:var(--paper2)}
+.tool{border:1.5px solid var(--line); background:#fff; border-radius:10px; padding:7px 11px; font:inherit; font-size:13.5px; cursor:pointer; color:inherit}
+.tool.on{border-color:var(--accent); background:var(--accent-soft)}
+.dot{width:24px; height:24px; border-radius:99px; border:2px solid var(--line); cursor:pointer; padding:0}
+.dot.on{border-color:var(--ink); transform:scale(1.12)}
+.spacer{flex:1}
+
+/* ---------- navigation ---------- */
+#nav{
+  position:fixed; left:0; right:0; bottom:0; z-index:60;
+  background:rgba(246,241,231,.96); backdrop-filter:blur(8px);
+  border-top:1px solid var(--line); padding:11px 18px calc(11px + env(safe-area-inset-bottom));
+}
+#nav .in{max-width:660px; margin:0 auto; display:flex; gap:10px; align-items:center}
+.btn{
+  font:inherit; font-weight:600; font-size:16px; border-radius:13px; padding:14px 22px;
+  border:1.5px solid var(--ink); background:var(--ink); color:var(--paper); cursor:pointer; flex:1;
+  transition:transform .1s, opacity .15s;
+}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line); flex:none; padding:14px 18px}
+.btn.cta{background:var(--accent); border-color:var(--accent)}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+.savenote{text-align:center; font-size:12px; color:var(--ink-soft); margin-top:7px}
+
+/* ---------- fin ---------- */
+.big-emoji{font-size:52px; line-height:1; margin-bottom:8px}
+.err{background:var(--accent-soft); border:1.5px solid var(--accent); border-radius:12px; padding:13px; font-size:14px; margin-top:14px}
+.center{text-align:center}
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{
+  border:1.5px solid var(--line); background:var(--paper2); border-radius:99px; padding:8px 14px;
+  font:inherit; font-size:14px; cursor:pointer; color:inherit; transition:transform .1s;
+}
+.chip:active{transform:scale(.95)}
+.chip.sel{border-color:var(--accent); background:var(--accent-soft); font-weight:600}
+</style>
+</head>
+<body>
+
+<div id="topbar"><div class="in">
+  <span class="brandmark"><span class="lg"></span>L'Arche</span>
+  <span class="bar"><i id="progress"></i></span>
+  <span class="step-n" id="stepn"></span>
+</div></div>
+
+<div class="wrap" id="app"></div>
+
+<div id="nav"><div class="in">
+  <button class="btn ghost" id="back">Retour</button>
+  <button class="btn" id="next">Commencer</button>
+</div>
+<div class="savenote" id="savenote">Vos réponses sont conservées sur cet appareil, vous pouvez fermer et revenir plus tard.</div>
+</div>
+
+<script>
+/* =======================================================================
+   CONFIGURATION
+   Collez ici l'URL de votre application web Google Apps Script.
+   ======================================================================= */
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbwE5nT6n7HDV5SktEhuXQ-kb88euAGkzBbpp1SccJtJLJkBjbw6RO9gmAVuNObim-Rh_A/exec";
+/* ===================================================================== */
+
+var STUDIO = "Thibaud Pages Designs";   // votre signature, affichée en bas des écrans clés
+
+var LOGO = '<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g transform="matrix(0.531,0,0,0.531,-600.793,-952.127)"><g transform="matrix(1.787,0,0,1.787,-1501.608,790.693)"><circle cx="1914.966" cy="957.096" r="57.411" style="fill:currentColor;"/></g><g transform="matrix(1,0,0,1,884.771,1522.399)"><path d="M713.294,853.328C695.398,754.004 693.327,654.196 721.401,584.622C757.349,495.532 810.463,460.569 856.136,451.337C938.466,434.696 1015.407,499.621 1026.358,573.813C1036.324,641.327 1021.606,834.528 854.449,929.627C878.666,1019.461 908.619,1095.127 919.648,1117.49C934.407,1147.416 922.112,1183.64 892.186,1198.399C862.261,1213.158 826.037,1200.863 811.278,1170.937C799.387,1146.826 767.35,1067.13 740.685,971.317C678.162,982.356 631.708,968.573 596.93,945.692C558.001,920.081 532.785,880.687 517.885,841.623C499.191,792.609 496.965,745.639 496.774,740.473C496.774,740.473 485.377,516.706 481.055,431.839C480.021,411.548 488.29,391.89 503.518,378.439C510.836,371.975 519.216,364.573 527.77,357.017C538.762,347.308 554.308,344.669 567.888,350.207C581.468,355.746 590.735,368.504 591.801,383.131C600.841,507.096 617.521,735.85 617.521,735.85L617.533,736.272C617.533,736.272 618.625,766.679 630.785,798.562C637.228,815.453 646.51,833.673 663.342,844.746C676.01,853.081 692.358,856.052 713.294,853.328ZM827.107,801.418C905.297,734.722 912.627,630.798 906.82,591.457C905.112,579.883 894.688,568.584 882.018,569.507C875.528,569.98 869.39,574.202 862.991,580.617C852.041,591.595 842.317,607.876 833.455,629.837C815.219,675.032 817.405,737.181 827.107,801.418Z" style="fill:currentColor;"/></g><g transform="matrix(1,0,0,1,884.771,1522.399)"><path d="M408.9,802.563C393.412,832.118 356.898,843.521 327.343,828.033C297.788,812.545 286.384,776.031 301.872,746.476C301.872,746.476 506.638,357.596 906.094,277.452C938.809,270.888 970.651,292.088 977.215,324.803C983.779,357.519 962.579,389.36 929.864,395.924C584.731,465.17 408.9,802.563 408.9,802.563Z" style="fill:currentColor;"/></g></g></svg>';
+
+var TROMBONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>';
+
+var SIGN = '<div class="signature"><span class="lg"></span><span>Un atelier signé <b>'+STUDIO+'</b></span></div>';
+
+var STORE_KEY = "arche_brief_v2";
+var A = {};           // toutes les réponses
+var idx = 0;          // écran courant
+var sent = false;
+
+/* ---------- données ---------- */
+var PALETTES = [
+  {id:"p1", n:"Encre et papier",        c:["#F4EFE6","#1C1B19","#8A8377","#C7BFAE"]},
+  {id:"p2", n:"Vermillon",              c:["#FFF8F0","#E23B2E","#1A1A1A","#FFC93C"]},
+  {id:"p3", n:"Nuit japonaise",         c:["#101820","#1F3A5F","#E8E1D5","#C1440E"]},
+  {id:"p4", n:"Pop shonen",             c:["#FFFFFF","#FF3B30","#FFD400","#0A84FF"]},
+  {id:"p5", n:"Terre et bois",          c:["#EDE0CE","#7A4E2D","#3E5641","#D9A441"]},
+  {id:"p6", n:"Pastel doux",            c:["#FDF6F0","#F2B8B5","#A8C6C1","#6B7A8F"]},
+  {id:"p7", n:"Néon nocturne",          c:["#0B0B14","#FF2E88","#00E5FF","#F5F5F5"]},
+  {id:"p8", n:"Franco-belge classique", c:["#F1E9D2","#123C69","#AC3B61","#EDC7B7"]}
+];
+
+var FONTS = [
+  {id:"f1", n:"Sérif chaleureux",   f:"'Fraunces',serif",            w:800, s:26},
+  {id:"f2", n:"Affiche massive",    f:"'Bebas Neue',sans-serif",     w:400, s:34, ls:"0.04em"},
+  {id:"f3", n:"Moderne net",        f:"'Space Grotesk',sans-serif",  w:700, s:26},
+  {id:"f4", n:"Classique élégant",  f:"'Playfair Display',serif",    w:600, s:26},
+  {id:"f5", n:"Bloc pop",           f:"'Archivo Black',sans-serif",  w:400, s:23},
+  {id:"f6", n:"Manuscrit",          f:"'Caveat',cursive",            w:700, s:34},
+  {id:"f7", n:"Japonais épuré",     f:"'Zen Kaku Gothic New',sans-serif", w:700, s:25},
+  {id:"f8", n:"Japonais typé",      f:"'Zen Antique',serif",         w:400, s:25}
+];
+
+/* ---------- écrans ---------- */
+var SCREENS = [
+
+{id:"intro", intro:true, next:"C'est parti", html:
+  '<div class="hero-logo lg"></div>'+
+  '<div class="kicker">Atelier d\'identité</div>'+
+  '<h1>Racontez-moi L\'Arche.</h1>'+
+  '<p class="sub">Avant de dessiner quoi que ce soit, j\'ai besoin de comprendre votre librairie de l\'intérieur. Ce petit atelier remplace une longue réunion : des choix rapides, quelques mots à vous, des images, et même un espace pour gribouiller.</p>'+
+  '<div class="note"><b>Quelques repères</b><br>'+
+  '· Environ 10 minutes.<br>'+
+  '· <b>Répondez chacun de votre côté</b>, sur votre propre téléphone. Je veux vos trois regards, pas une moyenne.<br>'+
+  '· Il n\'y a aucune mauvaise réponse, et rien n\'est obligatoire.<br>'+
+  '· Tout est sauvegardé au fur et à mesure : vous pouvez fermer et reprendre plus tard.<br>'+
+  '· À la fin, un seul bouton, et je reçois tout. Rien à m\'envoyer.</div>'+
+  SIGN},
+
+{id:"qui", k:"Faisons connaissance", t:"Les bases", s:"Trois secondes, promis.", f:[
+  {t:"text", k:"repondants", q:"Votre prénom", hint:"Un seul prénom : chacun remplit le sien de son côté.", ph:""},
+  {t:"radio", k:"nom_retenu", q:"Le nom, vous en êtes où ?", hint:"Votre avis personnel, même s'il diffère de celui des autres.", opts:[
+    {v:"L'Arche", l:"L'Arche", d:"Court, mystérieux, ouvert à l'interprétation"},
+    {v:"L'Arche Bandes Dessinées", l:"L'Arche Bandes Dessinées", d:"Explicite, on sait tout de suite ce qu'on vend"},
+    {v:"les deux", l:"Les deux selon le contexte", d:"Version courte et version longue du même logo"},
+    {v:"hesitation", l:"On hésite encore", d:"Le nom n'est pas complètement figé"},
+    {v:"autre", l:"J'ai une autre idée", d:"Écrivez-la juste en dessous"}
+  ]},
+  {t:"text", k:"nom_autre", q:"Votre proposition", hint:"Facultatif, à remplir seulement si vous avez une variante en tête.", ph:"ex : L'Arche BD & Manga"}
+]},
+
+{id:"public", k:"Vos futurs clients", t:"Qui pousse la porte ?", s:"Cochez tous ceux que vous espérez voir souvent.", f:[
+  {t:"checks", k:"publics", q:"Les publics espérés", opts:[
+    {v:"ados_manga", l:"Les ados fans de manga", d:"Ils connaissent les sorties mieux que vous"},
+    {v:"jeunes_adultes", l:"Les jeunes adultes", d:"Étudiants, jeunes actifs, culture pop"},
+    {v:"collectionneurs", l:"Les collectionneurs", d:"Figurines, éditions limitées, tirages de tête"},
+    {v:"puristes_bd", l:"Les amateurs de BD classique", d:"Franco-belge, romans graphiques, patrimoine"},
+    {v:"familles", l:"Les familles", d:"Parents qui cherchent pour leurs enfants"},
+    {v:"enfants", l:"Les enfants", d:"Premières lectures, BD jeunesse"},
+    {v:"curieux", l:"Les curieux, les non-initiés", d:"Ils n'osent pas trop, il faut les guider"},
+    {v:"frontaliers", l:"Le public international", d:"Genève à côté, clientèle anglophone ou suisse"},
+    {v:"cadeaux", l:"Ceux qui cherchent un cadeau", d:"Ils ne connaissent rien, ils veulent un conseil"}
+  ]},
+  {t:"textarea", k:"public_ideal", q:"Décrivez votre client idéal en une phrase", hint:"Comme si vous le voyiez entrer.", ph:"\"Un gamin de 14 ans qui vient chaque samedi avec son argent de poche...\""}
+]},
+
+{id:"perso", k:"Le caractère", t:"Si L'Arche était quelqu'un", s:"Faites glisser chaque curseur. Le milieu est une réponse valable, mais osez trancher : c'est là que je trouve la direction.", f:[
+  {t:"slider", k:"ax_pop", left:"Grand public", right:"Pointu, prescripteur"},
+  {t:"slider", k:"ax_chaud", left:"Cocon chaleureux", right:"Épuré, galerie"},
+  {t:"slider", k:"ax_jeu", left:"Sérieux, respectueux", right:"Joueur, décalé"},
+  {t:"slider", k:"ax_temps", left:"Intemporel, artisanal", right:"Contemporain, dans l'air du temps"},
+  {t:"slider", k:"ax_geo", left:"Ancré franco-belge", right:"Tourné vers le Japon"},
+  {t:"slider", k:"ax_energie", left:"Calme, feutré", right:"Vibrant, énergique"},
+  {t:"slider", k:"ax_lux", left:"Populaire, accessible", right:"Soigné, presque précieux"},
+  {t:"slider", k:"ax_local", left:"Une boutique de quartier", right:"Une destination, on fait la route"}
+]},
+
+{id:"mots", k:"Vos mots", t:"Complétez ces phrases", s:"Écrivez vite, sans réfléchir. C'est souvent le plus précieux pour moi.", f:[
+  {t:"textarea", k:"ph_porte", q:"« Quand quelqu'un pousse la porte de L'Arche, je veux qu'il se dise... »", ph:""},
+  {t:"textarea", k:"ph_diff", q:"« Ce qu'on trouvera chez nous et nulle part ailleurs autour, c'est... »", ph:""},
+  {t:"textarea", k:"ph_nom", q:"« On a choisi le nom L'Arche parce que... »", hint:"Le sens que VOUS y mettez compte énormément pour le dessin du logo. Refuge ? Embarquement ? Passage vers un autre monde ? Autre chose ?", ph:""},
+  {t:"textarea", k:"ph_perso", q:"« Si L'Arche était un personnage de BD ou de manga, ce serait... »", hint:"Et pourquoi.", ph:""},
+  {t:"text", k:"mots3", q:"Trois adjectifs, pas un de plus", ph:"ex : accueillant, exigeant, joyeux"}
+]},
+
+{id:"couleurs", k:"Direction visuelle", t:"Les ambiances de couleur", s:"Tapez une fois pour un coup de cœur, deux fois pour dire non. Vous pouvez ne rien mettre sur celles qui vous laissent indifférents.", vote:"palettes", items:"PALETTES", after:[
+  {t:"textarea", k:"couleur_note", q:"Une couleur que vous refusez absolument ?", hint:"Ou au contraire une que vous rêvez de voir sur votre enseigne.", ph:""}
+]},
+
+{id:"lettres", k:"Direction visuelle", t:"Les styles de lettrage", s:"Même principe. Ne jugez pas la police en elle-même, jugez l'impression qu'elle donne.", vote:"fonts", items:"FONTS", after:[
+  {t:"textarea", k:"lettre_note", q:"Un commentaire sur ces styles ?", ph:"Facultatif"}
+]},
+
+{id:"pistes", k:"Le logo", t:"Vers quoi vous penchez ?", s:"Cochez les pistes qui vous parlent. Plusieurs réponses possibles, et \"aucune idée\" est une réponse honnête.", f:[
+  {t:"checks", k:"pistes", q:"Pistes retenues", opts:[
+    {v:"arche_archi", l:"Une arche, une voûte", d:"Le sens architectural : un passage, un portail"},
+    {v:"arche_noe", l:"L'arche de Noé", d:"Le bateau, le refuge, l'embarquement"},
+    {v:"monogramme", l:"Un A stylisé", d:"Un monogramme fort, facile à décliner"},
+    {v:"bulle", l:"Une bulle de dialogue", d:"Le signe universel de la BD"},
+    {v:"case", l:"Une case, une planche", d:"Le cadre, le gaufrier, le découpage"},
+    {v:"livre", l:"Un livre ouvert", d:"Classique, immédiatement lisible"},
+    {v:"onomatopee", l:"Une onomatopée", d:"BAM, DOKI... l'énergie du lettrage BD"},
+    {v:"mascotte", l:"Une mascotte, un personnage", d:"En lien avec vos personnages d'illustrateur"},
+    {v:"typo_seule", l:"Juste le nom, aucun symbole", d:"Une typographie travaillée, rien d'autre"},
+    {v:"figurine", l:"Une silhouette de figurine", d:"Pour assumer ce rayon dès le logo"},
+    {v:"aucune", l:"Aucune idée, surprenez-nous", d:"Carte blanche"}
+  ]},
+  {t:"textarea", k:"piste_libre", q:"Une image vous vient en tête ?", hint:"Même vague, même bête. Vous pourrez la dessiner un peu plus loin.", ph:""}
+]},
+
+{id:"mascottes", k:"Vos personnages", t:"Les personnages de l'illustrateur", s:"Vos petits personnages manga vont cohabiter avec l'identité que je vais créer. Dites-moi juste où vous comptez les faire vivre, pour que je leur laisse la bonne place.", f:[
+  {t:"checks", k:"masc_usages", q:"Où comptez-vous les utiliser ?", opts:[
+    {v:"coupdecoeur", l:"Étiquettes coup de cœur en rayon"},
+    {v:"reseaux", l:"Réseaux sociaux"},
+    {v:"vitrine", l:"Vitrine et signalétique"},
+    {v:"sacs", l:"Sacs, marque-pages, goodies"},
+    {v:"site", l:"Site web"},
+    {v:"affiches", l:"Affiches et événements"},
+    {v:"emballage", l:"Emballages, stickers, cartes de fidélité"}
+  ]},
+  {t:"textarea", k:"masc_note", q:"Une précision sur ces personnages ?", hint:"Facultatif. Ce qu'ils représentent, l'ambiance visée, une contrainte à connaître.", ph:""}
+]},
+
+{id:"refs", k:"Références", t:"Ce que vous aimez, ce que vous fuyez", s:"C'est l'écran le plus utile de tout l'atelier. Prenez trente secondes de plus ici.", f:[
+  {t:"textarea", k:"ref_aime", q:"Des marques, boutiques ou logos que vous trouvez réussis", hint:"Pas forcément des librairies. Un café, une marque de vêtements, un festival, tout compte.", ph:"Citez-les, et dites en deux mots ce qui vous plaît."},
+  {t:"textarea", k:"ref_deteste", q:"Et ce que vous ne voulez surtout pas", hint:"Souvent plus parlant que le reste. Soyez francs.", ph:"\"Pas de police façon comic sans\", \"pas de truc trop enfantin\", \"pas de gris terne\"..."},
+  {t:"textarea", k:"concurrents", q:"Les autres librairies du secteur", hint:"Celles dont vous voulez vous démarquer, ou dont vous admirez quelque chose.", ph:""},
+  {t:"files", k:"images", q:"Ajoutez des images", hint:"Logos que vous aimez, photos du local, croquis sur un coin de nappe, planches qui vous inspirent, personnages de l'illustrateur. Vous pouvez prendre une photo directement."},
+  {t:"info", html:"<b>Rien sous la main ?</b> Aucun souci. Cette page n'est pas la dernière occasion : envoyez-moi vos images quand vous voulez, par mail ou par message, même dans trois semaines. Une capture d'écran prise sur le vif vaut souvent mieux qu'une longue explication."}
+]},
+
+{id:"supports", k:"Les usages", t:"Où ce logo va-t-il vivre ?", s:"Cochez tout ce que vous imaginez produire, même à moyen terme. Un logo se dessine différemment selon qu'il finit sur une enseigne de six mètres ou sur un tampon de deux centimètres.", f:[
+  {t:"checks", k:"supports", q:"Supports envisagés", grid:true, opts:[
+    {v:"enseigne", l:"Enseigne / devanture"},
+    {v:"vitrine", l:"Vitrophanie, vitrine"},
+    {v:"sac", l:"Sacs papier"},
+    {v:"marquepage", l:"Marque-pages"},
+    {v:"tampon", l:"Tampon encreur"},
+    {v:"coupdecoeur", l:"Étiquettes coup de cœur"},
+    {v:"fidelite", l:"Carte de fidélité"},
+    {v:"visite", l:"Cartes de visite"},
+    {v:"totebag", l:"Tote bags"},
+    {v:"stickers", l:"Stickers"},
+    {v:"badges", l:"Badges"},
+    {v:"tshirt", l:"T-shirts de l'équipe"},
+    {v:"signaletique", l:"Signalétique des rayons"},
+    {v:"affiches", l:"Affiches d'événements"},
+    {v:"instagram", l:"Instagram"},
+    {v:"tiktok", l:"TikTok"},
+    {v:"facebook", l:"Facebook"},
+    {v:"newsletter", l:"Newsletter"},
+    {v:"site", l:"Site web"},
+    {v:"flyers", l:"Flyers"},
+    {v:"emballage", l:"Emballage cadeau, ruban"},
+    {v:"vehicule", l:"Véhicule"},
+    {v:"autre", l:"Autre chose"}
+  ]},
+  {t:"text", k:"support_autre", q:"Si « Autre chose », lequel ?", hint:"Facultatif. Un support auquel je n'ai pas pensé.", ph:""},
+  {t:"text", k:"support_top", q:"Les trois plus urgents ?", ph:"ex : enseigne, sacs, Instagram"}
+]},
+
+{id:"reseaux", k:"Réseaux sociaux", t:"Votre présence en ligne", s:"", f:[
+  {t:"radio", k:"res_qui", q:"Qui va s'occuper des réseaux ?", opts:[
+    {v:"nous_motives", l:"Nous, et on est motivés", d:"Plusieurs publications par semaine"},
+    {v:"nous_moyen", l:"Nous, quand on aura le temps", d:"Réaliste : ce sera irrégulier"},
+    {v:"quelquun", l:"Quelqu'un de dédié dans l'équipe"},
+    {v:"?", l:"On ne sait pas encore"}
+  ]},
+  {t:"checks", k:"res_besoins", q:"Quels formats vous rendraient service ?", opts:[
+    {v:"nouveaute", l:"Annonce de nouveauté", d:"Une couverture, un titre, hop"},
+    {v:"coupdecoeur", l:"Coup de cœur", d:"Avec un espace pour votre texte et vos personnages"},
+    {v:"event", l:"Événement, dédicace", d:"Date, invité, lieu"},
+    {v:"citation", l:"Citation, extrait de planche"},
+    {v:"story", l:"Stories verticales", d:"Sondage, question, compte à rebours"},
+    {v:"arrivage", l:"Arrivage figurines"},
+    {v:"equipe", l:"Coulisses, équipe"},
+    {v:"horaires", l:"Infos pratiques, horaires"}
+  ]},
+  {t:"radio", k:"res_outil", q:"Avec quel outil retoucherez-vous ces modèles ?", hint:"Important : je livrerai dans le format que vous savez ouvrir.", opts:[
+    {v:"canva", l:"Canva", d:"Le plus simple, et le plus courant"},
+    {v:"adobe", l:"Un logiciel Adobe", d:"On a quelqu'un qui sait s'en servir"},
+    {v:"tel", l:"Une appli sur téléphone"},
+    {v:"?", l:"Aucune idée, conseillez-nous"}
+  ]}
+]},
+
+{id:"perimetre", k:"La mission", t:"De quoi avez-vous besoin, concrètement ?", s:"Répondez ce que vous pensez vraiment, pas ce que vous croyez raisonnable. On ajustera ensemble.", f:[
+  {t:"radio", k:"scope", q:"Le périmètre que vous imaginez", opts:[
+    {v:"logo", l:"Le logo, et c'est tout", d:"Un fichier propre, décliné en quelques versions"},
+    {v:"logo_da", l:"Logo + direction artistique", d:"Couleurs, typographies, règles d'usage, mini guide"},
+    {v:"logo_da_print", l:"Logo + DA + supports de la boutique", d:"Sacs, marque-pages, étiquettes, signalétique"},
+    {v:"logo_da_reseaux", l:"Logo + DA + modèles réseaux sociaux", d:"Des gabarits que vous remplissez vous-mêmes"},
+    {v:"tout", l:"L'ensemble", d:"Identité complète, boutique et réseaux"},
+    {v:"conseil", l:"On ne sait pas, dites-nous ce qui est utile", d:"Réponse parfaitement légitime"}
+  ]},
+  {t:"radio", k:"urgence", q:"Quelle est votre échéance la plus dure ?", opts:[
+    {v:"enseigne", l:"Le fabricant d'enseigne attend le fichier", d:"C'est le vrai compte à rebours"},
+    {v:"ouverture", l:"L'ouverture de la boutique"},
+    {v:"comm", l:"Commencer à communiquer avant l'ouverture"},
+    {v:"aucune", l:"Rien d'urgent pour l'instant"}
+  ]},
+  {t:"text", k:"deadline", q:"Une date précise à ne pas rater ?", ph:"Facultatif"},
+  {t:"radio", k:"budget", q:"Une enveloppe en tête ?", hint:"Facultatif et sans engagement. Ça m'évite juste de vous proposer quelque chose de complètement à côté.", opts:[
+    {v:"a", l:"Serré, on démarre tout juste"},
+    {v:"b", l:"Une enveloppe raisonnable, c'est un investissement"},
+    {v:"c", l:"On met les moyens, c'est notre vitrine pour dix ans"},
+    {v:"d", l:"On préfère en parler de vive voix"}
+  ]}
+]},
+
+{id:"croquis", k:"Bonus", t:"Un coin pour gribouiller", s:"Totalement facultatif, et personne ne jugera votre coup de crayon. Un symbole, la disposition de l'enseigne, une forme qui vous trotte dans la tête : trois traits valent parfois mille mots.", draw:true, after:[
+  {t:"text", k:"croquis_legende", q:"Ce que vous avez dessiné, en une ligne", ph:"Facultatif"}
+]},
+
+{id:"fin", k:"Dernière ligne droite", t:"Le mot de la fin", s:"", f:[
+  {t:"textarea", k:"libre", q:"Quelque chose que je ne vous ai pas demandé ?", hint:"Une inquiétude, une contrainte, une envie, une anecdote sur le projet. Videz votre sac.", ph:""},
+  {t:"info", html:"Merci d'avoir joué le jeu. Cliquez sur le bouton, et c'est terminé : tout arrive directement chez moi."}
+], next:"Envoyer à Thibaud"}
+
+];
+
+/* =====================================================================
+   RENDU
+   ===================================================================== */
+var app = document.getElementById("app");
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+function load(){
+  try{ var raw = localStorage.getItem(STORE_KEY); if(raw) A = JSON.parse(raw)||{}; }catch(e){ A = {}; }
+  if(!A.votes) A.votes = {};
+  if(!A.files) A.files = [];
+}
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(A)); }catch(e){}
+}
+
+function fieldHTML(f){
+  if(f.t==="info") return '<div class="note">'+f.html+'</div>';
+  var h = '<div class="field" data-k="'+f.k+'">';
+  if(f.q) h += '<label class="q">'+f.q+'</label>';
+  if(f.hint) h += '<div class="hint">'+f.hint+'</div>';
+
+  if(f.t==="text"){
+    h += '<input type="text" data-in="'+f.k+'" placeholder="'+esc(f.ph||"")+'">';
+  }
+  else if(f.t==="textarea"){
+    h += '<textarea data-in="'+f.k+'" placeholder="'+esc(f.ph||"")+'"></textarea>';
+  }
+  else if(f.t==="radio" || f.t==="checks"){
+    h += '<div class="opts'+(f.grid?" two":"")+'">';
+    for(var i=0;i<f.opts.length;i++){
+      var o = f.opts[i];
+      h += '<button type="button" class="opt '+(f.t==="radio"?"radio":"")+'" data-'+(f.t==="radio"?"radio":"check")+'="'+f.k+'" data-v="'+esc(o.v)+'">'+
+           '<span class="box"></span><span><b>'+o.l+'</b>'+(o.d?'<small>'+o.d+'</small>':'')+'</span></button>';
+    }
+    h += '</div>';
+  }
+  else if(f.t==="slider"){
+    h += '<div class="slider-row">'+
+         '<div class="slider-labels"><span>'+f.left+'</span><span>'+f.right+'</span></div>'+
+         '<input type="range" min="0" max="100" step="1" value="50" data-range="'+f.k+'">'+
+         '<div class="ticks"><i></i><i></i><i></i><i></i><i></i></div>'+
+         '</div>';
+  }
+  else if(f.t==="files"){
+    h += '<div class="drop" data-drop="1"><div class="big">'+TROMBONE+'</div><b>Ajouter des images</b>'+
+         '<small>Photo, capture d\'écran, croquis. Plusieurs à la fois.</small></div>'+
+         '<input type="file" accept="image/*" multiple style="display:none" data-fileinput="1">'+
+         '<div class="thumbs" id="thumbs"></div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function voteHTML(kind){
+  var list = kind==="palettes" ? PALETTES : FONTS;
+  var h = '<div class="vote-legend"><span><b>1 tap</b> = coup de cœur</span><span><b>2 taps</b> = non merci</span><span><b>3 taps</b> = neutre</span></div><div class="vgrid">';
+  for(var i=0;i<list.length;i++){
+    var it = list[i];
+    var inner;
+    if(kind==="palettes"){
+      inner = '<div class="swatches">';
+      for(var j=0;j<it.c.length;j++) inner += '<i style="background:'+it.c[j]+'"></i>';
+      inner += '</div>';
+    } else {
+      inner = '<div class="fontbox"><span style="font-family:'+it.f+'; font-weight:'+it.w+'; font-size:'+it.s+'px;'+(it.ls?'letter-spacing:'+it.ls+';':'')+'">L\'ARCHE</span></div>';
+    }
+    h += '<button type="button" class="vcard" data-vote="'+it.id+'">'+inner+
+         '<span class="cap"><span>'+it.n+'</span><span class="state"></span></span></button>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function drawHTML(){
+  return '<div class="canvas-wrap"><canvas id="pad"></canvas>'+
+    '<div class="tools">'+
+      '<button type="button" class="dot on" data-color="#1B1A17" style="background:#1B1A17"></button>'+
+      '<button type="button" class="dot" data-color="#D9442F" style="background:#D9442F"></button>'+
+      '<button type="button" class="dot" data-color="#2F6FB0" style="background:#2F6FB0"></button>'+
+      '<button type="button" class="tool on" data-size="3">Fin</button>'+
+      '<button type="button" class="tool" data-size="9">Épais</button>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="tool" id="undo">Annuler</button>'+
+      '<button type="button" class="tool" id="clear">Effacer</button>'+
+    '</div></div>';
+}
+
+function buildScreen(sc, n){
+  var h = '<section class="screen" data-i="'+n+'">';
+  if(sc.intro){ h += sc.html; }
+  else {
+    if(sc.k) h += '<div class="kicker">'+sc.k+'</div>';
+    h += '<h2>'+sc.t+'</h2>';
+    if(sc.s) h += '<p class="sub">'+sc.s+'</p>';
+    if(sc.vote) h += voteHTML(sc.vote);
+    if(sc.draw) h += drawHTML();
+    var list = (sc.f||[]).concat(sc.after||[]);
+    for(var i=0;i<list.length;i++) h += fieldHTML(list[i]);
+  }
+  h += '</section>';
+  return h;
+}
+
+function render(){
+  var h = "";
+  for(var i=0;i<SCREENS.length;i++) h += buildScreen(SCREENS[i], i);
+  h += '<section class="screen" data-i="'+SCREENS.length+'" id="done"></section>';
+  app.innerHTML = h;
+  paintLogos();
+  bind();
+  restore();
+  show(0);
+}
+
+function paintLogos(){
+  var l = document.querySelectorAll(".lg");
+  for(var i=0;i<l.length;i++) if(!l[i].innerHTML) l[i].innerHTML = LOGO;
+}
+
+/* ---------- liaisons ---------- */
+function bind(){
+  app.addEventListener("input", function(e){
+    var t = e.target;
+    if(t.dataset.in){ A[t.dataset.in] = t.value; save(); }
+    if(t.dataset.range){ A[t.dataset.range] = t.value; save(); }
+  });
+
+  app.addEventListener("click", function(e){
+    var b = e.target.closest("button");
+    if(!b) return;
+
+    if(b.dataset.radio){
+      var k = b.dataset.radio;
+      var sibs = b.parentNode.querySelectorAll("[data-radio='"+k+"']");
+      for(var i=0;i<sibs.length;i++) sibs[i].classList.remove("sel");
+      b.classList.add("sel"); A[k] = b.dataset.v; save(); return;
+    }
+    if(b.dataset.check){
+      var kk = b.dataset.check;
+      if(!Array.isArray(A[kk])) A[kk] = [];
+      var v = b.dataset.v, p = A[kk].indexOf(v);
+      if(p>=0){ A[kk].splice(p,1); b.classList.remove("sel"); }
+      else { A[kk].push(v); b.classList.add("sel"); }
+      save(); return;
+    }
+    if(b.dataset.vote){
+      var id = b.dataset.vote, cur = A.votes[id] || 0;
+      var nx = (cur+1)%3;
+      if(nx===0) delete A.votes[id]; else A.votes[id] = nx;
+      paintVote(b, nx); save(); return;
+    }
+    if(b.dataset.color){ setColor(b); return; }
+    if(b.dataset.size){ setSize(b); return; }
+    if(b.id==="undo"){ undo(); return; }
+    if(b.id==="clear"){ clearPad(); return; }
+    if(b.dataset.rm!==undefined){ A.files.splice(+b.dataset.rm,1); save(); paintThumbs(); return; }
+  });
+
+  var drop = app.querySelector("[data-drop]");
+  var fin = app.querySelector("[data-fileinput]");
+  if(drop && fin){
+    drop.addEventListener("click", function(){ fin.click(); });
+    fin.addEventListener("change", function(){ handleFiles(fin.files); fin.value=""; });
+  }
+}
+
+function paintVote(el, state){
+  el.classList.remove("like","nope");
+  var s = el.querySelector(".state");
+  if(state===1){ el.classList.add("like"); s.textContent = "♥"; s.style.color = "#2E7D5B"; }
+  else if(state===2){ el.classList.add("nope"); s.textContent = "✕"; s.style.color = "#8A8377"; }
+  else { s.textContent = ""; }
+}
+
+function restore(){
+  var i, els;
+  els = app.querySelectorAll("[data-in]");
+  for(i=0;i<els.length;i++){ var k=els[i].dataset.in; if(A[k]!=null) els[i].value = A[k]; }
+  els = app.querySelectorAll("[data-range]");
+  for(i=0;i<els.length;i++){ var r=els[i].dataset.range; if(A[r]!=null) els[i].value = A[r]; }
+  els = app.querySelectorAll("[data-radio]");
+  for(i=0;i<els.length;i++){ if(A[els[i].dataset.radio]===els[i].dataset.v) els[i].classList.add("sel"); }
+  els = app.querySelectorAll("[data-check]");
+  for(i=0;i<els.length;i++){
+    var ck = A[els[i].dataset.check];
+    if(Array.isArray(ck) && ck.indexOf(els[i].dataset.v)>=0) els[i].classList.add("sel");
+  }
+  els = app.querySelectorAll("[data-vote]");
+  for(i=0;i<els.length;i++){ var st = A.votes[els[i].dataset.vote]; if(st) paintVote(els[i], st); }
+  paintThumbs();
+}
+
+/* ---------- images ---------- */
+function handleFiles(files){
+  var arr = Array.prototype.slice.call(files);
+  var todo = arr.length;
+  if(!todo) return;
+  arr.forEach(function(f){
+    if(!/^image\//.test(f.type)){ todo--; return; }
+    var rd = new FileReader();
+    rd.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var max = 1400, w = img.width, h = img.height;
+        if(w>max || h>max){ var s = max/Math.max(w,h); w = Math.round(w*s); h = Math.round(h*s); }
+        var c = document.createElement("canvas"); c.width=w; c.height=h;
+        var x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,w,h); x.drawImage(img,0,0,w,h);
+        A.files.push({name:f.name||"image.jpg", data:c.toDataURL("image/jpeg",0.82)});
+        save(); paintThumbs();
+      };
+      img.src = rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
+}
+
+function paintThumbs(){
+  var box = document.getElementById("thumbs");
+  if(!box) return;
+  var h = "";
+  for(var i=0;i<A.files.length;i++){
+    h += '<div class="thumb"><img src="'+A.files[i].data+'" alt=""><button type="button" data-rm="'+i+'">✕</button></div>';
+  }
+  box.innerHTML = h;
+}
+
+/* ---------- canvas ---------- */
+var pad, ctx, drawing=false, strokes=[], cur=null, penColor="#1B1A17", penSize=3;
+
+function initPad(){
+  pad = document.getElementById("pad");
+  if(!pad || pad.dataset.ready) return;
+  pad.dataset.ready = "1";
+  var dpr = window.devicePixelRatio || 1;
+  var r = pad.getBoundingClientRect();
+  pad.width = Math.round(r.width*dpr); pad.height = Math.round(r.height*dpr);
+  ctx = pad.getContext("2d");
+  if(!ctx) return;
+  ctx.scale(dpr,dpr);
+  ctx.lineCap="round"; ctx.lineJoin="round";
+  paintPad();
+
+  pad.addEventListener("pointerdown", function(e){
+    pad.setPointerCapture(e.pointerId); drawing = true;
+    cur = {c:penColor, w:penSize, p:[pt(e)]}; strokes.push(cur);
+  });
+  pad.addEventListener("pointermove", function(e){
+    if(!drawing) return;
+    cur.p.push(pt(e)); paintPad();
+  });
+  pad.addEventListener("pointerup", function(){ drawing=false; storePad(); });
+  pad.addEventListener("pointercancel", function(){ drawing=false; storePad(); });
+}
+function pt(e){ var r = pad.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; }
+function paintPad(){
+  var r = pad.getBoundingClientRect();
+  ctx.clearRect(0,0,r.width,r.height);
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,r.width,r.height);
+  for(var i=0;i<strokes.length;i++){
+    var s = strokes[i];
+    ctx.strokeStyle=s.c; ctx.lineWidth=s.w; ctx.beginPath();
+    for(var j=0;j<s.p.length;j++){ j?ctx.lineTo(s.p[j][0],s.p[j][1]):ctx.moveTo(s.p[j][0],s.p[j][1]); }
+    if(s.p.length===1){ ctx.lineTo(s.p[0][0]+0.1, s.p[0][1]+0.1); }
+    ctx.stroke();
+  }
+}
+function storePad(){ try{ A.croquis = strokes.length ? pad.toDataURL("image/png") : ""; save(); }catch(e){} }
+function undo(){ strokes.pop(); paintPad(); storePad(); }
+function clearPad(){ strokes = []; paintPad(); storePad(); }
+function setColor(b){
+  penColor = b.dataset.color;
+  var d = app.querySelectorAll(".dot"); for(var i=0;i<d.length;i++) d[i].classList.remove("on");
+  b.classList.add("on");
+}
+function setSize(b){
+  penSize = +b.dataset.size;
+  var t = app.querySelectorAll("[data-size]"); for(var i=0;i<t.length;i++) t[i].classList.remove("on");
+  b.classList.add("on");
+}
+
+/* ---------- navigation ---------- */
+var screens, btnNext = document.getElementById("next"), btnBack = document.getElementById("back");
+
+function show(n){
+  screens = app.querySelectorAll(".screen");
+  if(n<0) n=0;
+  if(n>screens.length-1) n = screens.length-1;
+  idx = n;
+  for(var i=0;i<screens.length;i++) screens[i].classList.toggle("on", i===n);
+  var last = (n === SCREENS.length-1);
+  var done = (n === SCREENS.length);
+  btnBack.style.display = (n===0 || done) ? "none" : "";
+  btnNext.textContent = SCREENS[n] && SCREENS[n].next ? SCREENS[n].next : "Suivant";
+  btnNext.classList.toggle("cta", last);
+  document.getElementById("nav").style.display = done ? "none" : "";
+  document.getElementById("progress").style.width = Math.round(n/(SCREENS.length-1)*100)+"%";
+  document.getElementById("stepn").textContent = done ? "" : (n===0 ? "" : n+"/"+(SCREENS.length-1));
+  window.scrollTo({top:0, behavior:"instant"});
+  if(SCREENS[n] && SCREENS[n].draw) setTimeout(initPad, 60);
+}
+
+btnBack.addEventListener("click", function(){ show(idx-1); });
+btnNext.addEventListener("click", function(){
+  if(idx === SCREENS.length-1){ submit(); }
+  else show(idx+1);
+});
+
+/* ---------- envoi ---------- */
+function labelOf(f, v){
+  var o = (f.opts||[]).filter(function(x){return x.v===v})[0];
+  return o ? o.l : (v||"");
+}
+
+function payload(){
+  var sections = [];
+  for(var i=0;i<SCREENS.length;i++){
+    var sc = SCREENS[i];
+    if(sc.intro) continue;
+    var items = [];
+
+    if(sc.vote){
+      var list = sc.vote==="palettes" ? PALETTES : FONTS;
+      var likes = [], nopes = [];
+      for(var z=0;z<list.length;z++){
+        var st = A.votes[list[z].id];
+        if(st===1) likes.push(list[z].n);
+        else if(st===2) nopes.push(list[z].n);
+      }
+      items.push({q:"Coups de coeur", r: likes.join(" · ") || "(aucun)"});
+      items.push({q:"Rejetés",        r: nopes.join(" · ") || "(aucun)"});
+    }
+
+    var fl = (sc.f||[]).concat(sc.after||[]);
+    for(var j=0;j<fl.length;j++){
+      var f = fl[j];
+      if(f.t==="info") continue;
+      var v = A[f.k], r = "";
+      if(f.t==="radio"){ r = v ? labelOf(f, v) : ""; }
+      else if(f.t==="checks"){
+        if(Array.isArray(v) && v.length){
+          var tmp = [];
+          for(var m=0;m<v.length;m++) tmp.push(labelOf(f, v[m]));
+          r = tmp.join(" · ");
+        }
+      }
+      else if(f.t==="slider"){
+        r = (v==null) ? "" : (v + "/100   [ 0 = " + f.left + "   |   100 = " + f.right + " ]");
+      }
+      else if(f.t==="files"){ r = (A.files.length||0) ? A.files.length + " image(s) jointe(s)" : ""; }
+      else { r = v || ""; }
+      items.push({q: f.q || (f.left ? f.left+" / "+f.right : f.k), r: r});
+    }
+    sections.push({titre: sc.t, items: items});
+  }
+
+  return {
+    meta: {envoye:new Date().toISOString(), ua:navigator.userAgent},
+    sections: sections,
+    brut: A,
+    images: A.files || [],
+    croquis: A.croquis || ""
+  };
+}
+
+function submit(){
+  if(sent) return;
+  btnNext.disabled = true; btnNext.textContent = "Envoi en cours...";
+  var data = payload();
+
+  if(!ENDPOINT || ENDPOINT.indexOf("COLLEZ_ICI") === 0){
+    finish(false, "Le lien de réception n'est pas encore configuré.");
+    return;
+  }
+
+  var body = JSON.stringify(data);
+  var ok = function(){ sent = true; try{localStorage.removeItem(STORE_KEY);}catch(e){} finish(true); };
+
+  fetch(ENDPOINT, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: body
+  })
+  .then(function(r){ return r.text(); })
+  .then(ok)
+  .catch(function(){
+    // Secours : envoi opaque. On ne peut pas lire la réponse (CORS) mais la requête part bien.
+    fetch(ENDPOINT, {
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: body
+    }).then(ok).catch(function(err){ finish(false, String(err)); });
+  });
+}
+
+function finish(ok, msg){
+  var d = document.getElementById("done");
+  if(ok){
+    d.innerHTML = '<div class="center" style="padding:56px 0 20px">'+
+      '<div class="hero-logo lg" style="margin:0 auto 18px"></div>'+
+      '<h2>C\'est envoyé.</h2>'+
+      '<p class="sub">Merci, sincèrement. Tout est arrivé chez moi, vous n\'avez plus rien à faire.<br>Je reviens vers vous très vite avec de premières pistes.</p>'+
+      '<p class="sub" style="font-size:14px">Vous pouvez fermer cette page.</p></div>'+ SIGN;
+    paintLogos();
+  } else {
+    d.innerHTML = '<div style="padding:44px 0 20px">'+
+      '<div class="big-emoji">😕</div>'+
+      '<h2>L\'envoi a échoué.</h2>'+
+      '<p class="sub">Rien n\'est perdu : vos réponses sont toujours enregistrées sur cet appareil. Vous pouvez réessayer, ou télécharger le récapitulatif et me l\'envoyer.</p>'+
+      '<div class="err">'+esc(msg||"")+'</div>'+
+      '<div style="display:flex; gap:9px; margin-top:16px">'+
+      '<button class="btn" id="retry">Réessayer</button>'+
+      '<button class="btn ghost" id="dl">Télécharger</button></div></div>';
+    document.getElementById("retry").addEventListener("click", function(){
+      document.getElementById("nav").style.display=""; btnNext.disabled=false; show(SCREENS.length-1);
+    });
+    document.getElementById("dl").addEventListener("click", function(){
+      var blob = new Blob([JSON.stringify(payload(),null,2)], {type:"application/json"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "arche-brief.json"; a.click();
+    });
+  }
+  show(SCREENS.length);
+}
+
+/* ---------- go ---------- */
+load();
+render();
+</script>
+</body>
+</html>
