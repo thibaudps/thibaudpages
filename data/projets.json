@@ -519,6 +519,43 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Cover de l'album \"Rêves Éveillés\" pour L'Échappée Belle.\nL'idée était de dire beaucoup avec très peu. Pas de décor, pas d'effets, juste une image qui raconte l'évasion sans avoir besoin de l'expliquer.\nLa typo reste discrète, elle accompagne sans voler la vedette. C'est souvent le plus dur: savoir s'arrêter.\nUn projet réalisé dans le cadre de ma formation.",
       "year": "2025"
+    },
+    {
+      "titleEn": "Little Guys",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.1,
+      "descriptionEn": "Every linocut I've sent out lately went off with its own little authenticity card, hand drawn in coloured pencil on A6. Just a number on the back felt a bit sad, so I took the chance to fill them with a whole crew of tiny forest characters.\n\nBig thanks to everyone who ordered a linocut, this little series exists partly because of you.\n\nAnd a small reminder while I'm here: I don't only do logos and brand identity. Illustration, character design, cards, small hand drawn series, that's possible too.\nIf you've got a project somewhere in that area, send me a message, I'd be happy to talk about it.",
+      "onSale": false,
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Illustration",
+      "title": "Little Guys",
+      "images": [
+        {
+          "media": "/public/images/projects/little-guys-1-post.webp"
+        },
+        {
+          "media": "/public/images/projects/little-guys-2-post.webp"
+        },
+        {
+          "media": "/public/images/projects/little-guys-3-post.webp"
+        },
+        {
+          "media": "/public/images/projects/little-guys-4-post.webp"
+        },
+        {
+          "media": "/public/images/projects/little-guys-5-post.webp"
+        },
+        {
+          "media": "/public/images/projects/little-guys-6-post.webp"
+        }
+      ],
+      "image": "/public/images/projects/little-guys-1-post.webp",
+      "description": "Chaque linogravure que j'ai envoyé dernièrement est partie avec sa petite carte d'authentification, dessinée à la main aux crayons de couleur sur du A6. Un simple numéro au dos, je trouvais ça un peu triste, alors j'en ai profité pour y glisser une bande de petits personnages de la forêt.\n\nMerci beaucoup à celles et ceux qui m'ont commandé des linogravures, c'est un peu grâce à vous que cette petite série existe.\n\nEt petit rappel au passage : je ne fais pas que des logos et de l'identité graphique. Illustration, création de personnages, cartes, petites séries dessinées à la main, c'est aussi possible.\nSi vous avez un projet dans ce coin-là, écrivez-moi, ça me fera plaisir d'en parler.",
+      "year": "2026"
     }
   ]
 }
