@@ -5,11 +5,11 @@
       "reader": {
         "ratio": 0.7
       },
-      "cropZoom": 1.1,
+      "cropZoom": 1,
       "descriptionEn": "New website for Nuit Noire Tattoo, the Vernier studio I've been working with for a while. One page per artist, a small shop for the merch, and a dark feel that lets the tattoos do the talking. Available in French and English.\n\n[nuitnoiretattoo.com](https://www.nuitnoiretattoo.com/)",
       "onSale": false,
       "cropX": 50,
-      "cropY": 50,
+      "cropY": 38,
       "href": "#",
       "cat": "Web",
       "title": "Site web de Nuit Noire Tattoo",
