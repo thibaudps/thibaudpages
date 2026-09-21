@@ -1,6 +1,40 @@
 {
   "projects": [
     {
+      "titleEn": "Nuit Noire Tattoo Website",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.1,
+      "descriptionEn": "New website for Nuit Noire Tattoo, the Vernier studio I've been working with for a while. One page per artist, a small shop for the merch, and a dark feel that lets the tattoos do the talking. Available in French and English.\n\n[nuitnoiretattoo.com](https://www.nuitnoiretattoo.com/)",
+      "onSale": false,
+      "cropX": 50,
+      "cropY": 50,
+      "href": "#",
+      "cat": "Web",
+      "title": "Site web de Nuit Noire Tattoo",
+      "images": [
+        {
+          "media": "/public/images/projects/nuitnoire_2.png"
+        },
+        {
+          "media": "/public/images/projects/nuitnoire_3.png"
+        },
+        {
+          "media": "/public/images/projects/nuitnoire_4.png"
+        },
+        {
+          "media": "/public/images/projects/nuitnoire_5.png"
+        },
+        {
+          "media": "/public/images/projects/nuitnoire_7.png"
+        }
+      ],
+      "image": "/public/images/projects/nuitnoire_1.png",
+      "description": "Nouveau site pour Nuit Noire Tattoo, le studio de Vernier avec qui je bosse depuis un moment. Une page par artiste, une petite boutique pour le merch, et une ambiance sombre qui laisse toute la place aux tatouages. Le site est dispo en français et en anglais.\n\n[nuitnoiretattoo.com](https://www.nuitnoiretattoo.com)",
+      "year": "2026"
+    },
+    {
       "titleEn": "Little Guys",
       "reader": {
         "ratio": 0.7
@@ -556,40 +590,6 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Cover de l'album \"Rêves Éveillés\" pour L'Échappée Belle.\nL'idée était de dire beaucoup avec très peu. Pas de décor, pas d'effets, juste une image qui raconte l'évasion sans avoir besoin de l'expliquer.\nLa typo reste discrète, elle accompagne sans voler la vedette. C'est souvent le plus dur: savoir s'arrêter.\nUn projet réalisé dans le cadre de ma formation.",
       "year": "2025"
-    },
-    {
-      "titleEn": "Nuit Noire Tattoo Website",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.1,
-      "descriptionEn": "New website for Nuit Noire Tattoo, the Vernier studio I've been working with for a while. One page per artist, a small shop for the merch, and a dark feel that lets the tattoos do the talking. Available in French and English.\n\n[nuitnoiretattoo.com](https://www.nuitnoiretattoo.com/)",
-      "onSale": false,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Web",
-      "title": "Site web de Nuit Noire Tattoo",
-      "images": [
-        {
-          "media": "/public/images/projects/nuitnoire_2.png"
-        },
-        {
-          "media": "/public/images/projects/nuitnoire_3.png"
-        },
-        {
-          "media": "/public/images/projects/nuitnoire_4.png"
-        },
-        {
-          "media": "/public/images/projects/nuitnoire_5.png"
-        },
-        {
-          "media": "/public/images/projects/nuitnoire_7.png"
-        }
-      ],
-      "image": "/public/images/projects/nuitnoire_1.png",
-      "description": "Nouveau site pour Nuit Noire Tattoo, le studio de Vernier avec qui je bosse depuis un moment. Une page par artiste, une petite boutique pour le merch, et une ambiance sombre qui laisse toute la place aux tatouages. Le site est dispo en français et en anglais.\n\n[nuitnoiretattoo.com](https://www.nuitnoiretattoo.com)",
-      "year": "2026"
     }
   ]
 }
