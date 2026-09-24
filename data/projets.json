@@ -1,6 +1,40 @@
 {
   "projects": [
     {
+      "titleEn": "La Louve - Brand Identity",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.1,
+      "descriptionEn": "A she-wolf with one eye wide open, ready to howl.\n[La Louve](https://www.instagram.com/la_louve_asso) is a feminist non-profit organization that needed an identity that brings people together without smoothing out the edges: warm, a little raw, drawn by hand. The logo works in colour and in monochrome. It extends into event banners and social media templates, so the team can make its own posts while staying within the brand guidelines.\nWhat I take away from this one: a good identity is also one that others can make their own.",
+      "onSale": false,
+      "cropX": 50,
+      "cropY": 39,
+      "href": "#",
+      "cat": "Identity",
+      "title": "La Louve - Identité Graphique",
+      "images": [
+        {
+          "media": "/public/images/projects/post-louve_1.png"
+        },
+        {
+          "media": "/public/images/projects/post-louve_2.png"
+        },
+        {
+          "media": "/public/images/projects/post-louve_3.png"
+        },
+        {
+          "media": "/public/images/projects/post-louve_4.png"
+        },
+        {
+          "media": "/public/images/projects/post-louve_6.png"
+        }
+      ],
+      "image": "/public/images/projects/post-louve.png",
+      "description": "Une louve qui garde l'œil ouvert, la gueule prête à hurler.\nPour [La Louve](https://www.instagram.com/la_louve_asso), une association féministe, il fallait une identité qui rassemble sans lisser : chaleureuse, un peu brute, tracée à la main. Le logo tient en couleur comme en monochrome. Il se décline en bandeaux pour les événements et en templates réseaux, pour que l'équipe puisse créer ses propres posts sans perdre la cohérence de la charte.\nCe que je retiens de ce projet : une identité réussie, c'est aussi une identité que les autres peuvent s'approprier.",
+      "year": "2026"
+    },
+    {
       "titleEn": "Nuit Noire Tattoo Website",
       "reader": {
         "ratio": 0.7
@@ -317,40 +351,6 @@
       "image": "public/images/projects/hopi.webp",
       "description": "Imagier interactif pour enfants autour du jardin et de ses petits habitants. Chaque double-page invite à explorer un nouvel élément du quotidien d'Hopi, dans un univers doux et accessible.",
       "year": "2025"
-    },
-    {
-      "titleEn": "La Louve - Brand Identity",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.1,
-      "descriptionEn": "A she-wolf with one eye wide open, ready to howl.\n[La Louve](https://www.instagram.com/la_louve_asso) is a feminist non-profit organization that needed an identity that brings people together without smoothing out the edges: warm, a little raw, drawn by hand. The logo works in colour and in monochrome. It extends into event banners and social media templates, so the team can make its own posts while staying within the brand guidelines.\nWhat I take away from this one: a good identity is also one that others can make their own.",
-      "onSale": false,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Identity",
-      "title": "La Louve - Identité Graphique",
-      "images": [
-        {
-          "media": "/public/images/projects/post-louve_1.png"
-        },
-        {
-          "media": "/public/images/projects/post-louve_2.png"
-        },
-        {
-          "media": "/public/images/projects/post-louve_3.png"
-        },
-        {
-          "media": "/public/images/projects/post-louve_4.png"
-        },
-        {
-          "media": "/public/images/projects/post-louve_6.png"
-        }
-      ],
-      "image": "/public/images/projects/post-louve.png",
-      "description": "Une louve qui garde l'œil ouvert, la gueule prête à hurler.\nPour [La Louve](https://www.instagram.com/la_louve_asso), une association féministe, il fallait une identité qui rassemble sans lisser : chaleureuse, un peu brute, tracée à la main. Le logo tient en couleur comme en monochrome. Il se décline en bandeaux pour les événements et en templates réseaux, pour que l'équipe puisse créer ses propres posts sans perdre la cohérence de la charte.\nCe que je retiens de ce projet : une identité réussie, c'est aussi une identité que les autres peuvent s'approprier.",
-      "year": "2026"
     },
     {
       "titleEn": "Lone Assembly Album Release",
