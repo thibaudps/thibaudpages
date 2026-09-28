@@ -1,6 +1,43 @@
 {
   "projects": [
     {
+      "titleEn": "20th Anniversary - Vespa Classic Club Geneva",
+      "reader": {
+        "ratio": 0.7
+      },
+      "cropZoom": 1.5,
+      "descriptionEn": "Twenty years of the [Vespa Classic Club Geneva](https://www.instagram.com/vespaclassicclubgeneve_vccg/). For the occasion, the club asked me to design an anniversary logo. The challenge: one visual that works everywhere, from a small sticker to a Vespa banner, through t-shirts and bags. Seeing members wear it on their rides is my favorite part of the job.",
+      "onSale": false,
+      "cropX": 50,
+      "cropY": 31,
+      "href": "#",
+      "cat": "Print",
+      "title": "20 ans du Vespa Classic Club Genève",
+      "images": [
+        {
+          "media": "/public/images/projects/caroussel_1.png"
+        },
+        {
+          "media": "/public/images/projects/caroussel-final_2.png"
+        },
+        {
+          "media": "/public/images/projects/caroussel-final_3.png"
+        },
+        {
+          "media": "/public/images/projects/caroussel-final_4.png"
+        },
+        {
+          "media": "/public/images/projects/caroussel-final_5.png"
+        },
+        {
+          "media": "/public/images/projects/caroussel-final_6.png"
+        }
+      ],
+      "image": "/public/images/projects/caroussel_1.png",
+      "description": "Vingt ans du [Vespa Classic Club de Genève](https://www.instagram.com/vespaclassicclubgeneve_vccg/). Pour l'occasion, le club m'a confié la création d'un logo anniversaire. Le défi : un seul visuel qui fonctionne partout, du petit sticker à la bannière de Vespa, en passant par les t-shirts et les sacs. Le voir porté par les membres pendant leurs sorties, c'est ma partie préférée du métier.",
+      "year": "2026"
+    },
+    {
       "titleEn": "La Louve - Brand Identity",
       "reader": {
         "ratio": 0.7
@@ -624,43 +661,6 @@
       "image": "public/images/projects/filledulac2.webp",
       "description": "Cover de l'album \"Rêves Éveillés\" pour L'Échappée Belle.\nL'idée était de dire beaucoup avec très peu. Pas de décor, pas d'effets, juste une image qui raconte l'évasion sans avoir besoin de l'expliquer.\nLa typo reste discrète, elle accompagne sans voler la vedette. C'est souvent le plus dur: savoir s'arrêter.\nUn projet réalisé dans le cadre de ma formation.",
       "year": "2025"
-    },
-    {
-      "titleEn": "20th Anniversary - Vespa Classic Club Geneva",
-      "reader": {
-        "ratio": 0.7
-      },
-      "cropZoom": 1.1,
-      "descriptionEn": "Twenty years of the [Vespa Classic Club Geneva](https://www.instagram.com/vespaclassicclubgeneve_vccg/). For the occasion, the club asked me to design an anniversary logo. The challenge: one visual that works everywhere, from a small sticker to a Vespa banner, through t-shirts and bags. Seeing members wear it on their rides is my favorite part of the job.",
-      "onSale": false,
-      "cropX": 50,
-      "cropY": 50,
-      "href": "#",
-      "cat": "Print",
-      "title": "20 ans du Vespa Classic Club Genève",
-      "images": [
-        {
-          "media": "/public/images/projects/caroussel_1.png"
-        },
-        {
-          "media": "/public/images/projects/caroussel-final_2.png"
-        },
-        {
-          "media": "/public/images/projects/caroussel-final_3.png"
-        },
-        {
-          "media": "/public/images/projects/caroussel-final_4.png"
-        },
-        {
-          "media": "/public/images/projects/caroussel-final_5.png"
-        },
-        {
-          "media": "/public/images/projects/caroussel-final_6.png"
-        }
-      ],
-      "image": "/public/images/projects/caroussel_1.png",
-      "description": "Vingt ans du [Vespa Classic Club de Genève](https://www.instagram.com/vespaclassicclubgeneve_vccg/). Pour l'occasion, le club m'a confié la création d'un logo anniversaire. Le défi : un seul visuel qui fonctionne partout, du petit sticker à la bannière de Vespa, en passant par les t-shirts et les sacs. Le voir porté par les membres pendant leurs sorties, c'est ma partie préférée du métier.",
-      "year": "2026"
     }
   ]
 }
